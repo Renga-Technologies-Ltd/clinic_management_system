@@ -14,9 +14,7 @@ router.post('/login', function(req, res, next) {
   res.send('respond with a resource');
 });
 //craeting users
-router.post('/register', function(req, res, next) {
-  
-});
+router.post('/register', userController.registerUser);
 
 
 module.exports = router;

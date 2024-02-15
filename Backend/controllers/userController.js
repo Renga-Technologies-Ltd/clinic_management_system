@@ -4,17 +4,14 @@ const User = require("../schemas/users");
 const userController = {
     registerUser: async (req, res, next) => {
     try {
-        const { username, password, roles, profile } = req.body;
-
+      const { username, password, roles, profile } = req.body;
       // Check if the username is already taken
       const existingUser = await User.findOne({ username });
       if (existingUser) {
         return res.status(409).json({ message: "Username is already taken" });
       }
-
-      // Hash the password before saving it
-      const hashedPassword = await bcrypt.hash(password, 10);
-
+      const saltRounds = 10;
+      const hashedPassword = await bcrypt.hash(password, saltRounds);
       // Create a new user
       const newUser = new User({
         username,
@@ -22,7 +19,6 @@ const userController = {
         roles,
         profile,
       });
-
       // Save the user to the database
       await newUser.save();
 
@@ -32,7 +28,6 @@ const userController = {
       res.status(500).json({ message: "Internal Server Error" });
     }
   },
-
   // Add more controller methods as needed
 };
 
