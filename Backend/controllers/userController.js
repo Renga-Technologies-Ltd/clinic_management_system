@@ -47,7 +47,6 @@ const userController = {
 
       // Create a JWT token
       const token = generateToken(user);
-
       // Send the token and user details in the response
       res.status(200).json({
         message: "User logged in successfully",
