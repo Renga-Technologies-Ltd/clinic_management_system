@@ -22,12 +22,32 @@ const userController = {
       });
       // Save the user to the database
       await newUser.save();
-
       res.status(201).json({ message: "User registered successfully" });
     } catch (error) {
       console.error("Error registering user:", error);
       res.status(500).json({ message: "Internal Server Error" });
     }
+  },
+  //edit user
+  editUser: async (req, res, next) => {
+    try {
+      const { userid, username, password, roles, profile } = req.body;
+      const user_details = await User.findById({ userid });
+      if (!user_details) {
+        return res.json(404).json({ message: "User not found" });
+      }
+      const saltRounds = 10;
+      const hashedPassword = await bcrypt.hash(password, saltRounds);
+      user_details.username = username;
+      user_details.password = hashedPassword;
+      user_details.roles = roles;
+      user_details.profile = profile;
+      const updated_userDetails = await user_details.save();
+      res.status(200).json({
+        message: "User details updated",
+        updated_userDetails,
+      });
+    } catch (error) {}
   },
   // Add more controller methods as needed
   loginUser: async (req, res, next) => {
