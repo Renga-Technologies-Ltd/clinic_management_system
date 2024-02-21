@@ -5,43 +5,42 @@ import DonutChartWidget from "components/shared-components/DonutChartWidget";
 import Flex from "components/shared-components/Flex";
 import ChartWidget from "components/shared-components/ChartWidget";
 import NumberFormat from "react-number-format";
-import ApexChart from "react-apexcharts";
+// import ApexChart from "react-apexcharts";
 import {
-  apexSparklineChartDefultOption,
+  // apexSparklineChartDefultOption,
   COLORS,
 } from "constants/ChartConstant";
-import utils from "utils";
-import {
-  FacebookFilled,
-  TwitterSquareFilled,
-  LinkedinFilled,
-  YoutubeFilled,
-  DribbbleSquareFilled,
-  ArrowUpOutlined,
-  ArrowDownOutlined,
-} from "@ant-design/icons";
+// import utils from "utils";
+// import {
+//   FacebookFilled,
+//   TwitterSquareFilled,
+//   LinkedinFilled,
+//   YoutubeFilled,
+//   DribbbleSquareFilled,
+
+// } from "@ant-design/icons";
 import {
   regionData,
   sessionData,
   sessionLabels,
   conbinedSessionData,
   sessionColor,
-  pagesViewData,
+  // pagesViewData,
   latestAlerts,
-  socialMediaReferralData,
+  // socialMediaReferralData,
   uniqueVisitorsDataWeek,
   uniqueVisitorsDataDay,
   uniqueVisitorsDataMonth,
 } from "./AnalyticDashboardData";
 import { useSelector } from "react-redux";
 
-const socialMediaReferralIcon = [
-  <FacebookFilled style={{ color: "#1774eb" }} />,
-  <TwitterSquareFilled style={{ color: "#1c9deb" }} />,
-  <YoutubeFilled style={{ color: "#f00" }} />,
-  <LinkedinFilled style={{ color: "#0077b4" }} />,
-  <DribbbleSquareFilled style={{ color: "#e44a85" }} />,
-];
+// const socialMediaReferralIcon = [
+//   <FacebookFilled style={{ color: "#1774eb" }} />,
+//   <TwitterSquareFilled style={{ color: "#1c9deb" }} />,
+//   <YoutubeFilled style={{ color: "#f00" }} />,
+//   <LinkedinFilled style={{ color: "#0077b4" }} />,
+//   <DribbbleSquareFilled style={{ color: "#e44a85" }} />,
+// ];
 
 const { Option } = Select;
 

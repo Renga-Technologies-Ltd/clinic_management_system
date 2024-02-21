@@ -94,7 +94,7 @@ const Localization = () => {
 	return (
 		<div>
 			<h2>Localization</h2>
-			<p>Princenet implement localization through <code>react-i18n-next</code>, 
+			<p>CMS implement localization through <code>react-i18n-next</code>, 
 			corresponding files can be found in <code>src/lang/</code>, folder structure as below</p>
 			<div className="mb-4">
 				<DirectoryTree

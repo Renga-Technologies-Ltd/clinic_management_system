@@ -25,7 +25,7 @@ export class Invoice extends Component {
               <address>
                 <p>
                   <span className="font-weight-semibold text-dark font-size-md">
-                    Princenet, Inc.
+                    CMS, Inc.
                   </span>
                   <br />
                   <span>00100 Nairobi</span>

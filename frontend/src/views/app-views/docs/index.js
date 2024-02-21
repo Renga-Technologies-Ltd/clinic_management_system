@@ -171,7 +171,7 @@ const menuList = [
 	}
 ]
 
-const prefix = 'documentation/'
+// const prefix = 'documentation/'
 
 const MenuItem = ({title, path}) => {
 

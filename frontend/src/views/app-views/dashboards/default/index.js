@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Row, Col, Button, Avatar, Dropdown, Table, Menu, Tag } from "antd";
+import { Row, Col, Button, Avatar, Dropdown, Table,Tag } from "antd";
 import StatisticWidget from "components/shared-components/StatisticWidget";
 import ChartWidget from "components/shared-components/ChartWidget";
 import AvatarStatus from "components/shared-components/AvatarStatus";
@@ -21,9 +21,7 @@ import {
   FileExcelOutlined,
   PrinterOutlined,
   PlusOutlined,
-  EllipsisOutlined,
-  StopOutlined,
-  InvoiceOutlined,
+  EllipsisOutlined,  
   ReloadOutlined,
 } from "@ant-design/icons";
 import utils from "utils";

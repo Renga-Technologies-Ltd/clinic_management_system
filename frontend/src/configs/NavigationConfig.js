@@ -2,8 +2,8 @@ import {
   DashboardOutlined,
   AppstoreOutlined,
   FileTextOutlined,
-  SafetyOutlined,
-  StopOutlined,
+  // SafetyOutlined,
+  // StopOutlined,
   DotChartOutlined,
   MailOutlined,
   MessageOutlined,
@@ -13,7 +13,10 @@ import {
   FundOutlined,
   ShoppingCartOutlined,
 } from "@ant-design/icons";
-import { APP_PREFIX_PATH, AUTH_PREFIX_PATH } from "configs/AppConfig";
+import {
+  APP_PREFIX_PATH,
+  // AUTH_PREFIX_PATH
+} from "configs/AppConfig";
 
 const extraNavTree = [
   {

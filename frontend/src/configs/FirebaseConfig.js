@@ -1,9 +1,9 @@
 const FirebaseConfig = {
   apiKey: 'AIzaSyAOWoRQGoegkmwnCca7B2GG5GUG_ZP1lcM',
-  authDomain: 'Princenet.firebaseapp.com',
-  databaseURL: 'https://Princenet.firebaseio.com',
-  projectId: 'Princenet',
-  storageBucket: 'Princenet.appspot.com',
+  authDomain: 'CMS.firebaseapp.com',
+  databaseURL: 'https://CMS.firebaseio.com',
+  projectId: 'CMS',
+  storageBucket: 'CMS.appspot.com',
   messagingSenderId: '807555350717',
   appId: '1:807555350717:web:145ba7c21af47203a2f7d4',
   measurementId: 'G-8KE7HJB252'
