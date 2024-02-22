@@ -6,6 +6,7 @@ const patientSchema = new mongoose.Schema({
   dateOfBirth: { type: Date },
   gender: { type: String, enum: ["Male", "Female", "Other"] },
   contactNumber: { type: String },
+  emailAddress: { type: String },
   address: {
     street: { type: String },
     city: { type: String },

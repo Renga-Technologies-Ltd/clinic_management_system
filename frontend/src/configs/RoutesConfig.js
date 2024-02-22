@@ -43,83 +43,69 @@ export const protectedRoutes = [
     path: `${APP_PREFIX_PATH}/dashboards/analytic`,
     component: React.lazy(() => import("views/app-views/dashboards/analytic")),
   },
+  //main dashboard
   {
-    key: "dashboard.sales",
-    path: `${APP_PREFIX_PATH}/dashboards/sales`,
-    component: React.lazy(() => import("views/app-views/dashboards/sales")),
+    key: "dashboard.reception",
+    path: `${APP_PREFIX_PATH}/dashboards/reception`,
+    component: React.lazy(() => import("views/app-views/dashboards/reception")),
   },
+  {
+    key: "dashboard.nurse",
+    path: `${APP_PREFIX_PATH}/dashboards/nurse`,
+    component: React.lazy(() => import("views/app-views/dashboards/nurse")),
+  },
+  {
+    key: "dashboard.doctor",
+    path: `${APP_PREFIX_PATH}/dashboards/doctor`,
+    component: React.lazy(() => import("views/app-views/dashboards/doctor")),
+  },
+  //end main dashboard
   {
     key: "apps",
     path: `${APP_PREFIX_PATH}/apps`,
     component: React.lazy(() => import("views/app-views/apps")),
   },
   {
-    key: "apps.mail",
-    path: `${APP_PREFIX_PATH}/apps/mail/*`,
-    component: React.lazy(() => import("views/app-views/apps/mail")),
-  },
-  {
-    key: "apps.chat",
-    path: `${APP_PREFIX_PATH}/apps/chat/*`,
-    component: React.lazy(() => import("views/app-views/apps/chat")),
-  },
-  {
     key: "apps.calendar",
     path: `${APP_PREFIX_PATH}/apps/calendar`,
     component: React.lazy(() => import("views/app-views/apps/calendar")),
   },
+ 
+  // patients routes 
   {
-    key: "apps.project",
-    path: `${APP_PREFIX_PATH}/apps/project`,
-    component: React.lazy(() => import("views/app-views/apps/project")),
+    key: "apps.patient",
+    path: `${APP_PREFIX_PATH}/apps/patient`,
+    component: React.lazy(() => import("views/app-views/apps/patient")),
   },
   {
-    key: "apps.project.list",
-    path: `${APP_PREFIX_PATH}/apps/project/list`,
+    key: "apps.patient.add-patient",
+    path: `${APP_PREFIX_PATH}/apps/patient/add-patient`,
     component: React.lazy(() =>
-      import("views/app-views/apps/project/project-list/ProjectList")
+      import("views/app-views/apps/patient/add-patient")
     ),
   },
   {
-    key: "apps.project.scrumboard",
-    path: `${APP_PREFIX_PATH}/apps/project/scrumboard`,
+    key: "apps.patient.edit-patient",
+    path: `${APP_PREFIX_PATH}/apps/patient/edit-patient/:id`,
     component: React.lazy(() =>
-      import("views/app-views/apps/project/scrumboard")
+      import("views/app-views/apps/patient/edit-patient")
     ),
   },
   {
-    key: "apps.ecommerce",
-    path: `${APP_PREFIX_PATH}/apps/ecommerce`,
-    component: React.lazy(() => import("views/app-views/apps/e-commerce")),
-  },
-  {
-    key: "apps.ecommerce.add-product",
-    path: `${APP_PREFIX_PATH}/apps/ecommerce/add-product`,
+    key: "apps.patient.patient-list",
+    path: `${APP_PREFIX_PATH}/apps/patient/patient-list`,
     component: React.lazy(() =>
-      import("views/app-views/apps/e-commerce/add-product")
+      import("views/app-views/apps/patient/patient-list")
     ),
   },
   {
-    key: "apps.ecommerce.edit-product",
-    path: `${APP_PREFIX_PATH}/apps/ecommerce/edit-product/:id`,
+    key: "apps.patient.appointments",
+    path: `${APP_PREFIX_PATH}/apps/patient/appointments`,
     component: React.lazy(() =>
-      import("views/app-views/apps/e-commerce/edit-product")
+      import("views/app-views/apps/patient/appointments")
     ),
   },
-  {
-    key: "apps.ecommerce.product-list",
-    path: `${APP_PREFIX_PATH}/apps/ecommerce/product-list`,
-    component: React.lazy(() =>
-      import("views/app-views/apps/e-commerce/product-list")
-    ),
-  },
-  {
-    key: "apps.ecommerce.orders",
-    path: `${APP_PREFIX_PATH}/apps/ecommerce/orders`,
-    component: React.lazy(() =>
-      import("views/app-views/apps/e-commerce/orders")
-    ),
-  },
+  // end of patients routes 
   {
     key: "components.general",
     path: `${APP_PREFIX_PATH}/components/general`,
@@ -148,7 +134,7 @@ export const protectedRoutes = [
       blankLayout: true,
     },
   },
- 
+
   {
     key: "register-1",
     path: `${APP_PREFIX_PATH}/register-1`,
@@ -215,8 +201,13 @@ export const protectedRoutes = [
     component: React.lazy(() => import("views/app-views/pages/user-list")),
   },
   {
-    key: "docs.documentation",
-    path: `${APP_PREFIX_PATH}/docs/documentation/*`,
-    component: React.lazy(() => import("views/app-views/docs")),
+    key: "pages.add-patient",
+    path: `${APP_PREFIX_PATH}/pages/add-patient`,
+    component: React.lazy(() => import("views/app-views/pages/add-patient")),
   },
+  // {
+  //   key: "docs.documentation",
+  //   path: `${APP_PREFIX_PATH}/docs/documentation/*`,
+  //   component: React.lazy(() => import("views/app-views/docs")),
+  // },
 ];

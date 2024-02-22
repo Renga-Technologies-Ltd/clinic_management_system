@@ -9,6 +9,7 @@ const patientController = {
         dateOfBirth,
         gender,
         contactNumber,
+        emailAddress,
         address,
         nextOfKin,
       } = req.body;
@@ -20,6 +21,7 @@ const patientController = {
         dateOfBirth,
         gender,
         contactNumber,
+        emailAddress,
         address,
         nextOfKin,
       });
