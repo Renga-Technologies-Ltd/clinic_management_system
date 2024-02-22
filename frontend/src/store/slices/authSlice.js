@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 // import { AUTH_TOKEN } from "constants/AuthConstant";
 import AuthService from "services/AuthService";
-import apiBaseUrl from "configs/config";
+// import apiBaseUrl from "configs/config";
 
 export const initialState = {
   loading: false,
@@ -33,9 +33,12 @@ export const signIn = createAsyncThunk(
         const user_id = result.user.id; // Adjust accordingly based on your API response structure
         const user =
           result.user.profile.firstName + " " + result.user.profile.lastName;
+        const userDetails = result.user;
+
         localStorage.setItem("AUTH_TOKEN", AUTH_TOKEN);
         localStorage.setItem("user_id", user_id);
         localStorage.setItem("user", user);
+        localStorage.setItem("userDetails", JSON.stringify(userDetails));
         return AUTH_TOKEN;
       } else {
         const errorResponse = await response.json();

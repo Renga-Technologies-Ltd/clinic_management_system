@@ -17,6 +17,9 @@ router.post("/login", userController.loginUser);
 //craeting users
 router.post("/register", userController.registerUser);
 router.post("/editUser", userController.editUser);
+router.get("/getUser/:user", userController.getUser);
+// router.get("/getUsers", userController.getUsers);
+
 // creating a patient
 // router.post("/addPatient", authenticateToken, createPatient.createPatient);
 router.post("/addPatient", patientController.createPatient);
@@ -35,6 +38,5 @@ router.get("/allAppointments", appointmentController.fetchAllAppointments);
 router.get("/appBypatientsId", appointmentController.appointmentsByPatient);
 // record patients readings
 router.post("/nurseReadings", appointmentController.nurseSectionreading);
-
 
 module.exports = router;

@@ -49,6 +49,18 @@ const userController = {
       });
     } catch (error) {}
   },
+  getUser: async (req, res, next) => {
+    try {
+      const user = req.params.user;
+      // console.log(user);
+      const user_details = await User.findById({ user });
+      if (!user_details) {
+        return res.json(404).json({ message: "User not found" });
+      }
+      console.log(user_details);
+      res.status(200).json({ message: "User found", user_details });
+    } catch (error) {}
+  },
   // Add more controller methods as needed
   loginUser: async (req, res, next) => {
     try {
