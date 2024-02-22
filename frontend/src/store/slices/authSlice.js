@@ -70,9 +70,14 @@ export const signUp = createAsyncThunk(
 );
 
 export const signOut = createAsyncThunk("auth/signOut", async () => {
-  const response = await AuthService.signOutRequest();
-  //   localStorage.removeItem(token);
-  return response.data;
+  //   const response = await AuthService.signOutRequest();
+  localStorage.removeItem("AUTH_TOKEN");
+  localStorage.removeItem("user");
+  localStorage.removeItem("user_id");
+
+  const response = { message: "Logged out successfully" };
+
+  return response.message;
 });
 
 export const authSlice = createSlice({

@@ -2,8 +2,6 @@ import {
   DashboardOutlined,
   AppstoreOutlined,
   FileTextOutlined,
-  // SafetyOutlined,
-  // StopOutlined,
   DotChartOutlined,
   MailOutlined,
   MessageOutlined,

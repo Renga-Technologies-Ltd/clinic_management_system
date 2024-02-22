@@ -15,7 +15,7 @@ const LoginOne = props => {
 		<div className="h-100" style={backgroundStyle}>
 			<div className="container d-flex flex-column justify-content-center h-100">
 				<Row justify="center">
-					<Col xs={20} sm={20} md={20} lg={7}>
+					<Col xs={20} sm={20} md={20} lg={7}> 
 						<Card>
 							<div className="my-4">
 								<div className="text-center">
