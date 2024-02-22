@@ -52,13 +52,15 @@ const userController = {
   // Add more controller methods as needed
   loginUser: async (req, res, next) => {
     try {
-      const { username, password } = req.body;
+      // console.log(req.body);
+      const { email, password } = req.body;
+      const username = email;
       const user = await User.findOne({ username });
-
+      // console.log(user);
       if (!user) {
+        console.log("User not found");
         return res.status(404).json({ message: "User not found" });
       }
-
       const isPasswordValid = await bcrypt.compare(password, user.password);
 
       if (!isPasswordValid) {
@@ -72,6 +74,7 @@ const userController = {
         message: "User logged in successfully",
         token,
         user: {
+          id: user._id,
           username: user.username,
           roles: user.roles,
           profile: user.profile,

@@ -3,20 +3,20 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
-
+const cors = require("cors");
 var indexRouter = require("./routes/index");
 var app = express();
-
+app.use(cors());
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-require('dotenv').config();
+require("dotenv").config();
 // connect to db and start server
-require('./schemas/db');
+require("./schemas/db");
 
-console.log('Booting....');
+console.log("Booting....");
 // app.use(express.static(path.join(__dirname, 'public')));
 
 // redirect all api calls to index router

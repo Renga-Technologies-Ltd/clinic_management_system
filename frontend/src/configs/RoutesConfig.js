@@ -14,7 +14,7 @@ export const publicRoutes = [
     key: "register-1",
     path: `${AUTH_PREFIX_PATH}/register-1`,
     component: React.lazy(() =>
-      import("views/auth-views/authentication/register-1")
+      import("views/auth-views/authentication/register")
     ),
   },
 
@@ -153,7 +153,7 @@ export const protectedRoutes = [
     key: "register-1",
     path: `${APP_PREFIX_PATH}/register-1`,
     component: React.lazy(() =>
-      import("views/auth-views/authentication/register-1")
+      import("views/auth-views/authentication/register")
     ),
     meta: {
       blankLayout: true,
