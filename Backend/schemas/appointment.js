@@ -20,6 +20,11 @@ const appointmentSchema = new mongoose.Schema({
     ref: 'User',
     required: true,
   },
+  doctor: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+  },
   createdAt: {
     type: Date,
     default: Date.now,

@@ -70,8 +70,8 @@ export const protectedRoutes = [
     path: `${APP_PREFIX_PATH}/apps/calendar`,
     component: React.lazy(() => import("views/app-views/apps/calendar")),
   },
- 
-  // patients routes 
+
+  // patients routes
   {
     key: "apps.patient",
     path: `${APP_PREFIX_PATH}/apps/patient`,
@@ -82,6 +82,13 @@ export const protectedRoutes = [
     path: `${APP_PREFIX_PATH}/apps/patient/add-patient`,
     component: React.lazy(() =>
       import("views/app-views/apps/patient/add-patient")
+    ),
+  },
+  {
+    key: "apps.patient.patient-details",
+    path: `${APP_PREFIX_PATH}/apps/patient/patient-details/:id`,
+    component: React.lazy(() =>
+      import("views/app-views/apps/patient/patient-details")
     ),
   },
   {
@@ -105,7 +112,7 @@ export const protectedRoutes = [
       import("views/app-views/apps/patient/appointments")
     ),
   },
-  // end of patients routes 
+  // end of patients routes
   {
     key: "components.general",
     path: `${APP_PREFIX_PATH}/components/general`,

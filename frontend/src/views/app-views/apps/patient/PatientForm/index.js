@@ -66,40 +66,65 @@ const PatientForm = (props) => {
     setSubmitLoading(true);
     form
       .validateFields()
-      .then((values) => {
+      .then(async (values) => {
         const apiUrl = "http://localhost:5000/api/addPatient"; // replace with your actual API endpoint
+        const formData = new FormData();
+
+        // Append form data
+        Object.entries(values).forEach(([key, value]) => {
+          formData.append(key, value);
+        });
+
+        // Append image file
+        if (uploadedImg) {
+          const imageFile = dataURLtoFile(uploadedImg, "patientImage"); // convert data URL to File
+          formData.append("image", imageFile);
+        }
+
         const requestOptions = {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(values),
+          body: formData,
         };
 
         // Make the API request
-        fetch(apiUrl, requestOptions)
-          .then((response) => response.json())
-          .then((data) => {
-            setSubmitLoading(false);
-            if (mode === ADD) {
-              message.success(`Created ${values.firstName} in patients list`);
-              form.resetFields(); // Clear the form after successful submission
-            }
-            if (mode === EDIT) {
-              message.success(`Patient data saved`);
-            }
-          })
-          .catch((error) => {
-            setSubmitLoading(false);
-            console.error("Error:", error);
-            message.error("Failed to submit the form. Please try again.");
-          });
+        try {
+          const response = await fetch(apiUrl, requestOptions);
+          const data = await response.json();
+          console.log(data);
+
+          setSubmitLoading(false);
+
+          if (mode === ADD) {
+            message.success(`Created ${values.firstName} in patients list`);
+            form.resetFields(); // Clear the form after successful submission
+          }
+          if (mode === EDIT) {
+            message.success(`Patient data saved`);
+          }
+        } catch (error) {
+          setSubmitLoading(false);
+          console.error("Error:", error);
+          message.error("Failed to submit the form. Please try again.");
+        }
       })
       .catch((info) => {
         setSubmitLoading(false);
         console.log("info", info);
         message.error("Please enter all required fields");
       });
+  };
+
+  // Function to convert data URL to File
+  const dataURLtoFile = (dataURL, fileName) => {
+    const arr = dataURL.split(",");
+    const mime = arr[0].match(/:(.*?);/)[1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], fileName, { type: mime });
   };
 
   return (
@@ -159,13 +184,7 @@ const PatientForm = (props) => {
               {
                 label: "Next of Kin",
                 key: "2",
-                children: (
-                  <NextOfKin
-                    uploadedImg={uploadedImg}
-                    uploadLoading={uploadLoading}
-                    handleUploadChange={handleUploadChange}
-                  />
-                ),
+                children: <NextOfKin />,
               },
             ]}
           />

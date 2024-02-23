@@ -1,7 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Row, Col, Card, Table, Tag, Badge } from "antd";
-import Flex from "components/shared-components/Flex";
-import AvatarStatus from "components/shared-components/AvatarStatus";
+import moment from "moment";
 import DataDisplayWidget from "components/shared-components/DataDisplayWidget";
 // import DonutChartWidget from "components/shared-components/DonutChartWidget";
 import NumberFormat from "react-number-format";
@@ -12,36 +11,9 @@ import {
   UserAddOutlined,
   BarChartOutlined,
 } from "@ant-design/icons";
-// import ChartWidget from "components/shared-components/ChartWidget";
-// import { COLORS } from "constants/ChartConstant";
-import { recentOrderData } from "./SalesDashboardData";
-import dayjs from "dayjs";
-import { DATE_FORMAT_DD_MM_YYYY } from "constants/DateConstant";
-import utils from "utils";
-// import { useSelector } from "react-redux";
-// const { Option } = Select;
-const getPaymentStatus = (status) => {
-  if (status === "Paid") {
-    return "success";
-  }
-  if (status === "Pending") {
-    return "warning";
-  }
-  if (status === "Expired") {
-    return "error";
-  }
-  return "";
-};
 
-const getShippingStatus = (status) => {
-  if (status === "Ready") {
-    return "blue";
-  }
-  if (status === "Shipped") {
-    return "cyan";
-  }
-  return "";
-};
+import utils from "utils";
+
 const DisplayButtons = () => (
   <Row gutter={16}>
     <Col xs={24} sm={24} md={24} lg={12} xl={12} xxl={12}>
@@ -65,7 +37,7 @@ const DisplayButtons = () => (
       </Link>
     </Col>
     <Col xs={24} sm={24} md={24} lg={12} xl={12} xxl={12}>
-      <Link to="/pages/patients-list">
+      <Link to="/app/apps/patient/patient-list">
         <DataDisplayWidget
           icon={<OrderedListOutlined />}
           title="Patients List"
@@ -88,77 +60,86 @@ const DisplayButtons = () => (
 );
 const tableColumns = [
   {
-    title: "ID",
-    dataIndex: "id",
-  },
-  {
-    title: "Product",
-    dataIndex: "name",
+    title: "Appointment ID",
+    dataIndex: "_id",
     render: (_, record) => (
-      <Flex>
-        <AvatarStatus size={30} src={record.image} name={record.name} />
-      </Flex>
+      <div>
+        <NumberFormat displayType={"text"} value={record._id} />
+      </div>
     ),
-    sorter: (a, b) => utils.antdTableSorter(a, b, "name"),
   },
   {
     title: "Date",
-    dataIndex: "date",
-    render: (_, record) => (
-      <span>{dayjs.unix(record.date).format(DATE_FORMAT_DD_MM_YYYY)}</span>
+    dataIndex: "appointmentTime",
+    sorter: (a, b) => utils.antdTableSorter(a, b, "appointmentTime"),
+    render: (appointmentTime) => (
+      <span>{moment(appointmentTime).format("MMMM Do YYYY, h:mm:ss a")}</span>
     ),
-    sorter: (a, b) => utils.antdTableSorter(a, b, "date"),
   },
   {
-    title: "Order status",
-    dataIndex: "orderStatus",
-    render: (_, record) => (
-      <>
-        <Tag color={getShippingStatus(record.orderStatus)}>
-          {record.orderStatus}
-        </Tag>
-      </>
+    title: "Appointment Type",
+    dataIndex: "bookingType",
+    key: "bookingType",
+    render: (bookingType) => (
+      <Tag color={bookingType === "scheduled" ? "green" : "blue"}>
+        {bookingType}
+      </Tag>
     ),
-    sorter: (a, b) => utils.antdTableSorter(a, b, "orderStatus"),
   },
   {
-    title: "Payment status",
-    dataIndex: "paymentStatus",
-    render: (_, record) => (
-      <>
-        <Badge status={getPaymentStatus(record.paymentStatus)} />
-        <span className="mx-2">{record.paymentStatus}</span>
-      </>
-    ),
-    sorter: (a, b) => utils.antdTableSorter(a, b, "paymentStatus"),
+    title: "Booked By",
+    dataIndex: "bookedBy",
+    key: "bookedBy",
+    // render: (bookedBy) => {
+    //   const user = fetchUserDetails(bookedBy); // You should implement fetchUserDetails
+    //   return user ? user.name : "Unknown User";
+    // },
   },
   {
-    title: "Total",
-    dataIndex: "amount",
-    render: (_, record) => (
-      <span className="font-weight-semibold">
-        <NumberFormat
-          displayType={"text"}
-          value={(Math.round(record.amount * 100) / 100).toFixed(2)}
-          prefix={"$"}
-          thousandSeparator={true}
-        />
-      </span>
-    ),
-    sorter: (a, b) => utils.antdTableSorter(a, b, "amount"),
+    title: "Doctor",
+    dataIndex: "doctor",
+    sorter: (a, b) => utils.antdTableSorter(a, b, "doctor"),
   },
 ];
-const TodaysAppointments = () => (
-  <Card title="Upcoming Appointments">
-    <Table
-      pagination={false}
-      columns={tableColumns}
-      dataSource={recentOrderData}
-      rowKey="id"
-    />
-  </Card>
-);
+const TodaysAppointments = () => {
+  const [appointmentRecords, setAppointmentRecords] = useState(null);
 
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:5000/api/allAppointments`
+        );
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        if (Array.isArray(data.appointments)) {
+          setAppointmentRecords(data.appointments);
+        } else {
+          console.error("Invalid data structure:", data);
+        }
+        console.log(data.appointments);
+      } catch (error) {
+        console.error("Error fetching appointments:", error.message);
+        // You can set an error state or show a notification to the user
+      }
+    };
+
+    fetchAppointments();
+  }, []); // Empty dependency array to run once on mount
+
+  return (
+    <Card title="Upcoming Appointments">
+      <Table
+        pagination={false}
+        columns={tableColumns}
+        dataSource={appointmentRecords}
+        rowKey="id"
+      />
+    </Card>
+  );
+};
 const ReceptionDashboard = () => {
   return (
     <>

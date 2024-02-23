@@ -54,6 +54,7 @@ const userController = {
       const user = req.params.user;
       // console.log(user);
       const user_details = await User.findById({ user });
+      console.log(user_details);
       if (!user_details) {
         return res.json(404).json({ message: "User not found" });
       }

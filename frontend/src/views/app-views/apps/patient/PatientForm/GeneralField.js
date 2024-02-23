@@ -64,12 +64,12 @@ const GeneralField = (props) => (
         </Row>
         <Row gutter={16}>
           <Col xs={24} sm={24} md={12}>
-            <Form.Item label="Date of Birth" name="dateOfBirth">
+            <Form.Item rules={[{ required: true, message: "Please enter Date of Birth" }]} label="Date of Birth" name="dateOfBirth">
               <DatePicker style={{ width: "100%" }} />
             </Form.Item>
           </Col>
           <Col xs={24} sm={24} md={12}>
-            <Form.Item label="Gender" name="gender">
+            <Form.Item rules={[{ required: true, message: "Please enter patients' Gender" }]} label="Gender" name="gender">
               <Select placeholder="Select gender">
                 <Option value="Male">Male</Option>
                 <Option value="Female">Female</Option>
@@ -80,7 +80,7 @@ const GeneralField = (props) => (
         </Row>
         <Row gutter={16}>
           <Col xs={24} sm={24} md={12}>
-            <Form.Item label="Contact Email" name="emailAddress">
+            <Form.Item rules={[{ required: true, message: "Please enter Contact Email" }]} label="Contact Email" name="emailAddress">
               <Input
                 prefix={<MailOutlined />}
                 placeholder="patientemail@system.com"

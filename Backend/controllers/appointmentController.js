@@ -4,12 +4,14 @@ const NurseReadings = require("../schemas/nurseReadings");
 const appointmentController = {
   newAppointment: async (req, res, next) => {
     try {
-      const { patient, bookingtype, appointmentTime, bookedBy } = req.body;
+      const { patient, bookingtype, appointmentTime, doctor, bookedBy } =
+        req.body;
       //create new appointment
       const newAppo = new Appointment({
         patient,
         bookingType: bookingtype,
         appointmentTime,
+        doctor,
         bookedBy,
       });
       // save
@@ -25,20 +27,33 @@ const appointmentController = {
   },
   fetchAllAppointments: async (req, res, next) => {
     try {
-      const allAppointments = await Appointment.fetchAll();
-      res.status(201).json({
-        appointments: allAppointments,
+      const todayStart = new Date();
+      todayStart.setHours(0, 0, 0, 0);
+
+      const todayEnd = new Date();
+      todayEnd.setHours(23, 59, 59, 999);
+
+      const todayAppointments = await Appointment.find({
+        appointmentTime: {
+          $gte: todayStart,
+          $lt: todayEnd,
+        },
+      });
+
+      res.status(200).json({
+        appointments: todayAppointments,
       });
     } catch (error) {
-      console.error("Error no records found");
+      console.error(error);
       res.status(500).json({ message: "Error finding records" });
     }
   },
+
   appointmentsByPatient: async (req, res, next) => {
     try {
-      const patientid = req.body.patient;
+      const patientId = req.params.id;
       const patients_appointments = await Appointment.find({
-        patient: patientid,
+        patient: patientId,
       });
       if (patients_appointments.length === 0) {
         return res.status(404).json({

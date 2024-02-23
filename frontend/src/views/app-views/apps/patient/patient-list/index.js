@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Card, Table, Input, Button, Menu } from "antd";
-
 import {
   EyeOutlined,
-  DeleteOutlined,
   SearchOutlined,
   PlusCircleOutlined,
 } from "@ant-design/icons";
@@ -16,31 +14,25 @@ import utils from "utils";
 
 const PatientList = () => {
   const navigate = useNavigate();
-
   const [list, setList] = useState([]);
-  const [selectedRows, setSelectedRows] = useState([]);
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-
   useEffect(() => {
     const fetchPatients = async () => {
       try {
         const response = await fetch("http://localhost:5000/api/getPatients");
-        const data = await response.json();
-  
+        const { patients } = await response.json(); // Destructure patients from the response
         // Check if the data is an array
-        if (Array.isArray(data)) {
-          setList(data);
+        if (Array.isArray(patients)) {
+          setList(patients);
         } else {
-          console.error("Invalid data structure:", data);
+          console.error("Invalid data structure:", patients);
         }
       } catch (error) {
         console.error("Error fetching patients:", error);
       }
     };
-  
+
     fetchPatients();
   }, []);
-  
 
   const dropdownMenu = (row) => (
     <Menu>
@@ -50,46 +42,26 @@ const PatientList = () => {
           <span className="ml-2">View Details</span>
         </Flex>
       </Menu.Item>
-      <Menu.Item onClick={() => deleteRow(row)}>
-        <Flex alignItems="center">
-          <DeleteOutlined />
-          <span className="ml-2">
-            {selectedRows.length > 0
-              ? `Delete (${selectedRows.length})`
-              : "Delete"}
-          </span>
-        </Flex>
-      </Menu.Item>
     </Menu>
   );
-
   const addPatient = () => {
     navigate(`/app/apps/patient/add-patient`);
   };
 
   const viewDetails = (row) => {
-    navigate(`/app/apps/patientedit-patient/${row.id}`);
-  };
-
-  const deleteRow = (row) => {
-    const objKey = "id";
-    let data = list;
-    if (selectedRows.length > 1) {
-      selectedRows.forEach((elm) => {
-        data = utils.deleteArrayRow(data, objKey, elm.id);
-        setList(data);
-        setSelectedRows([]);
-      });
-    } else {
-      data = utils.deleteArrayRow(data, objKey, row.id);
-      setList(data);
-    }
+    console.log(row); // Log the row object to the console
+    navigate(`/app/apps/patient/patient-details/${row.id}`);
   };
 
   const tableColumns = [
     {
-      title: "ID",
-      dataIndex: "id",
+      title: "Patient Record ID",
+      dataIndex: "_id",
+      render: (_, record) => (
+        <div>
+          <NumberFormat displayType={"text"} value={record._id} />
+        </div>
+      ),
     },
     {
       title: "Patient",
@@ -99,8 +71,8 @@ const PatientList = () => {
           <AvatarStatus
             size={60}
             type="square"
-            src={record.image}
-            name={record.name}
+            src={record.firstName}
+            name={record.firstName + " " + record.lastName}
           />
         </div>
       ),
@@ -108,23 +80,13 @@ const PatientList = () => {
     },
     {
       title: "Contact Number",
-      dataIndex: "speed",
-      sorter: (a, b) => utils.antdTableSorter(a, b, "speed"),
+      dataIndex: "contactNumber",
+      sorter: (a, b) => utils.antdTableSorter(a, b, "contactNumber"),
     },
     {
-      title: "Price",
-      dataIndex: "price",
-      render: (price) => (
-        <div>
-          <NumberFormat
-            displayType={"text"}
-            value={(Math.round(price * 100) / 100).toFixed(2)}
-            prefix={"Ksh "}
-            thousandSeparator={true}
-          />
-        </div>
-      ),
-      sorter: (a, b) => utils.antdTableSorter(a, b, "price"),
+      title: "Gender",
+      dataIndex: "gender",
+      sorter: (a, b) => utils.antdTableSorter(a, b, "gender"),
     },
     {
       title: "",
@@ -136,31 +98,12 @@ const PatientList = () => {
       ),
     },
   ];
-
-  const rowSelection = {
-    onChange: (key, rows) => {
-      setSelectedRows(rows);
-      setSelectedRowKeys(key);
-    },
-  };
-
   const onSearch = (e) => {
     const value = e.currentTarget.value;
     const searchArray = e.currentTarget.value ? list : list;
     const data = utils.wildCardSearch(searchArray, value);
     setList(data);
-    setSelectedRowKeys([]);
   };
-
-  // const handleShowCategory = (value) => {
-  //   if (value !== "All") {
-  //     const key = "category";
-  //     const data = utils.filterArray(list, key, value);
-  //     setList(data);
-  //   } else {
-  //     setList(list);
-  //   }
-  // };
 
   return (
     <Card>
@@ -190,17 +133,7 @@ const PatientList = () => {
         </div>
       </Flex>
       <div className="table-responsive">
-        <Table
-          columns={tableColumns}
-          dataSource={list}
-          rowKey="id"
-          rowSelection={{
-            selectedRowKeys: selectedRowKeys,
-            type: "checkbox",
-            preserveSelectedRowKeys: false,
-            ...rowSelection,
-          }}
-        />
+        <Table columns={tableColumns} dataSource={list} rowKey="id" />
       </div>
     </Card>
   );

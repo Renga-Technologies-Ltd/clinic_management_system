@@ -1,8 +1,11 @@
 const Patient = require("../schemas/patient");
+const DoctorObservations = require("../schemas/doctorObservations");
+const { saveBase64Image } = require("./fileHandler");
 
 const patientController = {
   createPatient: async (req, res, next) => {
     try {
+      console.log("Received request body:", req.body);
       const {
         firstName,
         lastName,
@@ -12,8 +15,8 @@ const patientController = {
         emailAddress,
         address,
         nextOfKin,
+        imageUrl,
       } = req.body;
-
       // Create a new patient
       const newPatient = new Patient({
         firstName,
@@ -24,8 +27,8 @@ const patientController = {
         emailAddress,
         address,
         nextOfKin,
+        imageUrl,
       });
-
       // Save the patient to the database
       await newPatient.save();
 
@@ -72,6 +75,7 @@ const patientController = {
   getPatients: async (req, res, next) => {
     try {
       const patients = await Patient.find();
+      console.log("patients", patients);
       res.status(200).json({ patients });
     } catch (error) {
       console.error("Error getting patients:", error);
@@ -80,7 +84,7 @@ const patientController = {
   },
   getPatientById: async (req, res, next) => {
     try {
-      const { patientId } = req.params;
+      const patientId = req.params.id;
       const patient = await Patient.findById(patientId);
       if (!patient) {
         return res.status(404).json({ message: "Patient not found" });
@@ -105,8 +109,57 @@ const patientController = {
       res.status(500).json({ message: "Internal Server Error" });
     }
   },
-
-  // Add more controller methods as needed
+  addMedicalRecords: async (req, res, next) => {
+    try {
+      const {
+        appointment,
+        patientId,
+        diagnosis,
+        treatmentPlan,
+        prescriptions,
+        followUpInstructions,
+        referrals,
+        proceduresPerformed,
+        notes,
+        labTestsOrdered,
+        nextSteps,
+      } = req.body;
+      const newDoctorObservations = new DoctorObservations({
+        appointment,
+        patientId,
+        diagnosis,
+        treatmentPlan,
+        prescriptions,
+        followUpInstructions,
+        referrals,
+        proceduresPerformed,
+        notes,
+        labTestsOrdered,
+        nextSteps,
+      });
+      await newDoctorObservations.save();
+      res
+        .status(200)
+        .json({
+          message: "Medical records added successfully",
+          newDoctorObservations,
+        });
+    } catch (error) {
+      console.error("Error adding medical records:", error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  },
+  getMedicalRecords: async (req, res, next) => {
+    try {
+      const patientId = req.params.id;
+      const observations = await DoctorObservations.find({ patientId });
+      console.log(observations);
+      res.status(200).json({ medicalRecords: observations });
+    } catch (error) {
+      console.error("Error getting medical records:", error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  },
 };
 
 module.exports = patientController;
