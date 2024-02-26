@@ -62,6 +62,15 @@ const userController = {
       res.status(200).json({ message: "User found", user_details });
     } catch (error) {}
   },
+  getUsers: async (req, res, next) => {
+    try {
+      const users = await User.find();
+      if (!users) {
+        return res.json(404).json({ message: "Users not found" });
+      }
+      res.status(200).json({ message: "Users found", users });
+    } catch (error) {}
+  },
   // Add more controller methods as needed
   loginUser: async (req, res, next) => {
     try {

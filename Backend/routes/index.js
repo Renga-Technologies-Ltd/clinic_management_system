@@ -35,6 +35,7 @@ router.post("/login", userController.loginUser);
 router.post("/register", userController.registerUser);
 router.post("/editUser", userController.editUser);
 router.get("/getUser/:user", userController.getUser);
+router.get("/users", userController.getUsers);
 // router.get("/getUsers", userController.getUsers);
 
 // creating a patient
