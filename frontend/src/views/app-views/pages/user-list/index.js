@@ -1,109 +1,135 @@
-import React, { Component } from 'react'
-import { Card, Table, Tag, Tooltip, message, Button } from 'antd';
-import { EyeOutlined, DeleteOutlined } from '@ant-design/icons';
-import dayjs from 'dayjs';
-import UserView from './UserView';
-import AvatarStatus from 'components/shared-components/AvatarStatus';
-import userData from "assets/data/user-list.data.json";
+import React, { Component } from "react";
+import { Card, Table, Tag, Tooltip, message, Button } from "antd";
+import { EyeOutlined, DeleteOutlined } from "@ant-design/icons";
+import dayjs from "dayjs";
+import UserView from "./UserView";
+import AvatarStatus from "components/shared-components/AvatarStatus";
 
 export class UserList extends Component {
+  state = {
+    users: [], // Initialize users as an empty array
+    userProfileVisible: false,
+    selectedUser: null,
+  };
 
-	state = {
-		users: userData,
-		userProfileVisible: false,
-		selectedUser: null
-	}
+  componentDidMount() {
+    // Fetch users from the API endpoint
+    fetch("http://localhost:5000/api/users") // Update the URL with your API endpoint
+      .then((response) => response.json())
+      .then((data) => {
+        this.setState({ users: data.users });
+      })
+      .catch((error) => {
+        console.error("Error fetching user data:", error);
+        // Handle error, show a message, etc.
+      });
+  }
 
-	deleteUser = userId => {
-		this.setState({
-			users: this.state.users.filter(item => item.id !== userId),
-		})
-		message.success({ content: `Deleted user ${userId}`, duration: 2 });
-	}
-
-	showUserProfile = userInfo => {
-		this.setState({
-			userProfileVisible: true,
-			selectedUser: userInfo
-		});
-	};
-	
-	closeUserProfile = () => {
-		this.setState({
-			userProfileVisible: false,
-			selectedUser: null
+  deleteUser = (userId) => {
+    this.setState({
+      users: this.state.users.filter((item) => item.id !== userId),
     });
-	}
+    message.success({ content: `Deleted user ${userId}`, duration: 2 });
+  };
 
-	render() {
-		const { users, userProfileVisible, selectedUser } = this.state;
+  showUserProfile = (userInfo) => {
+    this.setState({
+      userProfileVisible: true,
+      selectedUser: userInfo,
+    });
+  };
 
-		const tableColumns = [
-			{
-				title: 'User',
-				dataIndex: 'name',
-				render: (_, record) => (
-					<div className="d-flex">
-						<AvatarStatus src={record.img} name={record.name} subTitle={record.email}/>
-					</div>
-				),
-				sorter: {
-					compare: (a, b) => {
-						a = a.name.toLowerCase();
-  						b = b.name.toLowerCase();
-						return a > b ? -1 : b > a ? 1 : 0;
-					},
-				},
-			},
-			{
-				title: 'Role',
-				dataIndex: 'role',
-				sorter: {
-					compare: (a, b) => a.role.length - b.role.length,
-				},
-			},
-			{
-				title: 'Last online',
-				dataIndex: 'lastOnline',
-				render: date => (
-					<span>{dayjs.unix(date).format("MM/DD/YYYY")} </span>
-				),
-				sorter: (a, b) => dayjs(a.lastOnline).unix() - dayjs(b.lastOnline).unix()
-			},
-			{
-				title: 'Status',
-				dataIndex: 'status',
-				render: status => (
-					<Tag className ="text-capitalize" color={status === 'active'? 'cyan' : 'red'}>{status}</Tag>
-				),
-				sorter: {
-					compare: (a, b) => a.status.length - b.status.length,
-				},
-			},
-			{
-				title: '',
-				dataIndex: 'actions',
-				render: (_, elm) => (
-					<div className="text-right d-flex justify-content-end">
-						<Tooltip title="View">
-							<Button type="primary" className="mr-2" icon={<EyeOutlined />} onClick={() => {this.showUserProfile(elm)}} size="small"/>
-						</Tooltip>
-						<Tooltip title="Delete">
-							<Button danger icon={<DeleteOutlined />} onClick={()=> {this.deleteUser(elm.id)}} size="small"/>
-						</Tooltip>
-					</div>
-				)
-			}
-		];
-		return (
-			<Card bodyStyle={{'padding': '0px'}}>
-				<div className="table-responsive">
-					<Table columns={tableColumns} dataSource={users} rowKey='id' />
-				</div>
-				<UserView data={selectedUser} visible={userProfileVisible} close={()=> {this.closeUserProfile()}}/>
-			</Card>
-		)
-	}
+  closeUserProfile = () => {
+    this.setState({
+      userProfileVisible: false,
+      selectedUser: null,
+    });
+  };
+
+  render() {
+    const { users, userProfileVisible, selectedUser } = this.state;
+
+    const tableColumns = [
+      {
+        title: "User",
+        dataIndex: "profile",
+        render: (profile, record) => (
+          <div className="d-flex">
+            <AvatarStatus
+              src={profile.profilePicture}
+              name={`${profile.firstName} ${profile.lastName}`}
+              subTitle={profile.email}
+            />
+          </div>
+        ),
+        sorter: {
+          compare: (a, b) => {
+            a = `${a.profile.firstName} ${a.profile.lastName}`.toLowerCase();
+            b = `${b.profile.firstName} ${b.profile.lastName}`.toLowerCase();
+            return a > b ? -1 : b > a ? 1 : 0;
+          },
+        },
+      },
+      {
+        title: "Email",
+        dataIndex: "username",
+        sorter: {
+          compare: (a, b) => a.length - b.length,
+        },
+      },
+      {
+        title: "Roles",
+        dataIndex: "roles",
+        render: (roles) => <Tag>{roles[0]}</Tag>,
+        sorter: {
+          compare: (a, b) => a.roles[0].length - b.roles[0].length,
+        },
+      },
+      {
+        title: "",
+        dataIndex: "actions",
+        render: (_, elm) => (
+          <div className="text-right d-flex justify-content-end">
+            <Tooltip title="View">
+              <Button
+                type="primary"
+                className="mr-2"
+                icon={<EyeOutlined />}
+                onClick={() => {
+                  this.showUserProfile(elm);
+                }}
+                size="small"
+              />
+            </Tooltip>
+            <Tooltip title="Delete">
+              <Button
+                danger
+                icon={<DeleteOutlined />}
+                onClick={() => {
+                  this.deleteUser(elm._id);
+                }}
+                size="small"
+              />
+            </Tooltip>
+          </div>
+        ),
+      },
+    ];
+    return (
+      <Card bodyStyle={{ padding: "0px" }}>
+        <div className="table-responsive">
+          <Table columns={tableColumns} dataSource={users} rowKey="id" />
+        </div>
+        <UserView
+          data={selectedUser}
+          visible={userProfileVisible}
+          close={() => {
+            this.closeUserProfile();
+          }}
+        />
+      </Card>
+    );
+  }
 }
 
-export default UserList
+export default UserList;

@@ -99,7 +99,7 @@ const CardDropdown = ({ items }) => {
 
 const tableColumns = [
   {
-    title: "Customer",
+    title: "Patient Name",
     dataIndex: "name",
     key: "name",
     render: (text, record) => (
@@ -174,7 +174,7 @@ export const DefaultDashboard = () => {
           <Row gutter={16}>
             <Col span={24}>
               <ChartWidget
-                title="Internet Bandwidth Usage"
+                title="Appointment Statistics"
                 series={visitorChartData.series}
                 xAxis={visitorChartData.categories}
                 height={"400px"}
@@ -198,7 +198,7 @@ export const DefaultDashboard = () => {
                 height={145}
               />
             }
-            value="17,329"
+            // value="17,329"
             status={3.7}
             subtitle="Active members"
           />
@@ -207,7 +207,7 @@ export const DefaultDashboard = () => {
       <Row gutter={16}>
         <Col xs={24} sm={24} md={24} lg={7}>
           <Card
-            title="New Customer"
+            title="New Patients"
             extra={<CardDropdown items={newJoinMemberOptions} />}
           >
             <div className="mt-3">

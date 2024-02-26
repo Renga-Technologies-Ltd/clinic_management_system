@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Card, Table, Tag, Badge } from "antd";
+import { Row, Col, Card, Table, Tag} from "antd";
 import moment from "moment";
 import DataDisplayWidget from "components/shared-components/DataDisplayWidget";
 // import DonutChartWidget from "components/shared-components/DonutChartWidget";
@@ -26,7 +26,7 @@ const DisplayButtons = () => (
           avatarSize={55}
         />
       </Link>
-      <Link to="/pages/view-appointments">
+      <Link to="/app/apps/patient/appointments">
         <DataDisplayWidget
           icon={<BarChartOutlined />}
           title="Book an Appointment"

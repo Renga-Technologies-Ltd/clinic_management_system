@@ -51,15 +51,7 @@ const extraNavTree = [
             icon: "",
             breadcrumb: true,
             submenu: [],
-          },
-          {
-            key: "extra-pages-pricing",
-            path: `${APP_PREFIX_PATH}/pages/pricing`,
-            title: "sidenav.pages.pricing",
-            icon: "",
-            breadcrumb: true,
-            submenu: [],
-          },
+          },        
           {
             key: "extra-pages-faq",
             path: `${APP_PREFIX_PATH}/pages/faq`,
@@ -78,57 +70,6 @@ const extraNavTree = [
           },
         ],
       },
-      // {
-      //   key: "extra-auth",
-      //   path: `${APP_PREFIX_PATH}`,
-      //   title: "sidenav.authentication",
-      //   icon: SafetyOutlined,
-      //   breadcrumb: true,
-      //   submenu: [
-      //     {
-      //       key: "extra-auth-login-1",
-      //       path: `${APP_PREFIX_PATH}/login-1`,
-      //       title: "sidenav.authentication.login.1",
-      //       icon: "",
-      //       breadcrumb: true,
-      //       submenu: [],
-      //     },
-
-      //     {
-      //       key: "extra-auth-forgot-password",
-      //       path: `${APP_PREFIX_PATH}/forgot-password`,
-      //       title: "sidenav.authentication.forgetPassword",
-      //       icon: "",
-      //       breadcrumb: true,
-      //       submenu: [],
-      //     },
-      //   ],
-      // },
-      // {
-      //   key: "extra-errors",
-      //   path: `${APP_PREFIX_PATH}/error-1`,
-      //   title: "sidenav.errors",
-      //   icon: StopOutlined,
-      //   breadcrumb: true,
-      //   submenu: [
-      //     {
-      //       key: "extra-errors-error-1",
-      //       path: `${APP_PREFIX_PATH}/error-page-1`,
-      //       title: "sidenav.errors.error.1",
-      //       icon: "",
-      //       breadcrumb: true,
-      //       submenu: [],
-      //     },
-      //     {
-      //       key: "extra-errors-error-2",
-      //       path: `${APP_PREFIX_PATH}/error-page-2`,
-      //       title: "sidenav.errors.error.2",
-      //       icon: "",
-      //       breadcrumb: true,
-      //       submenu: [],
-      //     },
-      //   ],
-      // },
     ],
   },
 ];
@@ -141,16 +82,7 @@ const dashBoardNavTree = [
     icon: DashboardOutlined,
     breadcrumb: false,
     isGroupTitle: true,
-    submenu: [
-      // {
-      //   key: "dashboards-analytic",
-      //   path: `${APP_PREFIX_PATH}/dashboards/analytic`,
-      //   title: "sidenav.dashboard.analytic",
-      //   icon: DotChartOutlined,
-      //   breadcrumb: false,
-      //   submenu: [],
-      // },
-      // main dashboard
+    submenu: [      
       {
         key: "dashboards-reception",
         path: `${APP_PREFIX_PATH}/dashboards/reception`,
@@ -220,23 +152,6 @@ const appsNavTree = [
             breadcrumb: true,
             submenu: [],
           },
-
-          // {
-          //   key: "apps-patient-editProduct",
-          //   path: `${APP_PREFIX_PATH}/apps/patient/edit-product/12`,
-          //   title: "sidenav.apps.patient.editProduct",
-          //   icon: "",
-          //   breadcrumb: false,
-          //   submenu: [],
-          // },
-          // {
-          //   key: "apps-patient-orders",
-          //   path: `${APP_PREFIX_PATH}/apps/patient/orders`,
-          //   title: "sidenav.apps.patient.orders",
-          //   icon: "",
-          //   breadcrumb: false,
-          //   submenu: [],
-          // },
         ],
       },
     ],

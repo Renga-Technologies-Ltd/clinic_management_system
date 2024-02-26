@@ -9,7 +9,7 @@ import Flex from "components/shared-components/Flex";
 
 const DetailsForm = (props) => {
   // const { patientId } = useParams();
-  const patientId = "65cf31edccca02bdc769b2b5";
+  const patientId = props.param.id;
   const [patientData, setPatientData] = useState(null);
 
   // console.log(patientData.patient.firstName);
@@ -65,7 +65,7 @@ const DetailsForm = (props) => {
               children: <MedicalRecords patientId={patientId} />,
             },
             {
-              label: "Next Appointment",
+              label: "Appointments",
               key: "4",
               children: <AppointmentRecords patientId={patientId} />,
             },

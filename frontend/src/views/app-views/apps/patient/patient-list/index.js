@@ -36,7 +36,7 @@ const PatientList = () => {
 
   const dropdownMenu = (row) => (
     <Menu>
-      <Menu.Item onClick={() => viewDetails(row)}>
+      <Menu.Item onClick={() => viewDetails(row._id)}>
         <Flex alignItems="center">
           <EyeOutlined />
           <span className="ml-2">View Details</span>
@@ -50,7 +50,7 @@ const PatientList = () => {
 
   const viewDetails = (row) => {
     console.log(row); // Log the row object to the console
-    navigate(`/app/apps/patient/patient-details/${row.id}`);
+    navigate(`/app/apps/patient/patient-details/${row}`);
   };
 
   const tableColumns = [
@@ -91,9 +91,9 @@ const PatientList = () => {
     {
       title: "",
       dataIndex: "actions",
-      render: (_, elm) => (
+      render: (_, record) => (
         <div className="text-right">
-          <EllipsisDropdown menu={dropdownMenu(elm)} />
+          <EllipsisDropdown menu={dropdownMenu(record)} />
         </div>
       ),
     },
