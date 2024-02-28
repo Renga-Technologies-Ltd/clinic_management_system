@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Card, Table, Tag, Tooltip, message, Button } from "antd";
 import { EyeOutlined, DeleteOutlined } from "@ant-design/icons";
-import dayjs from "dayjs";
+// import dayjs from "dayjs";
 import UserView from "./UserView";
 import AvatarStatus from "components/shared-components/AvatarStatus";
 

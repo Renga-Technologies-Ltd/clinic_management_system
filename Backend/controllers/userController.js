@@ -88,7 +88,6 @@ const userController = {
       if (!isPasswordValid) {
         return res.status(401).json({ message: "Invalid password" });
       }
-
       // Create a JWT token
       const token = generateToken(user);
       // Send the token and user details in the response
