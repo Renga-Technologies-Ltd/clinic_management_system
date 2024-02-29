@@ -30,15 +30,10 @@ export const LoginForm = (props) => {
     message,
     allowRedirect = true,
   } = props;
-  // default initialCredential
-  // const initialCredential = {
-  //   email: "user1@themenate.net",
-  //   password: "2005ipo",
-  // };
 
   const onLogin = (values) => {
     showLoading();
-    // console.log(values);
+   
     signIn(values);
   };
 

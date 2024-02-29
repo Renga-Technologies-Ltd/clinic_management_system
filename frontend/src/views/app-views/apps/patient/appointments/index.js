@@ -2,10 +2,15 @@
 import React, { useState, useEffect } from "react";
 import { Card, Table, Select, Input, Button, Tag } from "antd";
 import moment from "moment";
-import { FileExcelOutlined, SearchOutlined } from "@ant-design/icons";
+import {
+  FileExcelOutlined,
+  SearchOutlined,
+  PlusCircleOutlined,
+} from "@ant-design/icons";
 import Flex from "components/shared-components/Flex";
 import NumberFormat from "react-number-format";
 import utils from "utils";
+import { useNavigate } from "react-router-dom";
 
 const tableColumns = [
   {
@@ -90,6 +95,10 @@ const TodaysAppointments = () => {
   );
 };
 const Appointments = () => {
+  const navigate = useNavigate();
+  const newAppointment = () => {
+    navigate(`/app/apps/patient/add-appointment`);
+  };
   return (
     <Card>
       <Flex
@@ -123,8 +132,13 @@ const Appointments = () => {
           </div>
         </Flex>
         <div>
-          <Button type="primary" icon={<FileExcelOutlined />} block>
-            Export All
+          <Button
+            onClick={newAppointment}
+            type="primary"
+            icon={<PlusCircleOutlined />}
+            block
+          >
+            New Appointment
           </Button>
         </div>
       </Flex>
