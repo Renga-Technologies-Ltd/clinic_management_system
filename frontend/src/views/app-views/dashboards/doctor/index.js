@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Card, Table, Menu } from "antd";
+import { Row, Col, Card, Table, Menu, Tag } from "antd";
 import moment from "moment";
 import DataDisplayWidget from "components/shared-components/DataDisplayWidget";
 import Flex from "components/shared-components/Flex";
@@ -13,7 +13,7 @@ import {
   EyeOutlined,
 } from "@ant-design/icons";
 import utils from "utils";
-import EllipsisDropdown from "components/shared-components/EllipsisDropdown";
+// import EllipsisDropdown from "components/shared-components/EllipsisDropdown";
 import { useNavigate } from "react-router-dom";
 
 const DisplayButtons = () => (
@@ -78,6 +78,7 @@ const TodaysAppointments = () => {
       </Menu.Item>
     </Menu>
   );
+  console.log(dropdownMenu);
 
   const tableColumns = [
     {
@@ -90,6 +91,16 @@ const TodaysAppointments = () => {
       ),
     },
     {
+      title: "Patient",
+      dataIndex: "patient",
+      key: "patient",
+      render: (patient) => (
+        <span>
+          {patient && patient && `${patient.firstName} ${patient.lastName}`}
+        </span>
+      ),
+    },
+    {
       title: "Date",
       dataIndex: "appointmentTime",
       sorter: (a, b) => utils.antdTableSorter(a, b, "appointmentTime"),
@@ -98,17 +109,37 @@ const TodaysAppointments = () => {
       ),
     },
     {
+      title: "Appointment Type",
+      dataIndex: "bookingType",
+      key: "bookingType",
+      render: (bookingType) => (
+        <Tag color={bookingType === "scheduled" ? "green" : "blue"}>
+          {bookingType}
+        </Tag>
+      ),
+    },
+    {
+      title: "Booked By",
+      dataIndex: "bookedBy",
+      key: "bookedBy",
+      render: (bookedBy) => (
+        <span>
+          {bookedBy &&
+            bookedBy.profile &&
+            `${bookedBy.profile.firstName} ${bookedBy.profile.lastName}`}
+        </span>
+      ),
+    },
+    {
       title: "Doctor",
       dataIndex: "doctor",
       sorter: (a, b) => utils.antdTableSorter(a, b, "doctor"),
-    },
-    {
-      title: "",
-      dataIndex: "actions",
-      render: (_, record) => (
-        <div className="text-right">
-          <EllipsisDropdown menu={dropdownMenu(record)} />
-        </div>
+      render: (doctor) => (
+        <span>
+          {doctor &&
+            doctor.profile &&
+            `${doctor.profile.firstName} ${doctor.profile.lastName}`}
+        </span>
       ),
     },
   ];

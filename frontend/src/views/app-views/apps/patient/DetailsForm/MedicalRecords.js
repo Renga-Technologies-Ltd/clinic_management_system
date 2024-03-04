@@ -69,9 +69,7 @@ const MedicalRecords = (props) => {
             />
           </div>
         </Card>
-        <Card title="Disclaimer">
-          <p>Remember to save</p>
-        </Card>
+       
       </Col>
     </Row>
   );

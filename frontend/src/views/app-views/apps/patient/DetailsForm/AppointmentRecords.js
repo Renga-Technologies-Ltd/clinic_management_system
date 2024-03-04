@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Row, Col, Card, Table, Tag } from "antd";
 import NumberFormat from "react-number-format";
 import utils from "utils";
+import moment from "moment";
+const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
 const AppointmentRecords = (props) => {
   const { patientId } = props;
@@ -10,9 +12,8 @@ const AppointmentRecords = (props) => {
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:5000/api/getAppointments/${patientId}`
-        );
+        const apiUrl = `${base_apiUrl}/getAppointments/${patientId}`;
+        const response = await fetch(apiUrl);
         const data = await response.json();
         if (Array.isArray(data.appointments)) {
           setAppointmentRecords(data.appointments);
@@ -27,17 +28,16 @@ const AppointmentRecords = (props) => {
     fetchAppointments();
   }, [patientId]);
 
-  const fetchUserDetails = async (userId) => {
-    try {
-      const response = await fetch(
-        `http://localhost:5000/api/getUser/${userId}`
-      );
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error("Error fetching user details:", error);
-    }
-  };
+  // const fetchUserDetails = async (userId) => {
+  //   try {
+  //     const apiUrl = `${base_apiUrl}/getUser/${userId}`;
+  //     const response = await fetch(apiUrl);
+  //     const data = await response.json();
+  //     return data;
+  //   } catch (error) {
+  //     console.error("Error fetching user details:", error);
+  //   }
+  // };
   const tableColumns = [
     {
       title: "Appointment ID",
@@ -49,9 +49,22 @@ const AppointmentRecords = (props) => {
       ),
     },
     {
+      title: "Patient",
+      dataIndex: "patient",
+      key: "patient",
+      render: (patient) => (
+        <span>
+          {patient && patient && `${patient.firstName} ${patient.lastName}`}
+        </span>
+      ),
+    },
+    {
       title: "Date",
       dataIndex: "appointmentTime",
       sorter: (a, b) => utils.antdTableSorter(a, b, "appointmentTime"),
+      render: (appointmentTime) => (
+        <span>{moment(appointmentTime).format("MMMM Do YYYY, h:mm:ss a")}</span>
+      ),
     },
     {
       title: "Appointment Type",
@@ -67,15 +80,25 @@ const AppointmentRecords = (props) => {
       title: "Booked By",
       dataIndex: "bookedBy",
       key: "bookedBy",
-      render: (bookedBy) => {
-        const user = fetchUserDetails(bookedBy); // You should implement fetchUserDetails
-        return user ? user.name : "Unknown User";
-      },
+      render: (bookedBy) => (
+        <span>
+          {bookedBy &&
+            bookedBy.profile &&
+            `${bookedBy.profile.firstName} ${bookedBy.profile.lastName}`}
+        </span>
+      ),
     },
     {
       title: "Doctor",
       dataIndex: "doctor",
       sorter: (a, b) => utils.antdTableSorter(a, b, "doctor"),
+      render: (doctor) => (
+        <span>
+          {doctor &&
+            doctor.profile &&
+            `${doctor.profile.firstName} ${doctor.profile.lastName}`}
+        </span>
+      ),
     },
   ];
   return (
@@ -90,12 +113,8 @@ const AppointmentRecords = (props) => {
             />
           </div>
         </Card>
-        <Card title="Disclaimer">
-          <p>Remember to save</p>
-        </Card>
       </Col>
     </Row>
-   
   );
 };
 

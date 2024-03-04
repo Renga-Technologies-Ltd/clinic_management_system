@@ -11,6 +11,7 @@ import Flex from "components/shared-components/Flex";
 import NumberFormat from "react-number-format";
 import utils from "utils";
 import { useNavigate } from "react-router-dom";
+const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
 const tableColumns = [
   {
@@ -20,6 +21,16 @@ const tableColumns = [
       <div>
         <NumberFormat displayType={"text"} value={record._id} />
       </div>
+    ),
+  },
+  {
+    title: "Patient",
+    dataIndex: "patient",
+    key: "patient",
+    render: (patient) => (
+      <span>
+        {patient && patient && `${patient.firstName} ${patient.lastName}`}
+      </span>
     ),
   },
   {
@@ -44,26 +55,36 @@ const tableColumns = [
     title: "Booked By",
     dataIndex: "bookedBy",
     key: "bookedBy",
-    // render: (bookedBy) => {
-    //   const user = fetchUserDetails(bookedBy); // You should implement fetchUserDetails
-    //   return user ? user.name : "Unknown User";
-    // },
+    render: (bookedBy) => (
+      <span>
+        {bookedBy &&
+          bookedBy.profile &&
+          `${bookedBy.profile.firstName} ${bookedBy.profile.lastName}`}
+      </span>
+    ),
   },
   {
     title: "Doctor",
     dataIndex: "doctor",
     sorter: (a, b) => utils.antdTableSorter(a, b, "doctor"),
+    render: (doctor) => (
+      <span>
+        {doctor &&
+          doctor.profile &&
+          `${doctor.profile.firstName} ${doctor.profile.lastName}`}
+      </span>
+    ),
   },
 ];
+
 const TodaysAppointments = () => {
   const [appointmentRecords, setAppointmentRecords] = useState(null);
 
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:5000/api/allAppointments`
-        );
+        const apiUrl = `${base_apiUrl}/allAppointments`;
+        const response = await fetch(apiUrl);
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }

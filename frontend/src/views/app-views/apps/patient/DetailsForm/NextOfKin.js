@@ -46,9 +46,7 @@ const NextOfKin = (props) => {
             </Col>
           </Row>
         </Card>
-        <Card title="Disclaimer">
-          <p>Remember to save</p>
-        </Card>
+       
       </Col>
     </Row>
   );

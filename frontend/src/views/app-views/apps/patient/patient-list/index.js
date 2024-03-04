@@ -11,6 +11,7 @@ import Flex from "components/shared-components/Flex";
 import NumberFormat from "react-number-format";
 import { useNavigate } from "react-router-dom";
 import utils from "utils";
+const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
 const PatientList = () => {
   const navigate = useNavigate();
@@ -18,7 +19,8 @@ const PatientList = () => {
   useEffect(() => {
     const fetchPatients = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/getPatients");
+        const apiUrl = `${base_apiUrl}/allpatient`;
+        const response = await fetch(apiUrl);
         const { patients } = await response.json(); // Destructure patients from the response
         // Check if the data is an array
         if (Array.isArray(patients)) {

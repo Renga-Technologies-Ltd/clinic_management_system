@@ -6,6 +6,7 @@ import NextOfKin from "./NextOfKin";
 import MedicalRecords from "./MedicalRecords";
 import AppointmentRecords from "./AppointmentRecords";
 import Flex from "components/shared-components/Flex";
+const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
 const DetailsForm = (props) => {
   // const { patientId } = useParams();
@@ -18,9 +19,8 @@ const DetailsForm = (props) => {
     // Fetch user details from the API endpoint using the patientId
     const fetchPatientDetails = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:5000/api/getPatient/${patientId}`
-        );
+        const apiUrl = `${base_apiUrl}/getPatient/${patientId}`;
+        const response = await fetch(apiUrl);
         const data = await response.json();
         // console.log(data);
         // Assuming the API response contains patient details

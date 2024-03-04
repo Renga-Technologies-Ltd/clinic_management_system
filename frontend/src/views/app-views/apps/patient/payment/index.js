@@ -3,6 +3,7 @@ import PageHeaderAlt from "components/layout-components/PageHeaderAlt";
 import { Tabs, Form, Button, message } from "antd";
 import Flex from "components/shared-components/Flex";
 import GeneralField from "./PaymentForm";
+import Receipt from "./Receipt"; // Import the new Receipt component
 import { useNavigate } from "react-router-dom";
 const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
@@ -17,7 +18,7 @@ const Payment = (props) => {
     form
       .validateFields()
       .then(async (values) => {
-        const apiUrl = `${base_apiUrl}/newAppointment`;
+        const apiUrl = `${base_apiUrl}/makepayments`;
         // const formData = new FormData();
         const requestData = values; // No need for FormData
         const requestOptions = {
@@ -36,7 +37,7 @@ const Payment = (props) => {
           message.success(
             `Appointment created successfully, proceed to payment`
           );
-          form.resetFields();         
+          form.resetFields();
         } catch (error) {
           setSubmitLoading(false);
           console.error("Error:", error);
@@ -67,7 +68,7 @@ const Payment = (props) => {
               alignItems="center"
             >
               <h2 className="mb-3">
-                {mode === "ADD" ? "New Appoinment" : `Edit Patient`}{" "}
+                {mode === "ADD" ? "Make payment" : `Make Payment`}{" "}
               </h2>
               <div className="mb-3">
                 {/* <Button className="mr-2">Discard</Button> */}
@@ -92,6 +93,11 @@ const Payment = (props) => {
                 label: "Payment Details",
                 key: "1",
                 children: <GeneralField />,
+              },
+              {
+                label: "Receipt",
+                key: "2",
+                children: <Receipt />,
               },
             ]}
           />
