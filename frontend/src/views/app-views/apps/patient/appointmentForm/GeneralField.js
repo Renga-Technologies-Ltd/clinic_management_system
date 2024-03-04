@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Input,
   Row,
@@ -9,143 +9,272 @@ import {
   message,
   Select,
   DatePicker,
+  Button,
+  Space,
 } from "antd";
 import { UserOutlined, PhoneOutlined, MailOutlined } from "@ant-design/icons";
 import { ImageSvg } from "assets/svg/icon";
 import CustomIcon from "components/util-components/CustomIcon";
 import { LoadingOutlined } from "@ant-design/icons";
 
-const { Dragger } = Upload;
 const { Option } = Select;
 
-const imageUploadProps = {
-  name: "file",
-  multiple: true,
-  listType: "picture-card",
-  showUploadList: false,
-  action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
-};
+const GeneralField = (props) => {
+  const [allPatients, setAllPatients] = useState([]);
+  const [selectedPatient, setSelectedPatient] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [form] = Form.useForm(); // Create a form instance
+  const [selectedPatientId, setSelectedPatientId] = useState(null);
 
-const beforeUpload = (file) => {
-  const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
-  if (!isJpgOrPng) {
-    message.error("You can only upload JPG/PNG file!");
-  }
-  const isLt2M = file.size / 1024 / 1024 < 2;
-  if (!isLt2M) {
-    message.error("Image must smaller than 2MB!");
-  }
-  return isJpgOrPng && isLt2M;
-};
+  useEffect(() => {
+    fetchPatients();
+  }, []);
 
-const GeneralField = (props) => (
-  <Row gutter={16}>
-    <Col xs={24} sm={24} md={17}>
-      <Card title="Basic Info">
-        <Row gutter={16}>
-          <Col xs={24} sm={24} md={12}>
-            <Form.Item
-              label="First Name"
-              name="firstName"
-              rules={[{ required: true, message: "Please enter first name" }]}
+  const fetchPatients = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch("http://localhost:5000/api/allpatient");
+      const data = await response.json();
+      setAllPatients(data.patients);
+    } catch (error) {
+      console.error("Error fetching patients:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSearch = (value) => {
+    const foundPatient = allPatients.find(
+      (patient) =>
+        patient._id.toString() === value ||
+        `${patient.firstName} ${patient.lastName}`
+          .toLowerCase()
+          .includes(value.toLowerCase())
+    );
+
+    setSelectedPatient(foundPatient);
+
+    // Auto-populate form fields if patient is found
+    if (foundPatient) {
+      form.setFieldsValue({
+        firstName: foundPatient.firstName,
+        lastName: foundPatient.lastName,
+        dateOfBirth: foundPatient.dateOfBirth,
+        gender: foundPatient.gender,
+        emailAddress: foundPatient.emailAddress,
+        contactNumber: foundPatient.contactNumber,
+        address: {
+          street: foundPatient.address.street,
+          city: foundPatient.address.city,
+          state: foundPatient.address.state,
+          postalCode: foundPatient.address.postalCode,
+          country: foundPatient.address.country,
+        },
+      });
+    }
+  };
+
+  const handleFormChange = (changedFields, allFields) => {
+    // Implement this function to handle form changes
+    // You can use the changedFields to update the state or perform other actions
+    // setSelectedPatientId(value);
+  };
+  const handleSelectChange = (value) => {
+    // Handle the change of the selected patient ID here
+    setSelectedPatientId(value);
+  };
+
+  return (
+    <Row gutter={16}>
+      <Col xs={24} sm={24} md={17}>
+        <Card title="Basic Info">
+          <Space direction="vertical" style={{ width: "100%" }}>
+            <Select
+              showSearch
+              placeholder="Search by ID or fullname"
+              optionFilterProp="children"
+              onSearch={handleSearch}
+              onChange={handleSelectChange} // Add this line
+              style={{ width: "100%" }}
             >
-              <Input prefix={<UserOutlined />} placeholder="First Name" />
-            </Form.Item>
-          </Col>
-          <Col xs={24} sm={24} md={12}>
-            <Form.Item
-              label="Last Name"
-              name="lastName"
-              rules={[{ required: true, message: "Please enter last name" }]}
-            >
-              <Input prefix={<UserOutlined />} placeholder="Last Name" />
-            </Form.Item>
-          </Col>
-        </Row>
-        <Row gutter={16}>
-          <Col xs={24} sm={24} md={12}>
-            <Form.Item rules={[{ required: true, message: "Please enter Date of Birth" }]} label="Date of Birth" name="dateOfBirth">
-              <DatePicker style={{ width: "100%" }} />
-            </Form.Item>
-          </Col>
-          <Col xs={24} sm={24} md={12}>
-            <Form.Item rules={[{ required: true, message: "Please enter patients' Gender" }]} label="Gender" name="gender">
-              <Select placeholder="Select gender">
-                <Option value="Male">Male</Option>
-                <Option value="Female">Female</Option>
-                <Option value="Other">Other</Option>
-              </Select>
-            </Form.Item>
-          </Col>
-        </Row>
-        <Row gutter={16}>
-          <Col xs={24} sm={24} md={12}>
-            <Form.Item rules={[{ required: true, message: "Please enter Contact Email" }]} label="Contact Email" name="emailAddress">
-              <Input
-                prefix={<MailOutlined />}
-                placeholder="patientemail@system.com"
-              />
-            </Form.Item>
-          </Col>
-          <Col xs={24} sm={24} md={12}>
-            <Form.Item label="Contact Number" name="contactNumber">
-              <Input prefix={<PhoneOutlined />} placeholder="Contact Number" />
-            </Form.Item>
-          </Col>
-        </Row>
-      </Card>
-      <Card title="Address">
-        <Row gutter={16}>
-          <Col xs={24} sm={24} md={12}>
-            <Form.Item label="street" name={["address", "street"]}>
-              <Input placeholder="Street" />
-            </Form.Item>
-            <Form.Item label="city" name={["address", "city"]}>
-              <Input placeholder="City" />
-            </Form.Item>
-            <Form.Item label="state" name={["address", "state"]}>
-              <Input placeholder="State" />
-            </Form.Item>
-          </Col>
-          <Col xs={24} sm={24} md={12}>
-            <Form.Item label="postal code" name={["address", "postalCode"]}>
-              <Input placeholder="Postal Code" />
-            </Form.Item>
-            <Form.Item label="country" name={["address", "country"]}>
-              <Input placeholder="Country" />
-            </Form.Item>
-          </Col>
-        </Row>
-      </Card>
-    </Col>
-    <Col xs={24} sm={24} md={7}>
-      <Card title="Patient Photo">
-        <Dragger
-          {...imageUploadProps}
-          beforeUpload={beforeUpload}
-          onChange={(e) => props.handleUploadChange(e)}
-        >
-          {props.uploadedImg ? (
-            <img src={props.uploadedImg} alt="avatar" className="img-fluid" />
-          ) : (
-            <div>
-              {props.uploadLoading ? (
-                <div>
-                  <LoadingOutlined className="font-size-xxl text-primary" />
-                  <div className="mt-3">Uploading</div>
-                </div>
-              ) : (
-                <div>
-                  <CustomIcon className="display-3" svg={ImageSvg} />
-                  <p>Click or drag file to upload</p>
-                </div>
-              )}
-            </div>
-          )}
-        </Dragger>
-      </Card>
-    </Col>
-  </Row>
-);
+              {allPatients.map((patient) => (
+                <Option key={patient._id} value={patient._id}>
+                  {`${patient.firstName} ${patient.lastName}`}
+                </Option>
+              ))}
+            </Select>
+
+            {loading ? (
+              <LoadingOutlined className="font-size-xxl text-primary" />
+            ) : selectedPatient ? (
+              <>
+                <Form
+                  form={form}
+                  onFieldsChange={handleFormChange}
+                  initialValues={{
+                    firstName: selectedPatient.firstName,
+                    lastName: selectedPatient.lastName,
+                    dateOfBirth: selectedPatient.dateOfBirth,
+                    gender: selectedPatient.gender,
+                    emailAddress: selectedPatient.emailAddress,
+                    contactNumber: selectedPatient.contactNumber,
+                    address: {
+                      street: selectedPatient.address.street,
+                      city: selectedPatient.address.city,
+                      state: selectedPatient.address.state,
+                      postalCode: selectedPatient.address.postalCode,
+                      country: selectedPatient.address.country,
+                    },
+                    patient: selectedPatientId,
+                  }}
+                >
+                  {/* Common form structure */}
+                  <Row gutter={16}>
+                    <Col xs={24} sm={24} md={12}>
+                      <Form.Item label="Patient ID" name="patient">
+                        <span>{selectedPatient._id}</span>
+                        <Input
+                          placeholder="First Name"
+                          value={selectedPatient._id}
+                          name="patient"
+                          hidden
+                        />
+                      </Form.Item>
+                      <Form.Item label="" name="createdBy" hidden>
+                        <span>Dr. G B Mahapatra</span>
+                        <Input
+                          placeholder="First Name"
+                          value="65d721ff1f2b413a05b5e914"
+                          name="65d721ff1f2b413a05b5e914"
+                          hidden
+                        />
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} sm={24} md={12}>
+                      <Form.Item label="First Name" name="firstName">
+                        <span>{selectedPatient.firstName}</span>
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} sm={24} md={12}>
+                      <Form.Item label="Last Name" name="lastName">
+                        <span>{selectedPatient.lastName}</span>
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                  <Row gutter={16}>
+                    <Col xs={24} sm={24} md={12}>
+                      <Form.Item label="Date of Birth" name="dateOfBirth">
+                        <span>{selectedPatient.dateOfBirth}</span>
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} sm={24} md={12}>
+                      <Form.Item label="Gender" name="gender">
+                        <span>{selectedPatient.gender}</span>
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                  <Row gutter={16}>
+                    <Col xs={24} sm={24} md={12}>
+                      <Form.Item label="Contact Email" name="emailAddress">
+                        <span>
+                          {" "}
+                          <MailOutlined /> {selectedPatient.emailAddress}
+                        </span>
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} sm={24} md={12}>
+                      <Form.Item label="Contact Number" name="contactNumber">
+                        <span>
+                          <PhoneOutlined />
+                          {selectedPatient.contactNumber}
+                        </span>
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                </Form>
+              </>
+            ) : (
+              <Form form={form} onFieldsChange={handleFormChange}>
+                {/* Common form structure */}
+                <Row gutter={16}>{/* ... existing form fields */}</Row>
+              </Form>
+            )}
+          </Space>
+        </Card>
+        <Card title="Accompanied by">
+          <Row gutter={16}>
+            <Col xs={24} sm={24} md={12}>
+              <Form.Item label="Full Name" name={["accompaniedBy", "fullname"]}>
+                <Input placeholder="Next of Kin First Name" />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col xs={24} sm={24} md={12}>
+              <Form.Item
+                label="Relationship"
+                name={["accompaniedBy", "relationship"]}
+              >
+                <Input placeholder="Relationship" />
+              </Form.Item>
+            </Col>
+            <Col xs={24} sm={24} md={12}>
+              <Form.Item
+                label="Contact Number"
+                name={["accompaniedBy", "contactNumber"]}
+              >
+                <Input
+                  prefix={<PhoneOutlined />}
+                  placeholder="Contact Number"
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+        </Card>
+        <Card title="Appointment Details">
+          <Form.Item label="Doctor" name="doctor">
+            <Select placeholder="Select type">
+              <Option value="65d721ff1f2b413a05b5e914">
+                Dr. G B Mahapatra
+              </Option>
+              {/* <Option value="walk-in">Walk-in</Option> */}
+            </Select>
+          </Form.Item>
+          <Form.Item label="Patient ID" name="patient">
+            <Select placeholder="Select type">
+              <Option value={selectedPatientId}>{selectedPatientId}</Option>
+              {/* <Option value="walk-in">Walk-in</Option> */}
+            </Select>
+          </Form.Item>
+          <Row gutter={16}>
+            <Col xs={24} sm={24} md={12}>
+              <Form.Item label="Appointment Date" name="appointmentTime">
+                <DatePicker showTime />
+              </Form.Item>
+            </Col>
+            <Col xs={24} sm={24} md={12}>
+              <Form.Item label="Appointment type" name="bookingType">
+                <Select placeholder="Select type">
+                  <Option value="scheduled">Scheduled</Option>
+                  <Option value="walk-in">Walk-in</Option>
+                </Select>
+              </Form.Item>
+            </Col>
+            <Col xs={24} sm={24} md={12}>
+              <Form.Item label="Booked by" name="bookedBy">
+                <Select placeholder="Select type">
+                  <Option value="65d721ff1f2b413a05b5e914">
+                    Dr. G B Mahapatra
+                  </Option>
+                  {/* <Option value="walk-in">Walk-in</Option> */}
+                </Select>
+              </Form.Item>
+            </Col>
+          </Row>
+        </Card>
+      </Col>
+    </Row>
+  );
+};
 
 export default GeneralField;

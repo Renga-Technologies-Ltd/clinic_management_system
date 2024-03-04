@@ -3,54 +3,44 @@ import PageHeaderAlt from "components/layout-components/PageHeaderAlt";
 import { Tabs, Form, Button, message } from "antd";
 import Flex from "components/shared-components/Flex";
 import GeneralField from "./GeneralField";
-import NextOfKin from "./NextOfKin";
-// import VariationField from './VariationField'
-// import ShippingField from './ShippingField'
-import ProductListData from "assets/data/product-list.data.json";
 const base_apiUrl = process.env.REACT_APP_BASE_URL;
-
-const ADD = "ADD";
-const EDIT = "EDIT";
+const ADD = "Save";
+// const EDIT = "EDIT";
 
 const AppointmentForm = (props) => {
-  const { mode = ADD, param } = props;
-
+  const { mode = ADD, params } = props;
   const [form] = Form.useForm();
-
   const [submitLoading, setSubmitLoading] = useState(false);
   useEffect(() => {}, []);
-  const onFinish = () => {
+  const onFinish = async () => {
     setSubmitLoading(true);
     form
       .validateFields()
       .then(async (values) => {
-        const apiUrl = `${base_apiUrl}/addPatient`; // replace with your actual API endpoint
-        const formData = new FormData();
+        const apiUrl = `${base_apiUrl}/newAppointment`;
+        // const formData = new FormData();
+        const requestData = values; // No need for FormData
 
-        Object.entries(values).forEach(([key, value]) => {
-          formData.append(key, value);
-        });
+        console.log("requestData", requestData);
 
         const requestOptions = {
           method: "POST",
-          body: formData,
+          headers: {
+            "Content-Type": "application/json", // Set appropriate content type
+          },
+          body: JSON.stringify(requestData), // Send data as JSON
         };
 
-        // Make the API request
         try {
           const response = await fetch(apiUrl, requestOptions);
           const data = await response.json();
           console.log(data);
-
           setSubmitLoading(false);
 
-          if (mode === ADD) {
-            message.success(`Created ${values.firstName} in patients list`);
-            form.resetFields(); // Clear the form after successful submission
-          }
-          if (mode === EDIT) {
-            message.success(`Patient data saved`);
-          }
+          message.success(
+            `Appointment created successfully, proceed to payment`
+          );
+          form.resetFields(); // Clear the form after successful submission
         } catch (error) {
           setSubmitLoading(false);
           console.error("Error:", error);
@@ -69,6 +59,7 @@ const AppointmentForm = (props) => {
       <Form
         layout="vertical"
         form={form}
+        onFinish={onFinish} // Utilize Ant Design's onFinish callback
         name="advanced_search"
         className="ant-advanced-search-form"
       >
@@ -81,17 +72,17 @@ const AppointmentForm = (props) => {
               alignItems="center"
             >
               <h2 className="mb-3">
-                {mode === "ADD" ? "New Patient" : `Edit Patient`}{" "}
+                {mode === "ADD" ? "New Appoinment" : `Edit Patient`}{" "}
               </h2>
               <div className="mb-3">
-                <Button className="mr-2">Discard</Button>
+                {/* <Button className="mr-2">Discard</Button> */}
                 <Button
                   type="primary"
-                  onClick={() => onFinish()}
+                  onClick={() => form.validateFields().then(onFinish)}
                   htmlType="submit"
                   loading={submitLoading}
                 >
-                  {mode === "ADD" ? "Add" : `Save`}
+                  {mode === "ADD" ? "Submit" : `Save`}
                 </Button>
               </div>
             </Flex>
@@ -103,14 +94,9 @@ const AppointmentForm = (props) => {
             style={{ marginTop: 30 }}
             items={[
               {
-                label: "General",
+                label: "Registration Details",
                 key: "1",
                 children: <GeneralField />,
-              },
-              {
-                label: "Next of Kin",
-                key: "2",
-                children: <NextOfKin />,
               },
             ]}
           />

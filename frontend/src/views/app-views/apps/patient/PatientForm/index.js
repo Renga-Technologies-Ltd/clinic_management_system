@@ -134,11 +134,6 @@ const PatientForm = (props) => {
         form={form}
         name="advanced_search"
         className="ant-advanced-search-form"
-        initialValues={{
-          heightUnit: "cm",
-          widthUnit: "cm",
-          weightUnit: "kg",
-        }}
       >
         <PageHeaderAlt className="border-bottom" overlap>
           <div className="container">
