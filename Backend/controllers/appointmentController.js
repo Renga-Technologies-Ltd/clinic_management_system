@@ -4,20 +4,26 @@ const NurseReadings = require("../schemas/nurseReadings");
 const appointmentController = {
   newAppointment: async (req, res, next) => {
     try {
-      const { patient, bookingtype, appointmentTime, doctor, bookedBy } =
-        req.body;
-      //create new appointment
+      const {
+        patient,
+        bookingtype,
+        appointmentTime,
+        doctor,
+        bookedBy,
+        accompaniedBy,
+      } = req.body;
       const newAppo = new Appointment({
         patient,
         bookingType: bookingtype,
         appointmentTime,
         doctor,
         bookedBy,
+        accompaniedBy,
       });
       // save
       await newAppo.save();
       res.status(201).json({
-        message: "Appointmnet made successfully",
+        message: "Appointment made successfully",
         appointment: newAppo,
       });
     } catch (error) {
@@ -72,6 +78,20 @@ const appointmentController = {
   },
   editAppointment: async (req, res, next) => {
     const {} = req.body;
+  },
+  findAppointment: async (req, res, next) => {
+    try {
+      const appointment_id = req.params.appointment_id;
+      const appointment = await Appointment.findById(appointment_id);
+
+      if (!appointment) {
+        return res.status(404).json({ message: "Appointment not found" });
+      }
+      res.status(200).json({ appointment });
+    } catch (error) {
+      console.error("Error fetching appointment data:", error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
   },
   nurseSectionreading: async (req, res, next) => {
     try {

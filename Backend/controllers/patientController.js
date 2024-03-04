@@ -75,7 +75,7 @@ const patientController = {
   getPatients: async (req, res, next) => {
     try {
       const patients = await Patient.find();
-      console.log("patients", patients);
+      // console.log("patients", patients);
       res.status(200).json({ patients });
     } catch (error) {
       console.error("Error getting patients:", error);

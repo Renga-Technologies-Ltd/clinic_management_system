@@ -46,7 +46,7 @@ router.post(
   patientController.createPatient
 );
 router.post("/updatePatient", patientController.updatePatient);
-router.get("/getPatients", patientController.getPatients);
+router.get("/allpatient", patientController.getPatients);
 router.get("/getPatient/:id", patientController.getPatientById);
 router.delete("/deletePatient", patientController.deletePatient);
 
@@ -54,6 +54,7 @@ router.delete("/deletePatient", patientController.deletePatient);
 router.post("/newAppointment", appointmentController.newAppointment);
 router.post("/cancleAppointment", appointmentController.cancleAppointment);
 router.post("/editAppointment", appointmentController.editAppointment);
+router.post("/appointment/:appointment_id", appointmentController.findAppointment);
 
 // nursing section
 router.get("/allAppointments", appointmentController.fetchAllAppointments);
