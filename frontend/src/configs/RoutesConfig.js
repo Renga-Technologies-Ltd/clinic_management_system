@@ -102,6 +102,13 @@ export const protectedRoutes = [
     ),
   },
   {
+    key: "apps.patient.edit-patient",
+    path: `${APP_PREFIX_PATH}/apps/patient/pay-appointment/:appointment_id`,
+    component: React.lazy(() =>
+      import("views/app-views/apps/patient/payment")
+    ),
+  },
+  {
     key: "apps.patient.patient-list",
     path: `${APP_PREFIX_PATH}/apps/patient/patient-list`,
     component: React.lazy(() =>

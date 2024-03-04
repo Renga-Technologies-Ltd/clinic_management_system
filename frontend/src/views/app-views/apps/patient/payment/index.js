@@ -2,21 +2,15 @@ import React, { useState, useEffect } from "react";
 import PageHeaderAlt from "components/layout-components/PageHeaderAlt";
 import { Tabs, Form, Button, message } from "antd";
 import Flex from "components/shared-components/Flex";
-import GeneralField from "./GeneralField";
+import GeneralField from "./PaymentForm";
 import { useNavigate } from "react-router-dom";
 const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
 const ADD = "Save";
-// const EDIT = "EDIT";
-
-const AppointmentForm = (props) => {
+const Payment = (props) => {
   const { mode = ADD, params } = props;
   const [form] = Form.useForm();
   const [submitLoading, setSubmitLoading] = useState(false);
-  const navigate = useNavigate();
-  const pyamentPage = (appointmentId) => {
-    navigate(`/app/apps/patient/pay-appointment/${appointmentId}`);
-  };
   useEffect(() => {}, []);
   const onFinish = async () => {
     setSubmitLoading(true);
@@ -42,9 +36,7 @@ const AppointmentForm = (props) => {
           message.success(
             `Appointment created successfully, proceed to payment`
           );
-          form.resetFields();
-          const appointmentId = data.appointment._id;
-          pyamentPage(appointmentId);
+          form.resetFields();         
         } catch (error) {
           setSubmitLoading(false);
           console.error("Error:", error);
@@ -97,7 +89,7 @@ const AppointmentForm = (props) => {
             style={{ marginTop: 30 }}
             items={[
               {
-                label: "Registration Details",
+                label: "Payment Details",
                 key: "1",
                 children: <GeneralField />,
               },
@@ -109,4 +101,4 @@ const AppointmentForm = (props) => {
   );
 };
 
-export default AppointmentForm;
+export default Payment;
