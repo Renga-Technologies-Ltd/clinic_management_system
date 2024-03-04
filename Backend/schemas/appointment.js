@@ -10,6 +10,7 @@ const appointmentSchema = new mongoose.Schema({
     type: String,
     enum: ["scheduled", "walk-in"],
     required: false,
+    default: "walk-in",
   },
   appointmentTime: {
     type: Date,

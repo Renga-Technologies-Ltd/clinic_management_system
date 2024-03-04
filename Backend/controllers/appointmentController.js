@@ -44,7 +44,22 @@ const appointmentController = {
           $gte: todayStart,
           $lt: todayEnd,
         },
-      });
+      })
+        .populate({
+          path: "patient",
+          model: "Patient",
+          select: "firstName lastName",
+        })
+        .populate({
+          path: "bookedBy",
+          model: "User",
+          select: "profile.firstName profile.lastName",
+        })
+        .populate({
+          path: "doctor",
+          model: "User",
+          select: "profile.firstName profile.lastName",
+        });
 
       res.status(200).json({
         appointments: todayAppointments,
@@ -60,7 +75,11 @@ const appointmentController = {
       const patientId = req.params.id;
       const patients_appointments = await Appointment.find({
         patient: patientId,
-      });
+      })
+        .populate("patient", "firstName lastName") // Replace with the actual fields you want from the Patient model
+        .populate("doctor", "profile.firstName profile.lastName") // Replace with the actual fields you want from the User model
+        .populate("bookedBy", "profile.firstName profile.lastName"); // Replace with the actual fields you want from the User model
+
       if (patients_appointments.length === 0) {
         return res.status(404).json({
           message: "Patient has no appointments yet",
@@ -73,6 +92,7 @@ const appointmentController = {
       res.status(500).json({ message: "Internal Server Error" });
     }
   },
+
   cancleAppointment: async (req, res, next) => {
     const {} = req.body;
   },
@@ -82,7 +102,10 @@ const appointmentController = {
   findAppointment: async (req, res, next) => {
     try {
       const appointment_id = req.params.appointment_id;
-      const appointment = await Appointment.findById(appointment_id);
+      const appointment = await Appointment.findById(appointment_id)
+        .populate("patient", "firstName") // Replace "firstName" with the actual field you want to retrieve from the Patient model
+        .populate("doctor", "profile.firstName profile.lastName") // Access subfields in the profile object
+        .populate("bookedBy", "profile.firstName profile.lastName"); // Access subfields in the profile object
 
       if (!appointment) {
         return res.status(404).json({ message: "Appointment not found" });
@@ -93,6 +116,7 @@ const appointmentController = {
       res.status(500).json({ message: "Internal Server Error" });
     }
   },
+
   nurseSectionreading: async (req, res, next) => {
     try {
       const {

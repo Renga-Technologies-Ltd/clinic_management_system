@@ -54,7 +54,7 @@ router.delete("/deletePatient", patientController.deletePatient);
 router.post("/newAppointment", appointmentController.newAppointment);
 router.post("/cancleAppointment", appointmentController.cancleAppointment);
 router.post("/editAppointment", appointmentController.editAppointment);
-router.post("/appointment/:appointment_id", appointmentController.findAppointment);
+router.get("/appointment/:appointment_id", appointmentController.findAppointment);
 
 // nursing section
 router.get("/allAppointments", appointmentController.fetchAllAppointments);
