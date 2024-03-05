@@ -1,50 +1,173 @@
-// Receipt.js
+import React, { useState, useEffect } from "react";
+import { PrinterOutlined } from "@ant-design/icons";
+import { Card, Table, Button, Spin, Alert } from "antd";
+import NumberFormat from "react-number-format";
 
-import React from "react";
-import { Card, Row, Col, Typography } from "antd";
+import { useParams } from "react-router-dom";
 
-const { Title, Text } = Typography;
+const { Column } = Table;
+const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
-const Receipt = () => {
-  // Placeholder data (replace with actual payment data)
-  const paymentData = {
-    appointmentId: "123456",
-    amount: 100,
-    paymentMethod: "Cash",
-    transactionId: "789012",
-    paymentDate: new Date().toLocaleString(),
+const Invoice = () => {
+  const receipt_id = useParams();
+
+  const [invoiceData, setInvoiceData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchInvoiceData = async () => {
+      try {
+        const response = await fetch(`${base_apiUrl}/receipt/${receipt_id}`);
+        const data = await response.json();
+        setInvoiceData(data); // assuming the API response is an array of invoice items
+        setLoading(false);
+      } catch (error) {
+        setError(error.message);
+        setLoading(false);
+      }
+    };
+
+    fetchInvoiceData();
+  }, []);
+
+  const total = () => {
+    return invoiceData.reduce((acc, elm) => acc + elm.price * elm.quantity, 0);
   };
 
+  if (loading) {
+    return <Spin size="large" />;
+  }
+
+  if (error) {
+    return <Alert message="Error fetching invoice data" type="error" />;
+  }
+
   return (
-    <Row gutter={16}>
-      <Col xs={24} sm={24} md={17}>
-        <Card title="Receipt">
-          <Row gutter={16}>
-            <Col xs={24} sm={24} md={12}>
-              <Title level={4}>Appointment ID</Title>
-              <Text>{paymentData.appointmentId}</Text>
-            </Col>
-            <Col xs={24} sm={24} md={12}>
-              <Title level={4}>Amount</Title>
-              <Text>{`$${paymentData.amount}`}</Text>
-            </Col>
-            <Col xs={24} sm={24} md={12}>
-              <Title level={4}>Payment Method</Title>
-              <Text>{paymentData.paymentMethod}</Text>
-            </Col>
-            <Col xs={24} sm={24} md={12}>
-              <Title level={4}>Transaction ID</Title>
-              <Text>{paymentData.transactionId}</Text>
-            </Col>
-            <Col xs={24} sm={24} md={12}>
-              <Title level={4}>Payment Date</Title>
-              <Text>{paymentData.paymentDate}</Text>
-            </Col>
-          </Row>
-        </Card>
-      </Col>
-    </Row>
+    <div className="container">
+      <Card>
+        <div className="d-md-flex justify-content-md-between">
+          <div>
+            <img src="/img/logo.png" alt="" />
+            <address>
+              <p>
+                <span className="font-weight-semibold text-dark font-size-md">
+                  CMS, Inc.
+                </span>
+                <br />
+                <span>00100 Nairobi</span>
+                <br />
+                <span>Nairobi, Kenya</span>
+                <br />
+                <abbr className="text-dark" title="Phone">
+                  Phone:
+                </abbr>
+                <span>(254) 722545735</span>
+              </p>
+            </address>
+          </div>
+          <div className="mt-3 text-right">
+            <h2 className="mb-1 font-weight-semibold">Invoice #9972</h2>
+            <p>16/01/204</p>
+            <address>
+              <p>
+                <span className="font-weight-semibold text-dark font-size-md">
+                  Customer name
+                </span>
+                <br />
+                <span>Address 1 </span>
+                <br />
+                <span>Address 2</span>
+              </p>
+            </address>
+          </div>
+        </div>
+        <div className="mt-4">
+          <Table dataSource={invoiceData} pagination={false} className="mb-5">
+            <Column title="No." dataIndex="key" key="key" />
+            <Column title="Product" dataIndex="product" key="product" />
+            <Column title="Quantity" dataIndex="quantity" key="quantity" />
+            <Column
+              title="Price"
+              render={(text) => (
+                <NumberFormat
+                  displayType={"text"}
+                  value={(Math.round(text.price * 100) / 100).toFixed(2)}
+                  prefix={"Ksh"}
+                  thousandSeparator={true}
+                />
+              )}
+              key="price"
+            />
+            <Column
+              title="Total"
+              render={(text) => (
+                <NumberFormat
+                  displayType={"text"}
+                  value={(
+                    Math.round(text.price * text.quantity * 100) / 100
+                  ).toFixed(2)}
+                  prefix={"Ksh"}
+                  thousandSeparator={true}
+                />
+              )}
+              key="total"
+            />
+          </Table>
+          <div className="d-flex justify-content-end">
+            <div className="text-right ">
+              <div className="border-bottom">
+                <p className="mb-2">
+                  <span>Sub - Total amount: </span>
+                  <NumberFormat
+                    displayType={"text"}
+                    value={(Math.round(this.total() * 100) / 100).toFixed(2)}
+                    prefix={"Ksh"}
+                    thousandSeparator={true}
+                  />
+                </p>
+                <p>
+                  vat (16%) :{" "}
+                  {(Math.round((this.total() / 100) * 16 * 100) / 100).toFixed(
+                    2
+                  )}
+                </p>
+              </div>
+              <h2 className="font-weight-semibold mt-3">
+                <p>Prices are VAT inclusive </p>
+                <span className="mr-1">Grand Total: </span>
+
+                <NumberFormat
+                  displayType={"text"}
+                  value={(Math.round(this.total() * 100) / 100).toFixed(2)}
+                  prefix={"Ksh"}
+                  thousandSeparator={true}
+                />
+              </h2>
+            </div>
+          </div>
+          <p className="mt-5">
+            <small>
+              In exceptional circumstances, Financial Services can provide an
+              urgent manually processed special cheque. Note, however, that
+              urgent special cheques should be requested only on an emergency
+              basis as manually produced cheques involve duplication of effort
+              and considerable staff resources. Requests need to be supported by
+              a letter explaining the circumstances to justify the special
+              cheque payment
+            </small>
+          </p>
+        </div>
+        <hr className="d-print-none" />
+        <div className="text-right d-print-none">
+          <Button type="primary" onClick={() => window.print()}>
+            <PrinterOutlined type="printer" />
+            <span className="ml-1">Print</span>
+          </Button>
+        </div>
+      </Card>
+    </div>
   );
 };
 
-export default Receipt;
+export default Invoice;

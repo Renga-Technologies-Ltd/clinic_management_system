@@ -147,7 +147,7 @@ const PatientForm = (props) => {
                 {mode === "ADD" ? "New Patient" : `Edit Patient`}{" "}
               </h2>
               <div className="mb-3">
-                <Button className="mr-2">Discard</Button>
+                
                 <Button
                   type="primary"
                   onClick={() => onFinish()}

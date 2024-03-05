@@ -12,10 +12,7 @@ import {
   // Button,
   // Space,
 } from "antd";
-// import { UserOutlined, PhoneOutlined, MailOutlined } from "@ant-design/icons";
-// import { ImageSvg } from "assets/svg/icon";
-// import CustomIcon from "components/util-components/CustomIcon";
-// import { LoadingOutlined } from "@ant-design/icons";
+
 import { useParams } from "react-router-dom";
 import Input from "antd/es/input/Input";
 

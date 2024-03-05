@@ -51,9 +51,21 @@ export const protectedRoutes = [
     component: React.lazy(() => import("views/app-views/dashboards/nurse")),
   },
   {
+    key: "dashboard.nurse.examination",
+    path: `${APP_PREFIX_PATH}/dashboards/nurse/examination/:appointment_id`,
+    component: React.lazy(() =>
+      import("views/app-views/dashboards/nurse/Examination")
+    ),
+  },
+  {
     key: "dashboard.doctor",
     path: `${APP_PREFIX_PATH}/dashboards/doctor`,
     component: React.lazy(() => import("views/app-views/dashboards/doctor")),
+  },
+  {
+    key: "dashboard.doctor.consultation",
+    path: `${APP_PREFIX_PATH}/dashboards/doctor/consultation/:appointment_id`,
+    component: React.lazy(() => import("views/app-views/dashboards/doctor/Consultation")),
   },
   //end main dashboard
   {
@@ -104,9 +116,7 @@ export const protectedRoutes = [
   {
     key: "apps.patient.edit-patient",
     path: `${APP_PREFIX_PATH}/apps/patient/pay-appointment/:appointment_id`,
-    component: React.lazy(() =>
-      import("views/app-views/apps/patient/payment")
-    ),
+    component: React.lazy(() => import("views/app-views/apps/patient/payment")),
   },
   {
     key: "apps.patient.patient-list",

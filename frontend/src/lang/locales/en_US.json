@@ -4,7 +4,7 @@
 	"sidenav.dashboard.default": "Default",
 	"sidenav.dashboard.analytic": "AI and Analytic",
 	"sidenav.dashboard.reception": "Reception Home",
-	"sidenav.dashboard.nurse": "Nurse Home",
+	"sidenav.dashboard.nurse": "Triage",
 	"sidenav.dashboard.doctor": "Doctor Home",
 	
 	"sidenav.apps": "Manage",

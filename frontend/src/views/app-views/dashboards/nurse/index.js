@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Card, Table, Menu, Tag } from "antd";
+import { Row, Col, Card, Table, Menu, Tag, Button } from "antd";
 import moment from "moment";
 import DataDisplayWidget from "components/shared-components/DataDisplayWidget";
 import Flex from "components/shared-components/Flex";
@@ -8,6 +8,8 @@ import { Link } from "react-router-dom";
 import { OrderedListOutlined, EyeOutlined } from "@ant-design/icons";
 import utils from "utils";
 import { useNavigate } from "react-router-dom";
+
+const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
 const DisplayButtons = () => (
   <Row gutter={16}>
@@ -30,7 +32,7 @@ const TodaysAppointments = () => {
   const navigate = useNavigate();
   const viewDetails = (row) => {
     console.log(row); // Log the row object to the console
-    navigate(`/app/apps/patient/patient-details/${row}`);
+    navigate(`/app/dashboards/nurse/examination/${row}`);
   };
   const dropdownMenu = (row) => (
     <Menu>
@@ -106,14 +108,22 @@ const TodaysAppointments = () => {
         </span>
       ),
     },
+    {
+      title: "Actions",
+      dataIndex: "",
+      sorter: (a, b) => utils.antdTableSorter(a, b, "doctor"),
+      render: (record) => (
+        <>
+          <Button onClick={() => viewDetails(record._id)}>Attend to</Button>
+        </>
+      ),
+    },
   ];
 
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:5000/api/allAppointments`
-        );
+        const response = await fetch(`${base_apiUrl}/allAppointments`);
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
@@ -138,7 +148,7 @@ const TodaysAppointments = () => {
       <Table
         pagination={false}
         columns={tableColumns}
-        dataSource={appointmentRecords}
+        dataSource={appointmentRecords && appointmentRecords.filter(appointment => !appointment.nurseReadings)}
         rowKey="id"
       />
     </Card>

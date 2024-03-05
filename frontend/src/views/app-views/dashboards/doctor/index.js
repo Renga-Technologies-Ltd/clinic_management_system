@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Card, Table, Menu, Tag } from "antd";
+import { Row, Col, Card, Table, Tag, Button } from "antd";
 import moment from "moment";
 import DataDisplayWidget from "components/shared-components/DataDisplayWidget";
-import Flex from "components/shared-components/Flex";
+
 import NumberFormat from "react-number-format";
 import { Link } from "react-router-dom";
 import {
@@ -13,7 +13,7 @@ import {
   EyeOutlined,
 } from "@ant-design/icons";
 import utils from "utils";
-// import EllipsisDropdown from "components/shared-components/EllipsisDropdown";
+
 import { useNavigate } from "react-router-dom";
 
 const DisplayButtons = () => (
@@ -66,19 +66,8 @@ const TodaysAppointments = () => {
   const navigate = useNavigate();
   const viewDetails = (row) => {
     console.log(row); // Log the row object to the console
-    navigate(`/app/apps/patient/patient-details/${row}`);
+    navigate(`/app/dashboards/doctor/consultation/${row}`);
   };
-  const dropdownMenu = (row) => (
-    <Menu>
-      <Menu.Item onClick={() => viewDetails(row._id)}>
-        <Flex alignItems="center">
-          <EyeOutlined />
-          <span className="ml-2">View Details</span>
-        </Flex>
-      </Menu.Item>
-    </Menu>
-  );
-  console.log(dropdownMenu);
 
   const tableColumns = [
     {
@@ -142,6 +131,16 @@ const TodaysAppointments = () => {
         </span>
       ),
     },
+    {
+      title: "Actions",
+      dataIndex: "",
+      sorter: (a, b) => utils.antdTableSorter(a, b, "doctor"),
+      render: (record) => (
+        <>
+          <Button onClick={() => viewDetails(record._id)}>Attend to</Button>
+        </>
+      ),
+    },
   ];
 
   useEffect(() => {
@@ -174,7 +173,12 @@ const TodaysAppointments = () => {
       <Table
         pagination={false}
         columns={tableColumns}
-        dataSource={appointmentRecords}
+        dataSource={
+          appointmentRecords &&
+          appointmentRecords.filter(
+            (appointment) => !appointment.doctorReadings
+          )
+        }
         rowKey="id"
       />
     </Card>

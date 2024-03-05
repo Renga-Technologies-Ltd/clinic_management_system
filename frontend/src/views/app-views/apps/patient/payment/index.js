@@ -71,7 +71,7 @@ const Payment = (props) => {
                 {mode === "ADD" ? "Make payment" : `Make Payment`}{" "}
               </h2>
               <div className="mb-3">
-                {/* <Button className="mr-2">Discard</Button> */}
+                {/*  */}
                 <Button
                   type="primary"
                   onClick={() => form.validateFields().then(onFinish)}
