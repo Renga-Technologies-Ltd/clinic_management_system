@@ -44,6 +44,14 @@ const appointmentSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  nurseReadings: {
+    type: Boolean,
+    default: false,
+  },
+  doctorReadings: {
+    type: Boolean,
+    default: false,
+  },
   createdAt: {
     type: Date,
     default: Date.now,

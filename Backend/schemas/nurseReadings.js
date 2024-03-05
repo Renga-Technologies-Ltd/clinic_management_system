@@ -17,6 +17,7 @@ const nurseReadingsSchema = new mongoose.Schema({
   weight: Number,
   pulseOximetry: Number,
   painLevel: Number,
+  SpO2: Number,
   // Add other nurse-specific readings as needed
   createdAt: {
     type: Date,

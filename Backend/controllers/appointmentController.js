@@ -103,7 +103,7 @@ const appointmentController = {
     try {
       const appointment_id = req.params.appointment_id;
       const appointment = await Appointment.findById(appointment_id)
-        .populate("patient", "firstName") // Replace "firstName" with the actual field you want to retrieve from the Patient model
+        .populate("patient", "firstName lastName") // Replace "firstName" with the actual field you want to retrieve from the Patient model
         .populate("doctor", "profile.firstName profile.lastName") // Access subfields in the profile object
         .populate("bookedBy", "profile.firstName profile.lastName"); // Access subfields in the profile object
 
@@ -119,29 +119,25 @@ const appointmentController = {
 
   nurseSectionreading: async (req, res, next) => {
     try {
-      const {
-        appointment,
-        bloodPressure,
-        heartRate,
-        temperature,
-        respiratoryRate,
-        height,
-        weight,
-        pulseOximetry,
-        painLevel,
-      } = req.body;
+      console.log(req.body);
+      const { appointment_id, appointment } = req.body;
       const newReadings = new NurseReadings({
-        appointment,
-        bloodPressure,
-        heartRate,
-        temperature,
-        respiratoryRate,
-        height,
-        weight,
-        pulseOximetry,
-        painLevel,
+        appointment: appointment_id,
+        bloodPressure: appointment.bloodPressure,
+        heartRate: appointment.heartRate,
+        temperature: appointment.temperature,
+        respiratoryRate: appointment.respiratoryRate,
+        height: appointment.height,
+        weight: appointment.weight,
+        pulseOximetry: appointment.pulseOximetry,
+        painLevel: appointment.painLevel,
+        SpO2: appointment.SpO2,
       });
       await newReadings.save();
+      // Update nurseReadings field in the corresponding Appointment
+      await Appointment.findByIdAndUpdate(appointment_id, {
+        nurseReadings: true,
+      });
       res.status(201).json({
         message: "Details saved successfully",
         readings: newReadings,
@@ -149,6 +145,21 @@ const appointmentController = {
     } catch (error) {
       console.error("Error creating new recorrds", error);
       res.status(500).json({ message: "Error creating patients records" });
+    }
+  },
+  getNurseReadings: async (req, res, next) => {
+    try {
+      const appointment_id = req.params.id;
+      const nurseReadings = await NurseReadings.findOne({
+        appointment: appointment_id,
+      });
+      res.status(200).json({
+        nurseReadings,
+        message: "Nurse readings fetched successfully",
+      });
+    } catch (error) {
+      console.error("Error fetching nurse readings:", error);
+      res.status(500).json({ message: "Internal Server Error" });
     }
   },
   //fetch all nurse readings
