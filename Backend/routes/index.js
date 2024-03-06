@@ -7,6 +7,7 @@ const appointmentController = require("../controllers/appointmentController");
 
 const multer = require("multer");
 const path = require("path");
+const paymentController = require("../controllers/paymentController");
 
 // Configure multer storage
 const storage = multer.diskStorage({
@@ -54,7 +55,10 @@ router.delete("/deletePatient", patientController.deletePatient);
 router.post("/newAppointment", appointmentController.newAppointment);
 router.post("/cancleAppointment", appointmentController.cancleAppointment);
 router.post("/editAppointment", appointmentController.editAppointment);
-router.get("/appointment/:appointment_id", appointmentController.findAppointment);
+router.get(
+  "/appointment/:appointment_id",
+  appointmentController.findAppointment
+);
 router.get("/allAppointments", appointmentController.fetchAllAppointments);
 router.get("/getAppointments/:id", appointmentController.appointmentsByPatient);
 // record patients readings
@@ -63,5 +67,11 @@ router.get("/getNurseReadings/:id", appointmentController.getNurseReadings);
 //patient medical records
 router.post("/addMedicalRecords", patientController.addMedicalRecords);
 router.get("/getMedicalrecords/:id", patientController.getMedicalRecords);
+//  payments sections
+router.post("/makePayment", paymentController.createPayment);
+router.get("/allPayments", paymentController.fetchAllPayments);
+router.get("/todaysPayments", paymentController.todaysPayments);
+router.get("/getPayment/:id", paymentController.getPayment);
+router.get("/getpaymentperUser/:user_id", paymentController.getPaymentPerUser);
 
 module.exports = router;
