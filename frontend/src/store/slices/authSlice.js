@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-// import { AUTH_TOKEN } from "constants/AuthConstant";
 import AuthService from "services/AuthService";
-// import apiBaseUrl from "configs/config";
+const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
 export const initialState = {
   loading: false,
@@ -18,7 +17,7 @@ export const signIn = createAsyncThunk(
     // console.log(username);
     try {
       // Make API call for authentication
-      const response = await fetch("http://localhost:5000/api/login", {
+      const response = await fetch(`${base_apiUrl}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

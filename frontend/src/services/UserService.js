@@ -1,8 +1,8 @@
-// services/UserService.js
+const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
 class UserService {
   // Example endpoint URL
-  static BASE_URL = "http://localhost:5000/api";
+  static BASE_URL = base_apiUrl;
 
   static async getUserDetails(userId) {
     try {

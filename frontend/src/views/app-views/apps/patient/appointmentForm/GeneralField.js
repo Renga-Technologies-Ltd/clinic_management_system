@@ -1,21 +1,9 @@
 import React, { useState, useEffect } from "react";
-import {
-  Input,
-  Row,
-  Col,
-  Card,
-  Form,
-  Upload,
-  message,
-  Select,
-  DatePicker,
-  Button,
-  Space,
-} from "antd";
-import { UserOutlined, PhoneOutlined, MailOutlined } from "@ant-design/icons";
-import { ImageSvg } from "assets/svg/icon";
-import CustomIcon from "components/util-components/CustomIcon";
+import { Input, Row, Col, Card, Form, Select, DatePicker, Space } from "antd";
+import { PhoneOutlined, MailOutlined } from "@ant-design/icons";
+
 import { LoadingOutlined } from "@ant-design/icons";
+const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
 const { Option } = Select;
 
@@ -33,7 +21,7 @@ const GeneralField = (props) => {
   const fetchPatients = async () => {
     try {
       setLoading(true);
-      const response = await fetch("http://localhost:5000/api/allpatient");
+      const response = await fetch(`${base_apiUrl}/allpatient`);
       const data = await response.json();
       setAllPatients(data.patients);
     } catch (error) {

@@ -10,11 +10,11 @@ import {
   ReconciliationOutlined,
   UserAddOutlined,
   BarChartOutlined,
-  EyeOutlined,
 } from "@ant-design/icons";
 import utils from "utils";
 
 import { useNavigate } from "react-router-dom";
+const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
 const DisplayButtons = () => (
   <Row gutter={16}>
@@ -146,9 +146,7 @@ const TodaysAppointments = () => {
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:5000/api/allAppointments`
-        );
+        const response = await fetch(`${base_apiUrl}/allAppointments`);
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }

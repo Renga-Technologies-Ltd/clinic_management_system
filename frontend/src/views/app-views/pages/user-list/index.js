@@ -4,6 +4,7 @@ import { EyeOutlined, DeleteOutlined } from "@ant-design/icons";
 // import dayjs from "dayjs";
 import UserView from "./UserView";
 import AvatarStatus from "components/shared-components/AvatarStatus";
+const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
 export class UserList extends Component {
   state = {
@@ -14,7 +15,7 @@ export class UserList extends Component {
 
   componentDidMount() {
     // Fetch users from the API endpoint
-    fetch("http://localhost:5000/api/users") // Update the URL with your API endpoint
+    fetch(`${base_apiUrl}/users`) // Update the URL with your API endpoint
       .then((response) => response.json())
       .then((data) => {
         this.setState({ users: data.users });

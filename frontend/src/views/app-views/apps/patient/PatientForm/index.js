@@ -4,9 +4,10 @@ import { Tabs, Form, Button, message } from "antd";
 import Flex from "components/shared-components/Flex";
 import GeneralField from "./GeneralField";
 import NextOfKin from "./NextOfKin";
-// import VariationField from './VariationField'
-// import ShippingField from './ShippingField'
+
 import ProductListData from "assets/data/product-list.data.json";
+const base_apiUrl = process.env.REACT_APP_BASE_URL;
+
 
 const getBase64 = (img, callback) => {
   const reader = new FileReader();
@@ -67,7 +68,7 @@ const PatientForm = (props) => {
     form
       .validateFields()
       .then(async (values) => {
-        const apiUrl = "http://localhost:5000/api/addPatient"; // replace with your actual API endpoint
+        const apiUrl = `${base_apiUrl}/addPatient`;
         const formData = new FormData();
 
         // Append form data
@@ -147,7 +148,6 @@ const PatientForm = (props) => {
                 {mode === "ADD" ? "New Patient" : `Edit Patient`}{" "}
               </h2>
               <div className="mb-3">
-                
                 <Button
                   type="primary"
                   onClick={() => onFinish()}

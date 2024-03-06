@@ -12,8 +12,8 @@ import {
   BarChartOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-
 import utils from "utils";
+const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
 const DisplayButtons = () => (
   <Row gutter={16}>
@@ -130,6 +130,21 @@ const TodaysAppointments = () => {
       ),
     },
     {
+      title: "Appointment Status",
+      dataIndex: "doctorReadings",
+      sorter: (a, b) => utils.antdTableSorter(a, b, "doctor"),
+      render: (doctorReadings, nurseReadings) => {
+        if (!doctorReadings && !nurseReadings) {
+          return <Tag color="blue">Not Attended To</Tag>;
+        } else if (!doctorReadings && nurseReadings) {
+          return <Tag color="amber">Waiting for Doctor</Tag>;
+        } else if (doctorReadings && nurseReadings) {
+          return <Tag color="green">Completed</Tag>;
+        }
+        return null;
+      },
+    },
+    {
       title: "Payment Status",
       dataIndex: "paid",
       key: "paid",
@@ -148,9 +163,7 @@ const TodaysAppointments = () => {
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:5000/api/allAppointments`
-        );
+        const response = await fetch(`${base_apiUrl}/allAppointments`);
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }

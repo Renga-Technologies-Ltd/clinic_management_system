@@ -2,16 +2,18 @@ import React, { useState, useEffect } from "react";
 import { Row, Col, Card, Table } from "antd";
 import NumberFormat from "react-number-format";
 import utils from "utils";
+import moment from "moment";
+const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
 const MedicalRecords = (props) => {
   const { patientId } = props;
-  
+
   const [medicalRecords, setMedicalRecords] = useState(null);
   useEffect(() => {
     const fetchMedicalRecords = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/getMedicalrecords/${patientId}`
+          `${base_apiUrl}/getMedicalrecords/${patientId}`
         );
         const data = await response.json();
         if (Array.isArray(data.medicalRecords)) {
@@ -40,21 +42,15 @@ const MedicalRecords = (props) => {
       title: "Date",
       dataIndex: "createdAt",
       sorter: (a, b) => utils.antdTableSorter(a, b, "createdAt"),
+      render: (createdAt) => (
+        <span>{moment(createdAt).format("MMMM Do YYYY, h:mm:ss a")}</span>
+      ),
     },
     {
       title: "Diagnostic",
-      dataIndex: "diagnosis",
-      sorter: (a, b) => utils.antdTableSorter(a, b, "diagnosis"),
-    },
-    {
-      title: "Notes",
-      dataIndex: "notes",
-      sorter: (a, b) => utils.antdTableSorter(a, b, "notes"),
-    },
-    {
-      title: "Doctor",
-      dataIndex: "createdBy",
-      sorter: (a, b) => utils.antdTableSorter(a, b, "createdBy"),
+      dataIndex: "diagnosis.final_diagnosis",
+      sorter: (a, b) =>
+        utils.antdTableSorter(a, b, "diagnosis.final_diagnosis"),
     },
   ];
   return (
@@ -69,7 +65,6 @@ const MedicalRecords = (props) => {
             />
           </div>
         </Card>
-       
       </Col>
     </Row>
   );

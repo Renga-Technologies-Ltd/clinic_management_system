@@ -1,7 +1,7 @@
-// config.js
+const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
 const config = {
-  apiBaseUrl: "http://localhost:5000/api",
+  apiBaseUrl: base_apiUrl,
 };
 
 export default config;
