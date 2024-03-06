@@ -77,27 +77,41 @@ const paymentController = {
   },
   getPayment: async (req, res, next) => {
     try {
-      const paymentId = req.params.id;
-      const payment = await Payment.findById(paymentId)
+      const { appointment, paymentType } = req.params;
+      // Assuming that the `appointment` parameter is an ObjectId
+      const payment = await Payment.find({
+        appointment: appointment,
+        paymentType: paymentType,
+      })
         .populate({
           path: "appointment",
           model: "Appointment",
           select: "appointmentTime",
+          populate: {
+            path: "patient", // Populate the patient field in the appointment schema
+            model: "Patient",
+            select: "firstName lastName address",
+          },
         })
         .populate({
           path: "receivedBy",
           model: "User",
           select: "profile.firstName profile.lastName",
         });
-      if (!payment) {
+
+      if (!payment || payment.length === 0) {
         return res.status(404).json({ message: "Payment not found" });
       }
+
+      console.log("payment", payment);
+
       res.status(200).json({ payment });
     } catch (error) {
       console.error("Error getting payment by id:", error);
       res.status(500).json({ message: "Internal Server Error" });
     }
   },
+
   getPaymentPerUser: async (req, res, next) => {
     try {
       const userId = req.params.user_id;

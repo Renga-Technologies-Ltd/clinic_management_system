@@ -5,7 +5,6 @@ import Flex from "components/shared-components/Flex";
 import GeneralField from "./PaymentForm";
 import Receipt from "./Receipt";
 import { useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
 const Payment = (props) => {
@@ -100,7 +99,7 @@ const Payment = (props) => {
               {
                 label: "Receipt",
                 key: "2",
-                children: <Receipt />,
+                children: <Receipt appointment={appointmentId} />,
               },
             ]}
           />

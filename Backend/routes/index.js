@@ -71,7 +71,10 @@ router.get("/getMedicalrecords/:id", patientController.getMedicalRecords);
 router.post("/makepayments", paymentController.createPayment);
 router.get("/allPayments", paymentController.fetchAllPayments);
 router.get("/todaysPayments", paymentController.todaysPayments);
-router.get("/getPayment/:id", paymentController.getPayment);
+router.get(
+  "/getPayment/:appointment/:paymentType",
+  paymentController.getPayment
+);
 router.get("/getpaymentperUser/:user_id", paymentController.getPaymentPerUser);
 
 module.exports = router;

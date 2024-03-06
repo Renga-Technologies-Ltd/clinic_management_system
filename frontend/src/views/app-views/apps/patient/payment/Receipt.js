@@ -2,15 +2,13 @@ import React, { useState, useEffect } from "react";
 import { PrinterOutlined } from "@ant-design/icons";
 import { Card, Table, Button, Spin, Alert } from "antd";
 import NumberFormat from "react-number-format";
-
-import { useParams } from "react-router-dom";
-
+import utils from "utils";
+import moment from "moment";
 const { Column } = Table;
 const base_apiUrl = process.env.REACT_APP_BASE_URL;
-
-const Invoice = () => {
-  const receipt_id = useParams();
-
+const Invoice = (props) => {
+  const appointment = props;
+  const appointment_id = appointment.appointment.appointment_id;
   const [invoiceData, setInvoiceData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -18,9 +16,12 @@ const Invoice = () => {
   useEffect(() => {
     const fetchInvoiceData = async () => {
       try {
-        const response = await fetch(`${base_apiUrl}/receipt/${receipt_id}`);
+        const type = "first_time";
+        const response = await fetch(
+          `${base_apiUrl}/getPayment/${appointment_id}/${type}`
+        );
         const data = await response.json();
-        setInvoiceData(data); // assuming the API response is an array of invoice items
+        setInvoiceData(data.payment); // assuming the API response is an array of invoice items
         setLoading(false);
       } catch (error) {
         setError(error.message);
@@ -30,10 +31,7 @@ const Invoice = () => {
 
     fetchInvoiceData();
   }, []);
-
-  const total = () => {
-    return invoiceData.reduce((acc, elm) => acc + elm.price * elm.quantity, 0);
-  };
+  console.log(invoiceData);
 
   if (loading) {
     return <Spin size="large" />;
@@ -42,6 +40,42 @@ const Invoice = () => {
   if (error) {
     return <Alert message="Error fetching invoice data" type="error" />;
   }
+  const mapPaymentTypeToText = (paymentType) => {
+    switch (paymentType) {
+      case "first_time":
+        return "First time consultation";
+      case "follow-up":
+        return "Follow up with 7 days";
+      case "Lab":
+        return "Lab payments";
+      default:
+        return paymentType; // return original value if not found
+    }
+  };
+  const tableColumns = [
+    {
+      title: "Appointment ID",
+      dataIndex: "_id",
+      render: (_, record) => (
+        <div>
+          <NumberFormat displayType={"text"} value={record._id} />
+        </div>
+      ),
+    },
+    {
+      title: "Service",
+      dataIndex: "paymentType",
+      key: "paymentType",
+      render: (paymentType) => mapPaymentTypeToText(paymentType),
+    },
+    {
+      title: "Time",
+      dataIndex: "timeOfPayment",
+      render: (appointmentTime) => (
+        <span>{moment(appointmentTime).format("MMMM Do YYYY, h:mm:ss a")}</span>
+      ),
+    },
+  ];
 
   return (
     <div className="container">
@@ -67,83 +101,53 @@ const Invoice = () => {
             </address>
           </div>
           <div className="mt-3 text-right">
-            <h2 className="mb-1 font-weight-semibold">Invoice #9972</h2>
+            <h2 className="mb-1 font-weight-semibold">
+              Invoice {invoiceData[0]._id}
+            </h2>
             <p>16/01/204</p>
             <address>
               <p>
                 <span className="font-weight-semibold text-dark font-size-md">
-                  Customer name
+                  {invoiceData[0].appointment.patient
+                    ? invoiceData[0].appointment.patient.firstName +
+                      " " +
+                      invoiceData[0].appointment.patient.lastName
+                    : "Unknown"}
                 </span>
                 <br />
-                <span>Address 1 </span>
+                {invoiceData[0].appointment.patient
+                  ? invoiceData[0].appointment.patient.address.city
+                  : "Unknown Address"}
                 <br />
-                <span>Address 2</span>
               </p>
             </address>
           </div>
         </div>
         <div className="mt-4">
-          <Table dataSource={invoiceData} pagination={false} className="mb-5">
-            <Column title="No." dataIndex="key" key="key" />
-            <Column title="Product" dataIndex="product" key="product" />
-            <Column title="Quantity" dataIndex="quantity" key="quantity" />
-            <Column
-              title="Price"
-              render={(text) => (
-                <NumberFormat
-                  displayType={"text"}
-                  value={(Math.round(text.price * 100) / 100).toFixed(2)}
-                  prefix={"Ksh"}
-                  thousandSeparator={true}
-                />
-              )}
-              key="price"
-            />
-            <Column
-              title="Total"
-              render={(text) => (
-                <NumberFormat
-                  displayType={"text"}
-                  value={(
-                    Math.round(text.price * text.quantity * 100) / 100
-                  ).toFixed(2)}
-                  prefix={"Ksh"}
-                  thousandSeparator={true}
-                />
-              )}
-              key="total"
-            />
-          </Table>
+          <Table
+            pagination={false}
+            columns={tableColumns}
+            dataSource={[invoiceData[0]]}
+            className="mb-5"
+          ></Table>
           <div className="d-flex justify-content-end">
             <div className="text-right ">
               <div className="border-bottom">
                 <p className="mb-2">
                   <span>Sub - Total amount: </span>
+
                   <NumberFormat
                     displayType={"text"}
-                    value={(Math.round(this.total() * 100) / 100).toFixed(2)}
+                    value={invoiceData[0].amount}
                     prefix={"Ksh"}
                     thousandSeparator={true}
                   />
                 </p>
-                <p>
-                  vat (16%) :{" "}
-                  {(Math.round((this.total() / 100) * 16 * 100) / 100).toFixed(
-                    2
-                  )}
+                <p className="mb-2">
+                  <span>Payment Method </span>
+                  {invoiceData[0].paymentMethod}
                 </p>
               </div>
-              <h2 className="font-weight-semibold mt-3">
-                <p>Prices are VAT inclusive </p>
-                <span className="mr-1">Grand Total: </span>
-
-                <NumberFormat
-                  displayType={"text"}
-                  value={(Math.round(this.total() * 100) / 100).toFixed(2)}
-                  prefix={"Ksh"}
-                  thousandSeparator={true}
-                />
-              </h2>
             </div>
           </div>
           <p className="mt-5">
