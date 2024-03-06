@@ -1,6 +1,7 @@
 const Patient = require("../schemas/patient");
 const DoctorObservations = require("../schemas/doctorObservations");
 const { saveBase64Image } = require("./fileHandler");
+const Appointment = require("../schemas/appointment");
 
 const patientController = {
   createPatient: async (req, res, next) => {
@@ -111,31 +112,18 @@ const patientController = {
   },
   addMedicalRecords: async (req, res, next) => {
     try {
-      const {
-        appointment,
-        patientId,
-        diagnosis,
-        treatmentPlan,
-        prescriptions,
-        followUpInstructions,
-        referrals,
-        proceduresPerformed,
-        notes,
-        labTestsOrdered,
-        nextSteps,
-      } = req.body;
+      const { appointment_id, history, examination, diagnosis, treatment } =
+        req.body;
+      const patient = await Appointment.findById(appointment_id);
+      const patient_id = patient._id;
+      console.log(patient_id);
       const newDoctorObservations = new DoctorObservations({
-        appointment,
-        patientId,
+        appointment: appointment_id,
+        patient: patient_id,
+        history,
+        examination,
         diagnosis,
-        treatmentPlan,
-        prescriptions,
-        followUpInstructions,
-        referrals,
-        proceduresPerformed,
-        notes,
-        labTestsOrdered,
-        nextSteps,
+        treatment,
       });
       console.log(req.body);
       // await newDoctorObservations.save();
@@ -150,8 +138,10 @@ const patientController = {
   },
   getMedicalRecords: async (req, res, next) => {
     try {
-      const patientId = req.params.id;
-      const observations = await DoctorObservations.find({ patientId });
+      const patient = req.params.id;
+      const observations = await DoctorObservations.find({
+        patient: patient,
+      });
       console.log(observations);
       res.status(200).json({ medicalRecords: observations });
     } catch (error) {
