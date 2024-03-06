@@ -1,3 +1,4 @@
+const Appointment = require("../schemas/appointment");
 const Payment = require("../schemas/payment");
 const paymentController = {
   createPayment: async (req, res, next) => {
@@ -12,8 +13,11 @@ const paymentController = {
         paymentMethod,
       });
       await newPayment.save();
+      await Appointment.findByIdAndUpdate(appointment, {
+        $set: { paid: true },
+      });
       res.status(201).json({
-        message: "Payment created successfully",
+        message: "Payment submitted successfully",
         payment: newPayment,
       });
     } catch (error) {

@@ -3,13 +3,14 @@ import PageHeaderAlt from "components/layout-components/PageHeaderAlt";
 import { Tabs, Form, Button, message } from "antd";
 import Flex from "components/shared-components/Flex";
 import GeneralField from "./PaymentForm";
-import Receipt from "./Receipt"; // Import the new Receipt component
+import Receipt from "./Receipt";
+import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
-const ADD = "Save";
 const Payment = (props) => {
-  const { mode = ADD, params } = props;
+  const appointmentId = useParams();
+  const appointment_id = appointmentId.appointment_id;
   const [form] = Form.useForm();
   const [submitLoading, setSubmitLoading] = useState(false);
   useEffect(() => {}, []);
@@ -18,9 +19,15 @@ const Payment = (props) => {
     form
       .validateFields()
       .then(async (values) => {
+        //get user id from local storage
+        const userId = localStorage.getItem("user_id");
         const apiUrl = `${base_apiUrl}/makepayments`;
-        // const formData = new FormData();
-        const requestData = values; // No need for FormData
+
+        const requestData = {
+          ...values,
+          receivedBy: userId,
+          appointment: appointment_id,
+        };
         const requestOptions = {
           method: "POST",
           headers: {
@@ -32,11 +39,9 @@ const Payment = (props) => {
         try {
           const response = await fetch(apiUrl, requestOptions);
           const data = await response.json();
-          // console.log(data);
+          console.log(data);
           setSubmitLoading(false);
-          message.success(
-            `Appointment created successfully, proceed to payment`
-          );
+          message.success(data.message || "Payment submitted successfully");
           form.resetFields();
         } catch (error) {
           setSubmitLoading(false);
@@ -67,9 +72,7 @@ const Payment = (props) => {
               justifyContent="space-between"
               alignItems="center"
             >
-              <h2 className="mb-3">
-                {mode === "ADD" ? "Make payment" : `Make Payment`}{" "}
-              </h2>
+              <h2 className="mb-3">Make payment</h2>
               <div className="mb-3">
                 {/*  */}
                 <Button
@@ -78,7 +81,7 @@ const Payment = (props) => {
                   htmlType="submit"
                   loading={submitLoading}
                 >
-                  {mode === "ADD" ? "Submit" : `Save`}
+                  Submit
                 </Button>
               </div>
             </Flex>

@@ -1,18 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  // Input,
-  Row,
-  Col,
-  Card,
-  Form,
-  // Upload,
-  // message,
-  Select,
-  // DatePicker,
-  // Button,
-  // Space,
-} from "antd";
-
+import { Row, Col, Card, Form, Select } from "antd";
 import { useParams } from "react-router-dom";
 import Input from "antd/es/input/Input";
 
@@ -66,11 +53,20 @@ const PaymentForm = (props) => {
               </Form.Item>
             </Col>
             <Col xs={24} sm={24} md={12}>
-              <Form.Item label="Payment Method" name="payment_method">
+              <Form.Item label="Payment Method" name="paymentMethod">
                 <Select placeholder="Payment Method">
-                  <Option value="cash">Cash</Option>
-                  <Option value="mpesa">M-Pesa</Option>
-                  <Option value="card">Card</Option>
+                  <Option value="Cash">Cash</Option>
+                  <Option value="M-pesa">M-Pesa</Option>
+                  <Option value="Card">Card</Option>
+                </Select>
+              </Form.Item>
+            </Col>
+            <Col xs={24} sm={24} md={12}>
+              <Form.Item label="Payment type" name="paymentType">
+                <Select placeholder="Select payment type">
+                  <Option value="first_time">First time consultation</Option>
+                  <Option value="follow-up">Follow up with 7 days</Option>
+                  <Option value="Lab">Lab payments</Option>
                 </Select>
               </Form.Item>
             </Col>

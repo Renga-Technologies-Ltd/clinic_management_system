@@ -15,12 +15,12 @@ const paymentSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  paymentType: {
+  paymentMethod: {
     type: String,
     enum: ["Cash", "Card", "M-pesa"],
     required: true,
   },
-  paymentMethod: {
+  paymentType: {
     type: String,
     required: true,
   },
