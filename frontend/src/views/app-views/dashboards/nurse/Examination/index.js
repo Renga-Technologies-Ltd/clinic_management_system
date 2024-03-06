@@ -23,8 +23,8 @@ const Examination = (props) => {
     try {
       const values = await form.validateFields();
       // Include appointment_id in the form values
-      const formData = { ...values };
-      console.log(formData, appointment_id);
+      const formData = { ...values, appointment_id };
+      // console.log(formData, appointment_id);
 
       const apiUrl = `${base_apiUrl}/nurseReadings`;
 
@@ -77,7 +77,6 @@ const Examination = (props) => {
             >
               <h2 className="mb-3">New Patient Examination</h2>
               <div className="mb-3">
-                
                 <Button
                   type="primary"
                   onClick={() => onFinish()}

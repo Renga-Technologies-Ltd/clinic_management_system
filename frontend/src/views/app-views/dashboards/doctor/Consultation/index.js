@@ -12,25 +12,19 @@ import { useNavigate } from "react-router-dom";
 const Consultation = (props) => {
   const navigate = useNavigate();
   const appointment_id = useParams().appointment_id;
-  //   console.log(receipt_id);
-
   const [form] = Form.useForm();
-
   const [submitLoading, setSubmitLoading] = useState(false);
   const base_apiUrl = process.env.REACT_APP_BASE_URL;
-
-  //   console.log(appointmentRecords);
 
   const onFinish = async () => {
     setSubmitLoading(true);
     try {
       const values = await form.validateFields();
       // Include appointment_id in the form values
-      const formData = { ...values };
-      console.log(formData, appointment_id);
+      const formData = { ...values, appointment_id };
+      // console.log(formData, appointment_id);
 
-      const apiUrl = `${base_apiUrl}/nurseReadings`;
-
+      const apiUrl = `${base_apiUrl}/addMedicalRecords`;
       const requestOptions = {
         method: "POST",
         headers: {
@@ -79,7 +73,7 @@ const Consultation = (props) => {
               alignItems="center"
             >
               <h2 className="mb-3">Patient Examination</h2>
-              <div className="mb-3">                
+              <div className="mb-3">
                 <Button
                   type="primary"
                   onClick={() => onFinish()}
@@ -105,7 +99,9 @@ const Consultation = (props) => {
               {
                 label: "Examination",
                 key: "2",
-                children: <ClinicalExamination appointment_id={appointment_id} />,
+                children: (
+                  <ClinicalExamination appointment_id={appointment_id} />
+                ),
               },
               {
                 label: "Diagnosis",
@@ -117,7 +113,6 @@ const Consultation = (props) => {
                 key: "4",
                 children: <Treatment appointment_id={appointment_id} />,
               },
-              
             ]}
           />
         </div>

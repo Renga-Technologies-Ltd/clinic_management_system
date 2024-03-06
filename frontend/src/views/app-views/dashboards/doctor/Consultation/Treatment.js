@@ -21,8 +21,7 @@ const Treatment = (data) => {
     };
     fetchAppointmentData();
   }, [appointment_id]);
-  //   console.log(appointmentRecords);
-  //   console.log(appointment_id);
+
   return (
     <Row gutter={16}>
       <Col xs={24} sm={24} md={17}>
