@@ -137,13 +137,12 @@ const patientController = {
         labTestsOrdered,
         nextSteps,
       });
-      await newDoctorObservations.save();
-      res
-        .status(200)
-        .json({
-          message: "Medical records added successfully",
-          newDoctorObservations,
-        });
+      console.log(req.body);
+      // await newDoctorObservations.save();
+      res.status(200).json({
+        message: "Medical records added successfully",
+        newDoctorObservations,
+      });
     } catch (error) {
       console.error("Error adding medical records:", error);
       res.status(500).json({ message: "Internal Server Error" });

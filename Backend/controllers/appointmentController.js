@@ -1,6 +1,5 @@
 const Appointment = require("../schemas/appointment");
 const NurseReadings = require("../schemas/nurseReadings");
-
 const appointmentController = {
   newAppointment: async (req, res, next) => {
     try {
@@ -69,7 +68,6 @@ const appointmentController = {
       res.status(500).json({ message: "Error finding records" });
     }
   },
-
   appointmentsByPatient: async (req, res, next) => {
     try {
       const patientId = req.params.id;
@@ -92,7 +90,6 @@ const appointmentController = {
       res.status(500).json({ message: "Internal Server Error" });
     }
   },
-
   cancleAppointment: async (req, res, next) => {
     const {} = req.body;
   },
@@ -183,7 +180,6 @@ const appointmentController = {
           message: "Appointment number is required for fetching nurse readings",
         });
       }
-
       // Find nurse readings based on appointment number
       const nurseReadings = await NurseReadings.find({
         appointment: appointmentNumber,
@@ -255,5 +251,4 @@ const appointmentController = {
     }
   },
 };
-
 module.exports = appointmentController;

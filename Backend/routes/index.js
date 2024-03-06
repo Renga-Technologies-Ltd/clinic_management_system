@@ -54,15 +54,12 @@ router.delete("/deletePatient", patientController.deletePatient);
 router.post("/newAppointment", appointmentController.newAppointment);
 router.post("/cancleAppointment", appointmentController.cancleAppointment);
 router.post("/editAppointment", appointmentController.editAppointment);
-
 router.get("/appointment/:appointment_id", appointmentController.findAppointment);
 router.get("/allAppointments", appointmentController.fetchAllAppointments);
 router.get("/getAppointments/:id", appointmentController.appointmentsByPatient);
-
 // record patients readings
 router.post("/nurseReadings", appointmentController.nurseSectionreading);
 router.get("/getNurseReadings/:id", appointmentController.getNurseReadings);
-
 //patient medical records
 router.post("/addMedicalRecords", patientController.addMedicalRecords);
 router.get("/getMedicalrecords/:id", patientController.getMedicalRecords);
