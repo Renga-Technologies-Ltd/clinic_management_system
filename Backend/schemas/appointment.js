@@ -29,15 +29,15 @@ const appointmentSchema = new mongoose.Schema({
   accompaniedBy: {
     fullname: {
       type: String,
-      required: true,
+      required: false,
     },
     relationship: {
       type: String,
-      required: true,
+      required: false,
     },
     contactNumber: {
       type: String,
-      required: true,
+      required: false,
     },
   },
   paid: {

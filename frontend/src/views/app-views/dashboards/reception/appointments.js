@@ -77,16 +77,19 @@ const TodaysAppointments = () => {
     },
     {
       title: "Appointment Status",
-      dataIndex: "doctorReadings",
-      sorter: (a, b) => utils.antdTableSorter(a, b, "doctor"),
-      render: (doctorReadings, nurseReadings) => {
+      dataIndex: "appointmentStatus",
+      sorter: (a, b) => utils.antdTableSorter(a, b, "appointmentStatus"),
+      render: (text, record) => {
+        const { doctorReadings, nurseReadings } = record;
+
         if (!doctorReadings && !nurseReadings) {
-          return <Tag color="blue">Not Attended To</Tag>;
-        } else if (!doctorReadings && nurseReadings) {
-          return <Tag color="amber">Waiting for Doctor</Tag>;
+          return <Tag color="red">Not Attended To</Tag>;
+        } else if (nurseReadings && !doctorReadings) {
+          return <Tag color="blue">Waiting for Doctor</Tag>;
         } else if (doctorReadings && nurseReadings) {
           return <Tag color="green">Completed</Tag>;
         }
+
         return null;
       },
     },

@@ -1,6 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { Input, Row, Col, Card, Form, Select, DatePicker, Space } from "antd";
-import { PhoneOutlined, MailOutlined } from "@ant-design/icons";
+import {
+  Input,
+  Row,
+  Col,
+  Button,
+  Card,
+  Form,
+  Select,
+  DatePicker,
+  Space,
+} from "antd";
+import {
+  PhoneOutlined,
+  MailOutlined,
+  PlusCircleOutlined,
+} from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 
 import { LoadingOutlined } from "@ant-design/icons";
 const base_apiUrl = process.env.REACT_APP_BASE_URL;
@@ -13,6 +28,7 @@ const GeneralField = (props) => {
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm(); // Create a form instance
   const [selectedPatientId, setSelectedPatientId] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchPatients();
@@ -61,6 +77,9 @@ const GeneralField = (props) => {
       });
     }
   };
+  const addPatient = () => {
+    navigate(`/app/apps/patient/add-patient`);
+  };
 
   const handleFormChange = (changedFields, allFields) => {
     // Implement this function to handle form changes
@@ -77,20 +96,34 @@ const GeneralField = (props) => {
       <Col xs={24} sm={24} md={17}>
         <Card title="Basic Info">
           <Space direction="vertical" style={{ width: "100%" }}>
-            <Select
-              showSearch
-              placeholder="Search by ID or fullname"
-              optionFilterProp="children"
-              onSearch={handleSearch}
-              onChange={handleSelectChange} // Add this line
-              style={{ width: "100%" }}
-            >
-              {allPatients.map((patient) => (
-                <Option key={patient._id} value={patient._id}>
-                  {`${patient.firstName} ${patient.lastName}`}
-                </Option>
-              ))}
-            </Select>
+            <Row gutter={16}>
+              <Col xs={24} sm={24} md={17}>
+                <Select
+                  showSearch
+                  placeholder="Search by ID or fullname"
+                  optionFilterProp="children"
+                  onSearch={handleSearch}
+                  onChange={handleSelectChange} // Add this line
+                  style={{ width: "100%" }}
+                >
+                  {allPatients.map((patient) => (
+                    <Option key={patient._id} value={patient._id}>
+                      {`${patient.firstName} ${patient.lastName}`}
+                    </Option>
+                  ))}
+                </Select>
+              </Col>
+              <Col xs={24} sm={24} md={7}>
+                <Button
+                  onClick={addPatient}
+                  type="primary"
+                  icon={<PlusCircleOutlined />}
+                  block
+                >
+                  New Patient
+                </Button>
+              </Col>
+            </Row>
 
             {loading ? (
               <LoadingOutlined className="font-size-xxl text-primary" />

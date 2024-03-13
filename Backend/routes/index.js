@@ -4,6 +4,7 @@ const userController = require("../controllers/userController");
 const patientController = require("../controllers/patientController");
 const { authenticateToken } = require("../middleware/tokens");
 const appointmentController = require("../controllers/appointmentController");
+const labController = require("../controllers/Lab");
 
 const multer = require("multer");
 const path = require("path");
@@ -76,5 +77,11 @@ router.get(
   paymentController.getPayment
 );
 router.get("/getpaymentperUser/:user_id", paymentController.getPaymentPerUser);
+
+//lab section
+router.post("/addLabRequest", labController.addLabRequest);
+router.post("/addLabResults", labController.addLabResults);
+router.get("/getLabResults/:id", labController.getLabResults);
+router.post("/addLabTest", labController.addLabTest);
 
 module.exports = router;
