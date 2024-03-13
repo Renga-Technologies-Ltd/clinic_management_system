@@ -32,6 +32,26 @@ const labController = {
     }
   },
   getLabResults: async (req, res, next) => {},
+  getLabRequest: async (req, res, next) => {
+    try {
+      const todayStart = new Date();
+      todayStart.setHours(0, 0, 0, 0);
+
+      const todayEnd = new Date();
+      todayEnd.setHours(23, 59, 59, 999);
+      // const { appointment_id } = req.body;
+      const labRequest = await Lab.find({
+        createdAt: {
+          $gte: todayStart,
+          $lt: todayEnd,
+        },
+      });
+      res.status(200).json({ labRequest });
+    } catch (error) {
+      console.error("Error getting lab request:", error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  },
   addLabTest: async (req, res, next) => {},
 };
 

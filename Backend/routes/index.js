@@ -81,6 +81,7 @@ router.get("/getpaymentperUser/:user_id", paymentController.getPaymentPerUser);
 //lab section
 router.post("/addLabRequest", labController.addLabRequest);
 router.post("/addLabResults", labController.addLabResults);
+router.get("/getLabRequest", labController.getLabRequest);
 router.get("/getLabResults/:id", labController.getLabResults);
 router.post("/addLabTest", labController.addLabTest);
 

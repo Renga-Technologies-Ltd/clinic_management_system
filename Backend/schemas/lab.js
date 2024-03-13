@@ -44,10 +44,13 @@ const LabSchema = new mongoose.Schema({
     },
   },
   evidenceUrl: {
-    type: String,   
+    type: String,
     required: false,
   },
-
+  paid: {
+    type: Boolean,
+    default: false,
+  },
   createdAt: {
     type: Date,
     default: Date.now,
