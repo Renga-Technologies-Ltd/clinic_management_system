@@ -55,7 +55,7 @@ const LabResults = (data) => {
           marginTop: 8,
         }}
       >
-        Upload
+        Upload Image
       </div>
     </button>
   );

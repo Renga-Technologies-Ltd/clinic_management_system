@@ -1,3 +1,5 @@
+// navigationConfig.js
+
 import {
   DashboardOutlined,
   AppstoreOutlined,
@@ -7,108 +9,49 @@ import {
   CalendarOutlined,
   PlusCircleOutlined,
 } from "@ant-design/icons";
-import {
-  APP_PREFIX_PATH,
-  // AUTH_PREFIX_PATH
-} from "configs/AppConfig";
+import { APP_PREFIX_PATH } from "configs/AppConfig";
 
-const extraNavTree = [
+const getUserRole = () => {
+  // Get user details from local storage
+  const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+
+  // Check if user details exist and contain roles
+  if (userDetails && userDetails.roles) {
+    // For simplicity, assuming the user has only one role (you may modify as needed)
+    return userDetails.roles[0];
+  }
+
+  // Default role if user details are not available or roles are not defined
+  return "Admin";
+};
+const doctorDashboard = [
   {
-    key: "extra",
-    path: `${APP_PREFIX_PATH}/pages`,
-    title: "sidenav.pages",
-    icon: PlusCircleOutlined,
-    breadcrumb: true,
-    isGroupTitle: true,
-    submenu: [
-      {
-        key: "extra-pages",
-        path: `${APP_PREFIX_PATH}/pages`,
-        title: "sidenav.pages",
-        icon: FileTextOutlined,
-        breadcrumb: true,
-        submenu: [
-          {
-            key: "extra-pages-profile",
-            path: `${APP_PREFIX_PATH}/pages/profile`,
-            title: "sidenav.pages.profile",
-            icon: "",
-            breadcrumb: false,
-            submenu: [],
-          },
-          {
-            key: "extra-pages-list",
-            path: `${APP_PREFIX_PATH}/pages/user-list`,
-            title: "sidenav.pages.userlist",
-            icon: "",
-            breadcrumb: true,
-            submenu: [],
-          },
-          {
-            key: "extra-pages-invoice",
-            path: `${APP_PREFIX_PATH}/pages/invoice`,
-            title: "sidenav.pages.invoice",
-            icon: "",
-            breadcrumb: true,
-            submenu: [],
-          },        
-          {
-            key: "extra-pages-faq",
-            path: `${APP_PREFIX_PATH}/pages/faq`,
-            title: "sidenav.pages.faq",
-            icon: "",
-            breadcrumb: false,
-            submenu: [],
-          },
-          {
-            key: "extra-pages-setting",
-            path: `${APP_PREFIX_PATH}/pages/setting`,
-            title: "sidenav.pages.setting",
-            icon: "",
-            breadcrumb: true,
-            submenu: [],
-          },
-        ],
-      },
-    ],
+    key: "dashboards-doctor",
+    path: `${APP_PREFIX_PATH}/dashboards/doctor`,
+    title: "sidenav.dashboard.doctor",
+    icon: HomeOutlined,
+    breadcrumb: false,
+    submenu: [],
   },
 ];
-
-const dashBoardNavTree = [
+const nurseDashboard = [
   {
-    key: "dashboards",
-    path: `${APP_PREFIX_PATH}/dashboards`,
-    title: "sidenav.dashboard",
-    icon: DashboardOutlined,
+    key: "dashboards-nurse",
+    path: `${APP_PREFIX_PATH}/dashboards/nurse`,
+    title: "sidenav.dashboard.nurse",
+    icon: HomeOutlined,
     breadcrumb: false,
-    isGroupTitle: true,
-    submenu: [      
-      {
-        key: "dashboards-reception",
-        path: `${APP_PREFIX_PATH}/dashboards/reception`,
-        title: "sidenav.dashboard.reception",
-        icon: HomeOutlined,
-        breadcrumb: false,
-        submenu: [],
-      },
-      {
-        key: "dashboards-nurse",
-        path: `${APP_PREFIX_PATH}/dashboards/nurse`,
-        title: "sidenav.dashboard.nurse",
-        icon: HomeOutlined,
-        breadcrumb: false,
-        submenu: [],
-      },
-      {
-        key: "dashboards-doctor",
-        path: `${APP_PREFIX_PATH}/dashboards/doctor`,
-        title: "sidenav.dashboard.doctor",
-        icon: HomeOutlined,
-        breadcrumb: false,
-        submenu: [],
-      },
-      // end main dashboard
-    ],
+    submenu: [],
+  },
+];
+const receptionistDashboard = [
+  {
+    key: "dashboards-reception",
+    path: `${APP_PREFIX_PATH}/dashboards/reception`,
+    title: "sidenav.dashboard.reception",
+    icon: HomeOutlined,
+    breadcrumb: false,
+    submenu: [],
   },
 ];
 
@@ -158,6 +101,109 @@ const appsNavTree = [
   },
 ];
 
-const navigationConfig = [...dashBoardNavTree, ...appsNavTree, ...extraNavTree];
+const extraNavTree = [
+  {
+    key: "extra",
+    path: `${APP_PREFIX_PATH}/pages`,
+    title: "sidenav.pages",
+    icon: PlusCircleOutlined,
+    breadcrumb: true,
+    isGroupTitle: true,
+    submenu: [
+      {
+        key: "extra-pages",
+        path: `${APP_PREFIX_PATH}/pages`,
+        title: "sidenav.pages",
+        icon: FileTextOutlined,
+        breadcrumb: true,
+        submenu: [
+          {
+            key: "extra-pages-profile",
+            path: `${APP_PREFIX_PATH}/pages/profile`,
+            title: "sidenav.pages.profile",
+            icon: "",
+            breadcrumb: false,
+            submenu: [],
+          },
+          {
+            key: "extra-pages-list",
+            path: `${APP_PREFIX_PATH}/pages/user-list`,
+            title: "sidenav.pages.userlist",
+            icon: "",
+            breadcrumb: true,
+            submenu: [],
+          },
+          {
+            key: "extra-pages-invoice",
+            path: `${APP_PREFIX_PATH}/pages/invoice`,
+            title: "sidenav.pages.invoice",
+            icon: "",
+            breadcrumb: true,
+            submenu: [],
+          },
+          {
+            key: "extra-pages-faq",
+            path: `${APP_PREFIX_PATH}/pages/faq`,
+            title: "sidenav.pages.faq",
+            icon: "",
+            breadcrumb: false,
+            submenu: [],
+          },
+          {
+            key: "extra-pages-setting",
+            path: `${APP_PREFIX_PATH}/pages/setting`,
+            title: "sidenav.pages.setting",
+            icon: "",
+            breadcrumb: true,
+            submenu: [],
+          },
+        ],
+      },
+    ],
+  },
+];
+
+const doctorDashBoardNavTree = doctorDashboard.filter((item) => {
+  const doctorAllowedRoles = ["Doctor", "Admin"];
+  return (
+    (doctorAllowedRoles.includes(getUserRole()) &&
+      item.key === "dashboards-doctor") ||
+    !item.isGroupTitle
+  );
+});
+const nurseDashBoardNavTree = nurseDashboard.filter((item) => {
+  const doctorAllowedRoles = ["Nurse", "Admin"];
+  return (
+    (doctorAllowedRoles.includes(getUserRole()) &&
+      item.key === "dashboards-doctor") ||
+    !item.isGroupTitle
+  );
+});
+const receptionDashBoardNavTree = receptionistDashboard.filter((item) => {
+  const doctorAllowedRoles = ["Receptionist", "Admin"];
+  return (
+    (doctorAllowedRoles.includes(getUserRole()) &&
+      item.key === "dashboards-doctor") ||
+    !item.isGroupTitle
+  );
+});
+
+const filteredAppsNavTree = appsNavTree.filter((item) => {
+  const allowedRoles = ["Doctor", "Nurse", "Receptionist"];
+  return allowedRoles.includes(getUserRole()) || !item.isGroupTitle;
+});
+
+const filteredExtraNavTree = extraNavTree.filter((item) => {
+  const allowedRoles = ["Doctor", "Admin"];
+  return allowedRoles.includes(getUserRole()) || !item.isGroupTitle;
+});
+
+const navigationConfig = [
+  ...doctorDashBoardNavTree,
+  ...nurseDashBoardNavTree,
+  ...receptionDashBoardNavTree,
+  ...filteredAppsNavTree,
+  ...filteredExtraNavTree,
+];
 
 export default navigationConfig;

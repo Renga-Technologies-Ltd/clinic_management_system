@@ -139,7 +139,7 @@ const ClinicalExamination = (data) => {
       </Col>
       <Col xs={24} sm={24} md={8}>
         {/* Card for Lab Request */}
-        <Card title="Lab Request">
+        <Card className="align-items-center" title="Lab Section">
           <Radio.Group onChange={(e) => handleLabRequestChange(e.target.value)}>
             <Radio value={true}>Yes</Radio>
             <Radio value={false}>No</Radio>
