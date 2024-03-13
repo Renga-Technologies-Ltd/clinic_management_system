@@ -15,7 +15,6 @@ const userSchema = new mongoose.Schema({
     specialization: { type: String }, // Example: Cardiologist, Nurse, Pharmacist, etc.   
   },
 });
- 
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;
