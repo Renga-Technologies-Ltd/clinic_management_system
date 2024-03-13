@@ -14,7 +14,7 @@ const LabRequest = () => {
   };
   const tableColumns = [
     {
-      title: "Appointment ID",
+      title: "New Lab requests",
       dataIndex: "_id",
       render: (_, record) => (
         <div>
@@ -41,54 +41,16 @@ const LabRequest = () => {
       ),
     },
     {
-      title: "Appointment Type",
-      dataIndex: "bookingType",
-      key: "bookingType",
-      render: (bookingType) => (
-        <Tag color={bookingType === "scheduled" ? "green" : "blue"}>
-          {bookingType}
-        </Tag>
-      ),
-    },
-    {
-      title: "Booked By",
-      dataIndex: "bookedBy",
-      key: "bookedBy",
-      render: (bookedBy) => (
+      title: "Test Name",
+      dataIndex: "labRequest",
+      key: "labRequest",
+      render: (labRequest) => (
         <span>
-          {bookedBy &&
-            bookedBy.profile &&
-            `${bookedBy.profile.firstName} ${bookedBy.profile.lastName}`}
+          {labRequest && labRequest.testType && `${labRequest.testType}`}
         </span>
       ),
     },
-    {
-      title: "Doctor",
-      dataIndex: "doctor",
-      sorter: (a, b) => utils.antdTableSorter(a, b, "doctor"),
-      render: (doctor) => (
-        <span>
-          {doctor &&
-            doctor.profile &&
-            `${doctor.profile.firstName} ${doctor.profile.lastName}`}
-        </span>
-      ),
-    },
-    {
-      title: "Appointment Status",
-      dataIndex: "doctorReadings",
-      sorter: (a, b) => utils.antdTableSorter(a, b, "doctor"),
-      render: (doctorReadings, nurseReadings) => {
-        if (!doctorReadings && !nurseReadings) {
-          return <Tag color="blue">Not Attended To</Tag>;
-        } else if (!doctorReadings && nurseReadings) {
-          return <Tag color="amber">Waiting for Doctor</Tag>;
-        } else if (doctorReadings && nurseReadings) {
-          return <Tag color="green">Completed</Tag>;
-        }
-        return null;
-      },
-    },
+
     {
       title: "Payment Status",
       dataIndex: "paid",
@@ -98,7 +60,9 @@ const LabRequest = () => {
           {paid ? (
             <Tag color="green">Paid</Tag>
           ) : (
-            <Button onClick={() => handlePayment(record._id)}>Pay Now</Button>
+            <Button onClick={() => handlePayment(record.appointment)}>
+              Pay Now
+            </Button>
           )}
         </>
       ),
@@ -107,13 +71,15 @@ const LabRequest = () => {
   useEffect(() => {
     const fetchRequests = async () => {
       try {
-        const response = await fetch(`${base_apiUrl}/todaysLabrequests`);
+        const response = await fetch(`${base_apiUrl}/getLabRequest`);
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
+
         const data = await response.json();
-        if (Array.isArray(data.appointments)) {
-          setAppointmentRecords(data.appointments);
+        console.log(data.labRequest);
+        if (Array.isArray(data.labRequest)) {
+          setAppointmentRecords(data.labRequest);
         } else {
           console.error("Invalid data structure:", data);
         }
