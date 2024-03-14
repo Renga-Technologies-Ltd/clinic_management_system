@@ -3,7 +3,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 
 const Pages = () => (
 	<Routes>
-		<Route path="*" element={<Navigate to="profile" replace />} />
+		<Route path="*" element={<Navigate to="register" replace />} />
 	</Routes>
 );
 

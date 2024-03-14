@@ -11,6 +11,7 @@ import Flex from "components/shared-components/Flex";
 import NumberFormat from "react-number-format";
 import { useNavigate } from "react-router-dom";
 import utils from "utils";
+import RegisterForm from "../../../auth-views/components/RegisterForm";
 const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
 const UserList = () => {
@@ -47,14 +48,10 @@ const UserList = () => {
       </Menu.Item>
     </Menu>
   );
-  const addUser = () => {
-    navigate(`/app/pages/register`);
-  };
-
   const viewDetails = (row) => {
     console.log(row); // Log the row object to the console
-    // navigate(`/app/pages/profile/${row}`);
-    navigate(`/app/pages/profile`);
+    navigate(`/app/pages/profile/${row}`);
+    // navigate(`/app/pages/profile`);
   };
 
   const tableColumns = [
@@ -110,36 +107,37 @@ const UserList = () => {
   };
 
   return (
-    <Card>
-      <Flex
-        alignItems="center"
-        justifyContent="space-between"
-        mobileFlex={false}
-      >
-        <Flex className="mb-1" mobileFlex={false}>
-          <div className="mr-md-3 mb-3">
-            <Input
-              placeholder="Search"
-              prefix={<SearchOutlined />}
-              onChange={(e) => onSearch(e)}
-            />
-          </div>
+    <>
+      <Card>
+        <Flex
+          alignItems="center"
+          justifyContent="space-between"
+          mobileFlex={false}
+        >
+          <RegisterForm />
         </Flex>
-        <div>
-          <Button
-            onClick={addUser}
-            type="primary"
-            icon={<PlusCircleOutlined />}
-            block
-          >
-            User
-          </Button>
+      </Card>
+      <Card>
+        <Flex
+          alignItems="center"
+          justifyContent="space-between"
+          mobileFlex={false}
+        >
+          <Flex className="mb-1" mobileFlex={false}>
+            <div className="mr-md-3 mb-3">
+              <Input
+                placeholder="Search"
+                prefix={<SearchOutlined />}
+                onChange={(e) => onSearch(e)}
+              />
+            </div>
+          </Flex>
+        </Flex>
+        <div className="table-responsive">
+          <Table columns={tableColumns} dataSource={list} rowKey="id" />
         </div>
-      </Flex>
-      <div className="table-responsive">
-        <Table columns={tableColumns} dataSource={list} rowKey="id" />
-      </div>
-    </Card>
+      </Card>
+    </>
   );
 };
 

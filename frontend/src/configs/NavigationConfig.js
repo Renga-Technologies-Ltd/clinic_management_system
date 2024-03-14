@@ -43,7 +43,7 @@ const nurseDashboard = [
     submenu: [],
   },
 ];
-const receptionistDashboard = [
+const ReceptionDashboard = [
   {
     key: "dashboards-reception",
     path: `${APP_PREFIX_PATH}/dashboards/reception`,
@@ -53,9 +53,7 @@ const receptionistDashboard = [
     submenu: [],
   },
 ];
-const appointmentNavTree = [
- 
-];
+const appointmentNavTree = [];
 const appsNavTree = [
   {
     key: "apps",
@@ -180,7 +178,7 @@ const doctorDashBoardNavTree = doctorDashboard.filter((item) => {
   );
 });
 const appointmentNavTreeFiltered = appointmentNavTree.filter((item) => {
-  const allowedRoles = ["Doctor", "Nurse", "Receptionist", "Admin"];
+  const allowedRoles = ["Doctor", "Nurse", "Reception", "Admin"];
   return (
     (allowedRoles.includes(getUserRole()) && item.key === "appointments") ||
     !item.isGroupTitle
@@ -194,8 +192,8 @@ const nurseDashBoardNavTree = nurseDashboard.filter((item) => {
     !item.isGroupTitle
   );
 });
-const receptionDashBoardNavTree = receptionistDashboard.filter((item) => {
-  const doctorAllowedRoles = ["Receptionist", "Admin"];
+const receptionDashBoardNavTree = ReceptionDashboard.filter((item) => {
+  const doctorAllowedRoles = ["Reception", "Admin"];
   return (
     (doctorAllowedRoles.includes(getUserRole()) &&
       item.key === "dashboards-doctor") ||
@@ -204,7 +202,7 @@ const receptionDashBoardNavTree = receptionistDashboard.filter((item) => {
 });
 
 const filteredAppsNavTree = appsNavTree.filter((item) => {
-  const allowedRoles = ["Doctor", "Nurse", "Receptionist"];
+  const allowedRoles = ["Doctor", "Nurse", "Reception"];
   return allowedRoles.includes(getUserRole()) || !item.isGroupTitle;
 });
 

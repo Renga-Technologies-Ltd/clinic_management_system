@@ -225,8 +225,8 @@ export const protectedRoutes = [
     component: React.lazy(() => import("views/app-views/pages/user-list")),
   },
   {
-    key: "pages.register",
-    path: `${AUTH_PREFIX_PATH}/pages/register`,
+    key: "register",
+    path: `${AUTH_PREFIX_PATH}/register`,
     component: React.lazy(() => import("views/app-views/pages/register")),
   },
   {
