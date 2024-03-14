@@ -11,14 +11,6 @@ export const publicRoutes = [
   },
 
   {
-    key: "register",
-    path: `${AUTH_PREFIX_PATH}/register`,
-    component: React.lazy(() =>
-      import("views/auth-views/authentication/register")
-    ),
-  },
-
-  {
     key: "forgot-password",
     path: `${AUTH_PREFIX_PATH}/forgot-password`,
     component: React.lazy(() =>
@@ -65,7 +57,9 @@ export const protectedRoutes = [
   {
     key: "dashboard.doctor.consultation",
     path: `${APP_PREFIX_PATH}/dashboards/doctor/consultation/:appointment_id`,
-    component: React.lazy(() => import("views/app-views/dashboards/doctor/Consultation")),
+    component: React.lazy(() =>
+      import("views/app-views/dashboards/doctor/Consultation")
+    ),
   },
   //end main dashboard
   {
@@ -77,6 +71,11 @@ export const protectedRoutes = [
     key: "apps.calendar",
     path: `${APP_PREFIX_PATH}/apps/calendar`,
     component: React.lazy(() => import("views/app-views/apps/calendar")),
+  },
+  {
+    key: "apps.appointments",
+    path: `${APP_PREFIX_PATH}/apps/appointments`,
+    component: React.lazy(() => import("views/app-views/apps/appointments")),
   },
 
   // patients routes
@@ -165,9 +164,7 @@ export const protectedRoutes = [
   {
     key: "register-1",
     path: `${APP_PREFIX_PATH}/register-1`,
-    component: React.lazy(() =>
-      import("views/auth-views/authentication/register")
-    ),
+    component: React.lazy(() => import("views/app-views/pages/register")),
     meta: {
       blankLayout: true,
     },
@@ -228,13 +225,14 @@ export const protectedRoutes = [
     component: React.lazy(() => import("views/app-views/pages/user-list")),
   },
   {
+    key: "pages.register",
+    path: `${AUTH_PREFIX_PATH}/pages/register`,
+    component: React.lazy(() => import("views/app-views/pages/register")),
+  },
+  {
     key: "pages.add-patient",
     path: `${APP_PREFIX_PATH}/pages/add-patient`,
     component: React.lazy(() => import("views/app-views/pages/add-patient")),
   },
-  // {
-  //   key: "docs.documentation",
-  //   path: `${APP_PREFIX_PATH}/docs/documentation/*`,
-  //   component: React.lazy(() => import("views/app-views/docs")),
-  // },
+  
 ];

@@ -6,22 +6,20 @@
 	"sidenav.dashboard.reception": "Reception Home",
 	"sidenav.dashboard.nurse": "Triage",
 	"sidenav.dashboard.doctor": "Doctor Home",
-	
 	"sidenav.apps": "Manage",
 	"sidenav.apps.mail": "Mail",
 	"sidenav.apps.chat": "Chat",
 	"sidenav.apps.calendar": "Calendar",
+	"sidenav.apps.appointments": "Appointments",
 	"sidenav.apps.project": "Project",
 	"sidenav.apps.project.list": "List",
 	"sidenav.apps.project.scrumboard": "Scrumboard",
 	"sidenav.apps.patient": "Patients",
 	"sidenav.apps.patient.patient-list": "Patients list",
 	"sidenav.apps.patient.addPatient": "Add Patient",
-
-	"sidenav.apps.ecommerce.editProduct": "Edit Product",	
+	"sidenav.apps.ecommerce.editProduct": "Edit Product",
 	"sidenav.apps.ecommerce.productList": "Product List",
-	"sidenav.apps.ecommerce.orders": "Orders", 
-
+	"sidenav.apps.ecommerce.orders": "Orders",
 	"sidenav.components": "Components",
 	"sidenav.components.general": "General",
 	"sidenav.components.general.button": "Button",
@@ -97,8 +95,6 @@
 	"sidenav.maps": "Maps",
 	"sidenav.maps.google": "Google Maps",
 	"sidenav.maps.simple": "Simple Maps",
-
-
 	"sidenav.pages": "Settings",
 	"sidenav.pages.profile": "Profile",
 	"sidenav.pages.invoice": "Invoice",
