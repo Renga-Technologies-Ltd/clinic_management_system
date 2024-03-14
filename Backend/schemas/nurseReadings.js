@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const nurseReadingsSchema = new mongoose.Schema({
   appointment: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Appointment',
+    ref: "Appointment",
     required: true,
   },
   bloodPressure: {
@@ -15,7 +15,7 @@ const nurseReadingsSchema = new mongoose.Schema({
   respiratoryRate: Number,
   height: Number,
   weight: Number,
-  pulseOximetry: Number,
+  pulse: Number,
   painLevel: Number,
   SpO2: Number,
   // Add other nurse-specific readings as needed
@@ -25,6 +25,6 @@ const nurseReadingsSchema = new mongoose.Schema({
   },
 });
 
-const NurseReadings = mongoose.model('NurseReadings', nurseReadingsSchema);
+const NurseReadings = mongoose.model("NurseReadings", nurseReadingsSchema);
 
 module.exports = NurseReadings;

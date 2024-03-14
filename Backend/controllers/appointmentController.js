@@ -143,7 +143,7 @@ const appointmentController = {
 
   nurseSectionreading: async (req, res, next) => {
     try {
-      console.log(req.body);
+      // console.log(req.body);
       const { appointment_id, appointment } = req.body;
       const newReadings = new NurseReadings({
         appointment: appointment_id,
@@ -153,7 +153,7 @@ const appointmentController = {
         respiratoryRate: appointment.respiratoryRate,
         height: appointment.height,
         weight: appointment.weight,
-        pulseOximetry: appointment.pulseOximetry,
+        pulse: appointment.pulse,
         painLevel: appointment.painLevel,
         SpO2: appointment.SpO2,
       });

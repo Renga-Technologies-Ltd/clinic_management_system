@@ -20,7 +20,7 @@ const TriageForm = (data) => {
     fetchAppointmentData();
   }, [appointment_id]);
   //   console.log(appointmentRecords);
-//   console.log(appointment_id);
+  //   console.log(appointment_id);
   return (
     <Row gutter={16}>
       <Col xs={24} sm={24} md={17}>
@@ -136,11 +136,9 @@ const TriageForm = (data) => {
             </Col>
             <Col xs={24} sm={24} md={8}>
               <Form.Item
-                label="Pulse Oximetry"
-                name={["appointment", "pulseOximetry"]}
-                rules={[
-                  { required: true, message: "Please enter pulse oximetry" },
-                ]}
+                label="Pulse"
+                name={["appointment", "pulse"]}
+                rules={[{ required: true, message: "Please enter pulse" }]}
               >
                 <Input placeholder="Pulse Oximetry" type="number" />
               </Form.Item>
