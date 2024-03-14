@@ -78,14 +78,10 @@ const History = (data) => {
           <Row gutter={16}>
             <Col xs={24} sm={24} md={24}>
               <Form.Item
-                label="Proffessional History"
-                name={["history", "proffesional_history"]}
+                label="Personal History"
+                name={["history", "personal_history"]}
               >
-                <TextArea
-                  rows={6}
-                  placeholder="Professional History"
-                  type="text"
-                />
+                <TextArea rows={6} placeholder="Personal History" type="text" />
               </Form.Item>
             </Col>
           </Row>
