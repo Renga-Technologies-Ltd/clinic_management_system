@@ -10,7 +10,7 @@ const ADD = "Save";
 // const EDIT = "EDIT";
 
 const AppointmentForm = (props) => {
-  const { mode = ADD, params } = props;
+  const { mode = ADD } = props;
   const [form] = Form.useForm();
   const [submitLoading, setSubmitLoading] = useState(false);
   const navigate = useNavigate();

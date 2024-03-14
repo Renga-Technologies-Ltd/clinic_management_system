@@ -2,6 +2,7 @@ const Patient = require("../schemas/patient");
 const DoctorObservations = require("../schemas/doctorObservations");
 
 const Appointment = require("../schemas/appointment");
+const User = require("../schemas/users");
 
 const patientController = {
   createPatient: async (req, res, next) => {
@@ -91,6 +92,19 @@ const patientController = {
         return res.status(404).json({ message: "Patient not found" });
       }
       res.status(200).json({ patient });
+    } catch (error) {
+      console.error("Error getting patient by id:", error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  },
+  getDoctors: async (req, res, next) => {
+    try {
+      const doctors = await User.find({ roles: "Doctor" });
+      if (!doctors) {
+        return res.status(404).json({ message: "Docrors not found" });
+      }
+      console.log(doctors);
+      res.status(200).json({ doctors });
     } catch (error) {
       console.error("Error getting patient by id:", error);
       res.status(500).json({ message: "Internal Server Error" });

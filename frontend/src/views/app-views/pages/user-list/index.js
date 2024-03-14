@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Card, Table, Input, Button, Menu } from "antd";
-import {
-  EyeOutlined,
-  SearchOutlined,
-  PlusCircleOutlined,
-} from "@ant-design/icons";
+import { Card, Table, Input, Menu } from "antd";
+import { EyeOutlined, SearchOutlined } from "@ant-design/icons";
 import AvatarStatus from "components/shared-components/AvatarStatus";
 import EllipsisDropdown from "components/shared-components/EllipsisDropdown";
 import Flex from "components/shared-components/Flex";

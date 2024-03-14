@@ -68,6 +68,33 @@ const appointmentController = {
       res.status(500).json({ message: "Error finding records" });
     }
   },
+  fetchAppointments: async (req, res, next) => {
+    try {
+      const todayAppointments = await Appointment.find({})
+        .populate({
+          path: "patient",
+          model: "Patient",
+          select: "firstName lastName",
+        })
+        .populate({
+          path: "bookedBy",
+          model: "User",
+          select: "profile.firstName profile.lastName",
+        })
+        .populate({
+          path: "doctor",
+          model: "User",
+          select: "profile.firstName profile.lastName",
+        });
+
+      res.status(200).json({
+        appointments: todayAppointments,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Error finding records" });
+    }
+  },
   appointmentsByPatient: async (req, res, next) => {
     try {
       const patientId = req.params.id;

@@ -1,17 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Card, Table, Tag, Button } from "antd";
+import { Card, Table, Tag } from "antd";
 import moment from "moment";
 import NumberFormat from "react-number-format";
-import { useNavigate } from "react-router-dom";
+
 import utils from "utils";
 const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
 const AppointmentList = () => {
   const [appointmentRecords, setAppointmentRecords] = useState(null);
-  const navigate = useNavigate();
-  const handlePayment = (appointmentId) => {
-    navigate(`/app/apps/patient/pay-appointment/${appointmentId}`);
-  };
 
   const tableColumns = [
     {
@@ -93,20 +89,6 @@ const AppointmentList = () => {
         return null;
       },
     },
-    // {
-    //   title: "Payment Status",
-    //   dataIndex: "paid",
-    //   key: "paid",
-    //   render: (paid, record) => (
-    //     <>
-    //       {paid ? (
-    //         <Tag color="green">Paid</Tag>
-    //       ) : (
-    //         <Button onClick={() => handlePayment(record._id)}>Pay Now</Button>
-    //       )}
-    //     </>
-    //   ),
-    // },
   ];
 
   useEffect(() => {

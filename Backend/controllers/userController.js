@@ -28,6 +28,50 @@ const userController = {
       res.status(500).json({ message: "Internal Server Error" });
     }
   },
+  addUser: async (req, res, next) => {
+    try {
+      console.log(req.body);
+      const {
+        firstName,
+        lastName,
+        email,
+        roles,
+        phoneNumber,
+        password,
+        medicalLicense,
+      } = req.body;
+      const username = email;
+      // Check if the username is already taken
+      const existingUser = await User.findOne({ username });
+      if (existingUser) {
+        return res.status(409).json({ message: "Username is already taken" });
+      }
+      const saltRounds = 10;
+      const hashedPassword = await bcrypt.hash(password, saltRounds);
+      const user_roles = [roles];
+      const profile = {
+        firstName,
+        lastName,
+        email,
+        phoneNumber,
+        profilePicture: "https://example.com/profile-picture.jpg",
+        medicalLicense,
+        specialization: "General Medicine",
+      };
+      const newUser = new User({
+        username,
+        password: hashedPassword,
+        roles: user_roles,
+        profile,
+      });
+      // Save the user to the database
+      await newUser.save();
+      res.status(201).json({ message: "User registered successfully" });
+    } catch (error) {
+      console.error("Error registering user:", error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  },
   //edit user
   editUser: async (req, res, next) => {
     try {

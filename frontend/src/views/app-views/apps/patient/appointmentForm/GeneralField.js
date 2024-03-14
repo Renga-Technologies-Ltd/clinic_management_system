@@ -24,14 +24,19 @@ const { Option } = Select;
 
 const GeneralField = (props) => {
   const [allPatients, setAllPatients] = useState([]);
+  const [allDoctors, setAlldoctors] = useState([]);
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm(); // Create a form instance
   const [selectedPatientId, setSelectedPatientId] = useState(null);
   const navigate = useNavigate();
 
+  //get logged in user
+  const userId = localStorage.getItem("user_id");
+
   useEffect(() => {
     fetchPatients();
+    fetchDoctors();
   }, []);
 
   const fetchPatients = async () => {
@@ -46,7 +51,18 @@ const GeneralField = (props) => {
       setLoading(false);
     }
   };
-
+  const fetchDoctors = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`${base_apiUrl}/getDoctors`);
+      const data = await response.json();
+      setAlldoctors(data.doctors);
+    } catch (error) {
+      console.error("Error fetching patients:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
   const handleSearch = (value) => {
     const foundPatient = allPatients.find(
       (patient) =>
@@ -55,7 +71,6 @@ const GeneralField = (props) => {
           .toLowerCase()
           .includes(value.toLowerCase())
     );
-
     setSelectedPatient(foundPatient);
 
     // Auto-populate form fields if patient is found
@@ -254,11 +269,12 @@ const GeneralField = (props) => {
         </Card>
         <Card title="Appointment Details">
           <Form.Item label="Doctor" name="doctor">
-            <Select placeholder="Select type">
-              <Option value="65d721ff1f2b413a05b5e914">
-                Dr. G B Mahapatra
-              </Option>
-              {/* <Option value="walk-in">Walk-in</Option> */}
+            <Select showSearch>
+              {allDoctors.map((doctor) => (
+                <Option key={doctor._id} value={doctor._id}>
+                  {`${doctor.profile.firstName} ${doctor.profile.lastName}`}
+                </Option>
+              ))}
             </Select>
           </Form.Item>
           <Form.Item label="Patient ID" name="patient">
@@ -283,10 +299,8 @@ const GeneralField = (props) => {
             </Col>
             <Col xs={24} sm={24} md={12}>
               <Form.Item label="Booked by" name="bookedBy">
-                <Select placeholder="Select type">
-                  <Option value="65d721ff1f2b413a05b5e914">
-                    Dr. G B Mahapatra
-                  </Option>
+                <Select placeholder="bookedBy">
+                  <Option value={userId}>{userId}</Option>
                   {/* <Option value="walk-in">Walk-in</Option> */}
                 </Select>
               </Form.Item>
