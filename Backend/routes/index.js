@@ -35,7 +35,7 @@ router.get("/", function (req, res, next) {
 router.post("/login", userController.loginUser);
 //craeting users
 router.post("/register", userController.registerUser);
-router.post("/adduser", userController.addUser);    
+router.post("/adduser", userController.addUser);
 router.post("/editUser", userController.editUser);
 router.get("/getUser/:user", userController.getUser);
 router.get("/users", userController.getUsers);
@@ -49,10 +49,16 @@ router.post(
   patientController.createPatient
 );
 router.post("/updatePatient", patientController.updatePatient);
+// router.get("/getPatients", patientController.getPatients);
 router.get("/allpatient", patientController.getPatients);
 router.get("/getPatient/:id", patientController.getPatientById);
 router.delete("/deletePatient", patientController.deletePatient);
 router.get("/getDoctors", patientController.getDoctors);
+
+router.get(
+  "/patientsStats",
+  patientController.fetchPatientsAndAppointmentsOverTime
+);
 
 //appointment routes
 router.post("/newAppointment", appointmentController.newAppointment);

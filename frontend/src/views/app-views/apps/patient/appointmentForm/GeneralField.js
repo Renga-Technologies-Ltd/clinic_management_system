@@ -31,9 +31,6 @@ const GeneralField = (props) => {
   const [selectedPatientId, setSelectedPatientId] = useState(null);
   const navigate = useNavigate();
 
-  //get logged in user
-  const userId = localStorage.getItem("user_id");
-
   useEffect(() => {
     fetchPatients();
     fetchDoctors();
@@ -63,35 +60,44 @@ const GeneralField = (props) => {
       setLoading(false);
     }
   };
+
   const handleSearch = (value) => {
     const foundPatient = allPatients.find(
       (patient) =>
-        patient._id.toString() === value ||
+        patient.patient_id.toString() === value ||
         `${patient.firstName} ${patient.lastName}`
           .toLowerCase()
           .includes(value.toLowerCase())
     );
-    setSelectedPatient(foundPatient);
 
-    // Auto-populate form fields if patient is found
     if (foundPatient) {
-      form.setFieldsValue({
-        firstName: foundPatient.firstName,
-        lastName: foundPatient.lastName,
-        dateOfBirth: foundPatient.dateOfBirth,
-        gender: foundPatient.gender,
-        emailAddress: foundPatient.emailAddress,
-        contactNumber: foundPatient.contactNumber,
-        address: {
-          street: foundPatient.address.street,
-          city: foundPatient.address.city,
-          state: foundPatient.address.state,
-          postalCode: foundPatient.address.postalCode,
-          country: foundPatient.address.country,
-        },
-      });
+      props.handleSelectedPatient(foundPatient._id);
+    } else {
+      // Reset the selectedPatient if no patient is found
+      setSelectedPatient(null);
     }
   };
+  // Function to handle patient selection from dropdown
+  const handlePatientSelect = (value) => {
+    const selectedPatient = allPatients.find(
+      (patient) => patient._id === value
+    );
+    if (selectedPatient) {
+      setSelectedPatient(selectedPatient);
+      setSelectedPatientId(value);
+      form.setFieldsValue({
+        firstName: selectedPatient.firstName,
+        lastName: selectedPatient.lastName,
+        dateOfBirth: selectedPatient.dateOfBirth,
+        gender: selectedPatient.gender,
+        emailAddress: selectedPatient.emailAddress,
+        contactNumber: selectedPatient.contactNumber,
+        patient: selectedPatient._id,
+      });
+      props.handleSelectedPatient(selectedPatient._id);
+    }
+  };
+
   const addPatient = () => {
     navigate(`/app/apps/patient/add-patient`);
   };
@@ -100,10 +106,6 @@ const GeneralField = (props) => {
     // Implement this function to handle form changes
     // You can use the changedFields to update the state or perform other actions
     // setSelectedPatientId(value);
-  };
-  const handleSelectChange = (value) => {
-    // Handle the change of the selected patient ID here
-    setSelectedPatientId(value);
   };
 
   return (
@@ -118,7 +120,7 @@ const GeneralField = (props) => {
                   placeholder="Search by ID or fullname"
                   optionFilterProp="children"
                   onSearch={handleSearch}
-                  onChange={handleSelectChange} // Add this line
+                  onChange={handlePatientSelect} // Handle patient selection
                   style={{ width: "100%" }}
                 >
                   {allPatients.map((patient) => (
@@ -154,13 +156,6 @@ const GeneralField = (props) => {
                     gender: selectedPatient.gender,
                     emailAddress: selectedPatient.emailAddress,
                     contactNumber: selectedPatient.contactNumber,
-                    address: {
-                      street: selectedPatient.address.street,
-                      city: selectedPatient.address.city,
-                      state: selectedPatient.address.state,
-                      postalCode: selectedPatient.address.postalCode,
-                      country: selectedPatient.address.country,
-                    },
                     patient: selectedPatientId,
                   }}
                 >
@@ -168,20 +163,11 @@ const GeneralField = (props) => {
                   <Row gutter={16}>
                     <Col xs={24} sm={24} md={12}>
                       <Form.Item label="Patient ID" name="patient">
-                        <span>{selectedPatient._id}</span>
+                        <span>{selectedPatient.patient_id}</span>
                         <Input
                           placeholder="First Name"
-                          value={selectedPatient._id}
+                          value={selectedPatient.patient_id}
                           name="patient"
-                          hidden
-                        />
-                      </Form.Item>
-                      <Form.Item label="" name="createdBy" hidden>
-                        <span>Dr. G B Mahapatra</span>
-                        <Input
-                          placeholder="First Name"
-                          value="65d721ff1f2b413a05b5e914"
-                          name="65d721ff1f2b413a05b5e914"
                           hidden
                         />
                       </Form.Item>
@@ -277,12 +263,6 @@ const GeneralField = (props) => {
               ))}
             </Select>
           </Form.Item>
-          <Form.Item label="Patient ID" name="patient">
-            <Select placeholder="Select type">
-              <Option value={selectedPatientId}>{selectedPatientId}</Option>
-              {/* <Option value="walk-in">Walk-in</Option> */}
-            </Select>
-          </Form.Item>
           <Row gutter={16}>
             <Col xs={24} sm={24} md={12}>
               <Form.Item label="Appointment Date" name="appointmentTime">
@@ -294,14 +274,6 @@ const GeneralField = (props) => {
                 <Select placeholder="Select type">
                   <Option value="scheduled">Scheduled</Option>
                   <Option value="walk-in">Walk-in</Option>
-                </Select>
-              </Form.Item>
-            </Col>
-            <Col xs={24} sm={24} md={12}>
-              <Form.Item label="Booked by" name="bookedBy">
-                <Select placeholder="bookedBy">
-                  <Option value={userId}>{userId}</Option>
-                  {/* <Option value="walk-in">Walk-in</Option> */}
                 </Select>
               </Form.Item>
             </Col>

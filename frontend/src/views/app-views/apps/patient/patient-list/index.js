@@ -5,10 +5,8 @@ import {
   SearchOutlined,
   PlusCircleOutlined,
 } from "@ant-design/icons";
-import AvatarStatus from "components/shared-components/AvatarStatus";
 import EllipsisDropdown from "components/shared-components/EllipsisDropdown";
 import Flex from "components/shared-components/Flex";
-import NumberFormat from "react-number-format";
 import { useNavigate } from "react-router-dom";
 import utils from "utils";
 const base_apiUrl = process.env.REACT_APP_BASE_URL;
@@ -59,24 +57,13 @@ const PatientList = () => {
     {
       title: "Patient Record ID",
       dataIndex: "_id",
-      render: (_, record) => (
-        <div>
-          <NumberFormat displayType={"text"} value={record._id} />
-        </div>
-      ),
+      render: (_, record) => <div>{record.patient_id}</div>,
     },
     {
       title: "Patient",
       dataIndex: "name",
       render: (_, record) => (
-        <div className="d-flex">
-          <AvatarStatus
-            size={60}
-            type="square"
-            src={record.firstName}
-            name={record.firstName + " " + record.lastName}
-          />
-        </div>
+        <div className="d-flex">{record.firstName + " " + record.lastName}</div>
       ),
       sorter: (a, b) => utils.antdTableSorter(a, b, "name"),
     },

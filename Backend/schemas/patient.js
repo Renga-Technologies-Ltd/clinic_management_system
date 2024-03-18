@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 const patientSchema = new mongoose.Schema({
+  patient_id: { type: String, required: true },
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
   dateOfBirth: { type: Date },
@@ -21,6 +22,7 @@ const patientSchema = new mongoose.Schema({
     relationship: { type: String },
     contactNumber: { type: String },
   },
+  createdAt: { type: Date, default: Date.now },
   // Add more fields as needed
 });
 

@@ -19,8 +19,38 @@ const patientController = {
         nextOfKin,
         imageUrl,
       } = req.body;
-      // Create a new patient
+      // Generate custom patient ID (MMC-timestamp)
+      const currentDate = new Date();
+      const formattedDate = `${currentDate
+        .getFullYear()
+        .toString()
+        .slice(-2)}${(currentDate.getMonth() + 1)
+        .toString()
+        .padStart(2, "0")}${currentDate.getDate().toString().padStart(2, "0")}`;
+
+      const todayCount = await Patient.countDocuments({
+        createdAt: {
+          $gte: new Date(
+            currentDate.getFullYear(),
+            currentDate.getMonth(),
+            currentDate.getDate()
+          ),
+          $lt: new Date(
+            currentDate.getFullYear(),
+            currentDate.getMonth(),
+            currentDate.getDate() + 1
+          ),
+        },
+      });
+      console.log("Today's patient count:", todayCount);
+
+      // Generate custom patient ID (MMC-DD/MM/YYYY-number)
+      const customId = `MMC${formattedDate}${(todayCount + 1)
+        .toString()
+        .padStart(3, "0")}`;
+
       const newPatient = new Patient({
+        patient_id: customId,
         firstName,
         lastName,
         dateOfBirth,
@@ -163,6 +193,71 @@ const patientController = {
     } catch (error) {
       console.error("Error getting medical records:", error);
       res.status(500).json({ message: "Internal Server Error" });
+    }
+  },
+  fetchPatientsAndAppointmentsOverTime: async (req, res, next) => {
+    try {
+      // Fetch all patients from the backend
+      const patients = await Patient.find();
+
+      // Fetch all appointments from the backend
+      const appointments = await Appointment.find();
+
+      // Group patients by month based on createdAt column
+      const patientsByMonth = patients.reduce((acc, patient) => {
+        const month = patient.createdAt.getMonth();
+        acc[month] = acc[month] || { patients: 0, appointments: 0 };
+        acc[month].patients++;
+        return acc;
+      }, {});
+
+      // Group appointments by month based on createdAt column
+      const appointmentsByMonth = appointments.reduce((acc, appointment) => {
+        const month = appointment.createdAt.getMonth();
+        acc[month] = acc[month] || { patients: 0, appointments: 0 };
+        acc[month].appointments++;
+        return acc;
+      }, {});
+
+      // Generate data for "Number of patients" series
+      const numberOfPatientsData = Object.values(patientsByMonth).map(
+        (entry) => entry.patients
+      );
+
+      // Generate data for "Appointments booked" series
+      const appointmentsBookedData = Object.values(appointmentsByMonth).map(
+        (entry) => entry.appointments
+      );
+
+      // Define categories (months)
+      const categories = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ];
+
+      return {
+        series: [
+          { name: "Number of patients", data: numberOfPatientsData },
+          { name: "Appointments booked", data: appointmentsBookedData },
+        ],
+        categories: categories,
+      };
+    } catch (error) {
+      console.error(
+        "Error fetching patients and appointments over time:",
+        error
+      );
+      throw error;
     }
   },
 };

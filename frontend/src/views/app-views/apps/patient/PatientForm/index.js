@@ -8,7 +8,6 @@ import NextOfKin from "./NextOfKin";
 import ProductListData from "assets/data/product-list.data.json";
 const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
-
 const getBase64 = (img, callback) => {
   const reader = new FileReader();
   reader.addEventListener("load", () => callback(reader.result));
@@ -147,16 +146,6 @@ const PatientForm = (props) => {
               <h2 className="mb-3">
                 {mode === "ADD" ? "New Patient" : `Edit Patient`}{" "}
               </h2>
-              <div className="mb-3">
-                <Button
-                  type="primary"
-                  onClick={() => onFinish()}
-                  htmlType="submit"
-                  loading={submitLoading}
-                >
-                  {mode === "ADD" ? "Add" : `Save`}
-                </Button>
-              </div>
             </Flex>
           </div>
         </PageHeaderAlt>
@@ -173,16 +162,22 @@ const PatientForm = (props) => {
                     uploadedImg={uploadedImg}
                     uploadLoading={uploadLoading}
                     handleUploadChange={handleUploadChange}
+                    handleOnclick={onFinish}
                   />
                 ),
               },
-              {
-                label: "Next of Kin",
-                key: "2",
-                children: <NextOfKin />,
-              },
             ]}
           />
+          <div className="text-right mt-4">
+            <Button
+              type="primary"
+              htmlType="submit"
+              loading={submitLoading}
+              onClick={onFinish}
+            >
+              {mode === ADD ? "Create Patient" : "Save Changes"}
+            </Button>
+          </div>
         </div>
       </Form>
     </>

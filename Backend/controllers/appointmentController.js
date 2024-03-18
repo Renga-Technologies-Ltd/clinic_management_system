@@ -3,20 +3,17 @@ const NurseReadings = require("../schemas/nurseReadings");
 const appointmentController = {
   newAppointment: async (req, res, next) => {
     try {
-      const {
-        patient,
-        bookingtype,
-        appointmentTime,
-        doctor,
-        bookedBy,
-        accompaniedBy,
-      } = req.body;
+      console.log("Received request body:", req.body);
+      const { accompaniedBy, doctor, appointmentTime, bookingType } =
+        req.body.values;
+      const { patient, createdBy } = req.body;
+
       const newAppo = new Appointment({
         patient,
-        bookingType: bookingtype,
+        bookingType,
         appointmentTime,
         doctor,
-        bookedBy,
+        bookedBy: createdBy,
         accompaniedBy,
       });
       // save

@@ -14,8 +14,14 @@ const AppointmentForm = (props) => {
   const [form] = Form.useForm();
   const [submitLoading, setSubmitLoading] = useState(false);
   const navigate = useNavigate();
+  const [selectedPatient, setSelectedPatient] = useState(null);
   const pyamentPage = (appointmentId) => {
     navigate(`/app/apps/patient/pay-appointment/${appointmentId}`);
+  };
+  const handleSelectedPatient = (patientId) => {
+    // Do something with the selected patient ID
+    setSelectedPatient(patientId);
+    console.log("Selected Patient ID:", patientId);
   };
   useEffect(() => {}, []);
   const onFinish = async () => {
@@ -25,7 +31,12 @@ const AppointmentForm = (props) => {
       .then(async (values) => {
         const apiUrl = `${base_apiUrl}/newAppointment`;
         // const formData = new FormData();
-        const requestData = values; // No need for FormData
+        const userId = localStorage.getItem("user_id");
+        const requestData = {
+          values,
+          createdBy: userId,
+          patient: selectedPatient,
+        }; // No need for FormData
         const requestOptions = {
           method: "POST",
           headers: {
@@ -37,7 +48,6 @@ const AppointmentForm = (props) => {
         try {
           const response = await fetch(apiUrl, requestOptions);
           const data = await response.json();
-          // console.log(data);
           setSubmitLoading(false);
           message.success(
             `Appointment created successfully, proceed to payment`
@@ -99,7 +109,9 @@ const AppointmentForm = (props) => {
               {
                 label: "Registration Details",
                 key: "1",
-                children: <GeneralField />,
+                children: (
+                  <GeneralField handleSelectedPatient={handleSelectedPatient} />
+                ),
               },
             ]}
           />
