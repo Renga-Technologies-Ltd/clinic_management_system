@@ -96,14 +96,6 @@ const Invoice = (props) => {
                       {invoiceData.appointment.patient.lastName}
                     </span>{" "}
                     <br />
-                    <span>Address: </span>
-                    <span>
-                      {invoiceData.appointment.patient.address.address1}
-                    </span>
-                    ,{" "}
-                    <span>
-                      {invoiceData.appointment.patient.address.address2}
-                    </span>
                   </p>
                 </address>
               </div>
