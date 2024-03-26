@@ -120,6 +120,24 @@ const TodaysAppointments = () => {
       ),
     },
     {
+      title: "Appointment Status",
+      dataIndex: "appointmentStatus",
+      sorter: (a, b) => utils.antdTableSorter(a, b, "appointmentStatus"),
+      render: (text, record) => {
+        const { doctorReadings, nurseReadings } = record;
+
+        if (!doctorReadings && !nurseReadings) {
+          return <Tag color="red">Not Attended To</Tag>;
+        } else if (nurseReadings && !doctorReadings) {
+          return <Tag color="blue">Waiting for Doctor</Tag>;
+        } else if (doctorReadings && nurseReadings) {
+          return <Tag color="green">Completed</Tag>;
+        }
+
+        return null;
+      },
+    },
+    {
       title: "Doctor",
       dataIndex: "doctor",
       sorter: (a, b) => utils.antdTableSorter(a, b, "doctor"),
@@ -182,7 +200,7 @@ const TodaysAppointments = () => {
     </Card>
   );
 };
-const NurseDashboard = () => {
+const DoctorDash = () => {
   return (
     <>
       <Row gutter={16}>
@@ -199,4 +217,4 @@ const NurseDashboard = () => {
   );
 };
 
-export default NurseDashboard;
+export default DoctorDash;

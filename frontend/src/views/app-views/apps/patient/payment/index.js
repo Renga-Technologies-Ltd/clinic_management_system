@@ -12,7 +12,11 @@ const Payment = (props) => {
   const appointment_id = appointmentId.appointment_id;
   const [form] = Form.useForm();
   const [submitLoading, setSubmitLoading] = useState(false);
+  const [paymentId, setPaymentId] = useState(null); // Track payment ID
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
+  const [paymentDetails, setPaymentdetails] = useState(null);
   useEffect(() => {}, []);
+
   const onFinish = async () => {
     setSubmitLoading(true);
     form
@@ -38,9 +42,12 @@ const Payment = (props) => {
         try {
           const response = await fetch(apiUrl, requestOptions);
           const data = await response.json();
-          console.log(data);
+          // console.log(data);
           setSubmitLoading(false);
           message.success(data.message || "Payment submitted successfully");
+          setPaymentId(data.payment._id); // Set payment ID
+          setPaymentdetails(data.payment);
+          setPaymentSuccess(true); // Set payment success to true
           form.resetFields();
         } catch (error) {
           setSubmitLoading(false);
@@ -73,7 +80,6 @@ const Payment = (props) => {
             >
               <h2 className="mb-3">Make payment</h2>
               <div className="mb-3">
-                {/*  */}
                 <Button
                   type="primary"
                   onClick={() => form.validateFields().then(onFinish)}
@@ -94,12 +100,12 @@ const Payment = (props) => {
               {
                 label: "Payment Details",
                 key: "1",
-                children: <GeneralField />,
+                children: paymentSuccess ? null : <GeneralField />, // Hide Payment details when payment is successful
               },
-              {
+              paymentSuccess && {
                 label: "Receipt",
                 key: "2",
-                children: <Receipt appointment={appointmentId} />,
+                children: <Receipt paymentId={paymentId} />, // Pass appointment_id and paymentId to Receipt component
               },
             ]}
           />

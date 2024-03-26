@@ -3,9 +3,7 @@ import { PrinterOutlined } from "@ant-design/icons";
 import { Card, Table, Button } from "antd";
 import { invoiceData } from "./invoiceData";
 import NumberFormat from "react-number-format";
-
 const { Column } = Table;
-
 export class Invoice extends Component {
   total() {
     let total = 0;
@@ -29,14 +27,13 @@ export class Invoice extends Component {
                   </span>
                   <br />
                   <span>6th Floor; B Wing, Doctor's Park</span>
-                  <br />                 
+                  <br />
                   <span>3rd Parklands Avenue</span>
-                  <br />                
+                  <br />
                   <span>P.O Box: 38158 -00628</span>
                   <br />
                   <span>Nairobi, Kenya</span>
                   <br />
-                 
                   <abbr className="text-dark" title="Phone">
                     Phone:
                   </abbr>
@@ -104,12 +101,7 @@ export class Invoice extends Component {
                       thousandSeparator={true}
                     />
                   </p>
-                  {/* <p>
-                    vat (16%) :{" "}
-                    {(
-                      Math.round((this.total() / 100) * 16 * 100) / 100
-                    ).toFixed(2)}
-                  </p> */}
+                 
                 </div>
                 <h2 className="font-weight-semibold mt-3">
                   <p>Prices are VAT inclusive </p>

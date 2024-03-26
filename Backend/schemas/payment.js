@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 const paymentSchema = new mongoose.Schema({
+  receipt_id: { type: String, required: true },
   appointment: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Appointment",

@@ -26,19 +26,21 @@ const History = (data) => {
   return (
     <Row gutter={16}>
       <Col xs={24} sm={24} md={17}>
-        <Card title="Patient Details">
+      <Card title="Patient Details">
           {appointmentRecords?.patient ? (
             // Access nested properties correctly
             <>
               <p>
-                <strong>Appointment ID:</strong> {`${appointmentRecords._id}`}
+                <strong>Appointment ID:</strong>{" "}
+                {`${appointmentRecords.appointment_id}`}
               </p>
               <p>
                 <strong>Patient Name:</strong>{" "}
                 {`${appointmentRecords.patient.firstName} ${appointmentRecords.patient.lastName}`}
               </p>
               <p>
-                <strong>Patient ID:</strong> {appointmentRecords.patient._id}
+                <strong>Patient ID:</strong>{" "}
+                {appointmentRecords.patient.patient_id}
               </p>
               {/* Add more patient details as needed */}
             </>

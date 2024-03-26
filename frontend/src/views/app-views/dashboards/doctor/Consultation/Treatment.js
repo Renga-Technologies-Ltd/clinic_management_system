@@ -30,14 +30,16 @@ const Treatment = (data) => {
             // Access nested properties correctly
             <>
               <p>
-                <strong>Appointment ID:</strong> {`${appointmentRecords._id}`}
+                <strong>Appointment ID:</strong>{" "}
+                {`${appointmentRecords.bookedBy.appointment_id}`}
               </p>
               <p>
                 <strong>Patient Name:</strong>{" "}
                 {`${appointmentRecords.patient.firstName} ${appointmentRecords.patient.lastName}`}
               </p>
               <p>
-                <strong>Patient ID:</strong> {appointmentRecords.patient._id}
+                <strong>Patient ID:</strong>{" "}
+                {appointmentRecords.patient.user_id}
               </p>
               {/* Add more patient details as needed */}
             </>

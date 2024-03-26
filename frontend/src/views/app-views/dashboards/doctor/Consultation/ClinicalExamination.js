@@ -3,6 +3,7 @@ import { Input, Row, Col, Card, Form, Radio, message } from "antd";
 import NurseReading from "./NursesReadings";
 import LabRequest from "./Lab";
 import LabResults from "./LabResults";
+import RadilogyRequest from "./Radiology";
 const { TextArea } = Input;
 const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
@@ -11,6 +12,7 @@ const ClinicalExamination = (data) => {
   const [appointmentRecords, setAppointmentRecords] = useState(null);
   const [labRequestNeeded, setLabRequestNeeded] = useState(false);
   const [showLabRequestForm, setShowLabRequestForm] = useState(false);
+  const [showRadioRequestForm, setShowRadioRequestForm] = useState(false);
   const [form] = Form.useForm();
 
   // Handle lab request change
@@ -54,6 +56,10 @@ const ClinicalExamination = (data) => {
     // Update the state based on the radio button selection
     setLabRequestNeeded(value === true);
   };
+  const handleRadioRequestChange = (value) => {
+    // Update the state based on the radio button selection
+    setShowRadioRequestForm(value === true);
+  };
   useEffect(() => {
     const fetchAppointmentData = async () => {
       try {
@@ -77,14 +83,16 @@ const ClinicalExamination = (data) => {
             // Access nested properties correctly
             <>
               <p>
-                <strong>Appointment ID:</strong> {`${appointmentRecords._id}`}
+                <strong>Appointment ID:</strong>{" "}
+                {`${appointmentRecords.bookedBy.appointment_id}`}
               </p>
               <p>
                 <strong>Patient Name:</strong>{" "}
                 {`${appointmentRecords.patient.firstName} ${appointmentRecords.patient.lastName}`}
               </p>
               <p>
-                <strong>Patient ID:</strong> {appointmentRecords.patient._id}
+                <strong>Patient ID:</strong>{" "}
+                {appointmentRecords.patient.user_id}
               </p>
               {/* Add more patient details as needed */}
             </>
@@ -156,6 +164,18 @@ const ClinicalExamination = (data) => {
               />
             )
           )}
+        </Card>
+        <Card className="align-items-center" title="Radiology">
+          <Radio.Group
+            onChange={(e) => handleRadioRequestChange(e.target.value)}
+          >
+            <Radio value={true}>Yes</Radio>
+            <Radio value={false}>No</Radio>
+          </Radio.Group>
+          {/* Conditionally render Radiology Request  based on state */}
+          {showRadioRequestForm ? (
+            <RadilogyRequest appointment_id={appointment_id} />
+          ) : null}
         </Card>
         <Card title="Triage Results">
           <NurseReading appointment_id={appointment_id} />

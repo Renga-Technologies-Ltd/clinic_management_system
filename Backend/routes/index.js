@@ -68,6 +68,7 @@ router.get(
   "/appointment/:appointment_id",
   appointmentController.findAppointment
 );
+router.post("/radiology", appointmentController.radiologyRequest);
 //get todays appointments
 router.get("/allAppointments", appointmentController.fetchAllAppointments);
 //get all appointments
@@ -84,10 +85,7 @@ router.get("/getMedicalrecords/:id", patientController.getMedicalRecords);
 router.post("/makepayments", paymentController.createPayment);
 router.get("/allPayments", paymentController.fetchAllPayments);
 router.get("/todaysPayments", paymentController.todaysPayments);
-router.get(
-  "/getPayment/:appointment/:paymentType",
-  paymentController.getPayment
-);
+router.get("/getPayment/:receipt", paymentController.getPayment);
 router.get("/getpaymentperUser/:user_id", paymentController.getPaymentPerUser);
 
 //lab section

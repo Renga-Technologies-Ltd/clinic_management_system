@@ -1,5 +1,6 @@
 const Appointment = require("../schemas/appointment");
 const NurseReadings = require("../schemas/nurseReadings");
+const RadiologyRequest = require("../schemas/radiology");
 const appointmentController = {
   newAppointment: async (req, res, next) => {
     try {
@@ -8,7 +9,37 @@ const appointmentController = {
         req.body.values;
       const { patient, createdBy } = req.body;
 
+      const currentDate = new Date();
+      const formattedDate = `${currentDate
+        .getFullYear()
+        .toString()
+        .slice(-2)}${(currentDate.getMonth() + 1)
+        .toString()
+        .padStart(2, "0")}${currentDate.getDate().toString().padStart(2, "0")}`;
+
+      const todayCount = await Appointment.countDocuments({
+        createdAt: {
+          $gte: new Date(
+            currentDate.getFullYear(),
+            currentDate.getMonth(),
+            currentDate.getDate()
+          ),
+          $lt: new Date(
+            currentDate.getFullYear(),
+            currentDate.getMonth(),
+            currentDate.getDate() + 1
+          ),
+        },
+      });
+      console.log("Today's payments count:", todayCount);
+
+      // Generate custom patient ID (MMC-DD/MM/YYYY-number)
+      const customId = `MMC-APP${formattedDate}${(todayCount + 1)
+        .toString()
+        .padStart(3, "0")}`;
+
       const newAppo = new Appointment({
+        appointment_id: customId,
         patient,
         bookingType,
         appointmentTime,
@@ -63,6 +94,53 @@ const appointmentController = {
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Error finding records" });
+    }
+  },
+  radiologyRequest: async (req, res, next) => {
+    try {
+      const { appointment_id, radiology_test } = req.body;
+      const currentDate = new Date();
+      const formattedDate = `${currentDate
+        .getFullYear()
+        .toString()
+        .slice(-2)}${(currentDate.getMonth() + 1)
+        .toString()
+        .padStart(2, "0")}${currentDate.getDate().toString().padStart(2, "0")}`;
+
+      const todayCount = await RadiologyRequest.countDocuments({
+        createdAt: {
+          $gte: new Date(
+            currentDate.getFullYear(),
+            currentDate.getMonth(),
+            currentDate.getDate()
+          ),
+          $lt: new Date(
+            currentDate.getFullYear(),
+            currentDate.getMonth(),
+            currentDate.getDate() + 1
+          ),
+        },
+      });
+      console.log("Today's payments count:", todayCount);
+
+      // Generate custom patient ID (MMC-DD/MM/YYYY-number)
+      const customId = `MMC-RAD${formattedDate}${(todayCount + 1)
+        .toString()
+        .padStart(3, "0")}`;
+      const data = new RadiologyRequest({
+        appointmentId: appointment_id,
+        request_id: customId,
+        description: radiology_test,
+      });
+      // save
+      await data.save();
+      res.status(201).json({
+        message: "Request sent successfully",
+        request: data,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: error });
     }
   },
   fetchAppointments: async (req, res, next) => {
@@ -124,9 +202,9 @@ const appointmentController = {
     try {
       const appointment_id = req.params.appointment_id;
       const appointment = await Appointment.findById(appointment_id)
-        .populate("patient", "firstName lastName") // Replace "firstName" with the actual field you want to retrieve from the Patient model
-        .populate("doctor", "profile.firstName profile.lastName") // Access subfields in the profile object
-        .populate("bookedBy", "profile.firstName profile.lastName"); // Access subfields in the profile object
+        .populate("patient", "firstName lastName patient_id") // Replace "firstName" with the actual field you want to retrieve from the Patient model
+        .populate("doctor", "profile.firstName profile.lastName user_id") // Access subfields in the profile object
+        .populate("bookedBy", "profile.firstName profile.lastName user_id"); // Access subfields in the profile object
 
       if (!appointment) {
         return res.status(404).json({ message: "Appointment not found" });

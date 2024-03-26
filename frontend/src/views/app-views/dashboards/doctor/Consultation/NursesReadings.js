@@ -28,7 +28,7 @@ const NurseReading = (data) => {
           // Access nested properties correctly
           <>
             <p>
-              <strong>Appointment ID:</strong> {`${nurseReadings._id}`}
+              {/* <strong>Appointment ID:</strong> {`${nurseReadings._id}`} */}
             </p>
             <p>
               <strong>Blood pressure:</strong>{" "}

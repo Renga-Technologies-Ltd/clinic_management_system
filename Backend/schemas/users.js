@@ -1,7 +1,8 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
+  user_id: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   roles: [{ type: String, required: true }],
   profile: {
@@ -12,9 +13,9 @@ const userSchema = new mongoose.Schema({
     profilePicture: { type: String }, // store the URL of the profile picture in the database (e.g. /images/profile.jpg)
     address: { type: String },
     medicalLicense: { type: String }, // Example: Medical license number
-    specialization: { type: String }, // Example: Cardiologist, Nurse, Pharmacist, etc.   
+    specialization: { type: String }, // Example: Cardiologist, Nurse, Pharmacist, etc.
   },
 });
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
 
 module.exports = User;

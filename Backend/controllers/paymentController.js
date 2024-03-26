@@ -5,7 +5,37 @@ const paymentController = {
     try {
       const { appointment, receivedBy, amount, paymentType, paymentMethod } =
         req.body;
+
+      const currentDate = new Date();
+      const formattedDate = `${currentDate
+        .getFullYear()
+        .toString()
+        .slice(-2)}${(currentDate.getMonth() + 1)
+        .toString()
+        .padStart(2, "0")}${currentDate.getDate().toString().padStart(2, "0")}`;
+
+      const todayCount = await Payment.countDocuments({
+        createdAt: {
+          $gte: new Date(
+            currentDate.getFullYear(),
+            currentDate.getMonth(),
+            currentDate.getDate()
+          ),
+          $lt: new Date(
+            currentDate.getFullYear(),
+            currentDate.getMonth(),
+            currentDate.getDate() + 1
+          ),
+        },
+      });
+      console.log("Today's payments count:", todayCount);
+
+      // Generate custom patient ID (MMC-DD/MM/YYYY-number)
+      const customId = `MMC${formattedDate}${(todayCount + 1)
+        .toString()
+        .padStart(3, "0")}`;
       const newPayment = new Payment({
+        receipt_id: customId,
         appointment,
         receivedBy,
         amount,
@@ -77,20 +107,18 @@ const paymentController = {
   },
   getPayment: async (req, res, next) => {
     try {
-      const { appointment, paymentType } = req.params;
+      // const { appointment, paymentType } = req.params;
+      const { receipt } = req.params;
       // Assuming that the `appointment` parameter is an ObjectId
-      const payment = await Payment.find({
-        appointment: appointment,
-        paymentType: paymentType,
-      })
+      const payment = await Payment.findById(receipt)
         .populate({
           path: "appointment",
           model: "Appointment",
-          select: "appointmentTime",
+          select: "appointment_id appointmentTime",
           populate: {
             path: "patient", // Populate the patient field in the appointment schema
             model: "Patient",
-            select: "firstName lastName address",
+            select: "patient_id firstName lastName address",
           },
         })
         .populate({

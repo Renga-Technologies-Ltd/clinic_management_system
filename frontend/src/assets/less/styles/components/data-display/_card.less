@@ -28,3 +28,21 @@
     padding-top: @card-head-padding !important;
     padding-bottom: 0 !important;
 }
+@media print {
+    body * {
+      visibility: hidden;
+    }
+  
+    .container, .container * {
+      visibility: visible;
+    }
+  
+    .container {
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+  
+    /* Adjust the styles as needed to fit your layout */
+  }
+  
