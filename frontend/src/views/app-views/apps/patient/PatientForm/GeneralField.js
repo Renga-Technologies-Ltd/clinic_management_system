@@ -1,43 +1,8 @@
 import React from "react";
-import {
-  Input,
-  Row,
-  Col,
-  Card,
-  Form,
-  Upload,
-  message,
-  Select,
-  DatePicker,
-} from "antd";
+import { Input, Row, Col, Card, Form, Select, DatePicker } from "antd";
 import { UserOutlined, PhoneOutlined, MailOutlined } from "@ant-design/icons";
-import { ImageSvg } from "assets/svg/icon";
-import CustomIcon from "components/util-components/CustomIcon";
-import { LoadingOutlined } from "@ant-design/icons";
-import NextOfKin from "./NextOfKin";
 
-const { Dragger } = Upload;
 const { Option } = Select;
-
-const imageUploadProps = {
-  name: "file",
-  multiple: true,
-  listType: "picture-card",
-  showUploadList: false,
-  action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
-};
-
-const beforeUpload = (file) => {
-  const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
-  if (!isJpgOrPng) {
-    message.error("You can only upload JPG/PNG file!");
-  }
-  const isLt2M = file.size / 1024 / 1024 < 2;
-  if (!isLt2M) {
-    message.error("Image must smaller than 2MB!");
-  }
-  return isJpgOrPng && isLt2M;
-};
 
 const GeneralField = (props) => (
   <Row gutter={16}>
@@ -137,10 +102,36 @@ const GeneralField = (props) => (
         </Row>
       </Card>
       <Card title="Next Of Kin">
-        <NextOfKin
-          handleOnClick={props.handleOnClick}
-          submitLoading={props.submitLoading}
-        />
+        <Row gutter={16}>
+          <Col xs={24} sm={24} md={12}>
+            <Form.Item label="First Name" name={["nextOfKin", "firstName"]}>
+              <Input placeholder="Next of Kin First Name" />
+            </Form.Item>
+          </Col>
+          <Col xs={24} sm={24} md={12}>
+            <Form.Item label="Last Name" name={["nextOfKin", "lastName"]}>
+              <Input placeholder="Last Name" />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row gutter={16}>
+          <Col xs={24} sm={24} md={12}>
+            <Form.Item
+              label="Relationship"
+              name={["nextOfKin", "relationship"]}
+            >
+              <Input placeholder="Relationship" />
+            </Form.Item>
+          </Col>
+          <Col xs={24} sm={24} md={12}>
+            <Form.Item
+              label="Contact Number"
+              name={["nextOfKin", "contactNumber"]}
+            >
+              <Input prefix={<PhoneOutlined />} placeholder="Contact Number" />
+            </Form.Item>
+          </Col>
+        </Row>
       </Card>
     </Col>
   </Row>

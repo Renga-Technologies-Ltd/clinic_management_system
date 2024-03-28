@@ -42,9 +42,6 @@ const patientController = {
           ),
         },
       });
-      console.log("Today's patient count:", todayCount);
-
-      // Generate custom patient ID (MMC-DD/MM/YYYY-number)
       const customId = `MMC${formattedDate}${(todayCount + 1)
         .toString()
         .padStart(3, "0")}`;
@@ -57,12 +54,13 @@ const patientController = {
         gender,
         contactNumber,
         emailAddress,
-        address,
-        nextOfKin,
+        address: address,
+        nextOfKin: nextOfKin,
         imageUrl,
       });
       // Save the patient to the database
       await newPatient.save();
+      console.log("Patient created successfully:", newPatient);
 
       res
         .status(201)
