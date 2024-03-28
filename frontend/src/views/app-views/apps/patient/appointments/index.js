@@ -2,13 +2,8 @@
 import React, { useState, useEffect } from "react";
 import { Card, Table, Select, Input, Button, Tag } from "antd";
 import moment from "moment";
-import {
-  FileExcelOutlined,
-  SearchOutlined,
-  PlusCircleOutlined,
-} from "@ant-design/icons";
+import { SearchOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import Flex from "components/shared-components/Flex";
-import NumberFormat from "react-number-format";
 import utils from "utils";
 import { useNavigate } from "react-router-dom";
 const base_apiUrl = process.env.REACT_APP_BASE_URL;
@@ -16,12 +11,7 @@ const base_apiUrl = process.env.REACT_APP_BASE_URL;
 const tableColumns = [
   {
     title: "Appointment ID",
-    dataIndex: "_id",
-    render: (_, record) => (
-      <div>
-        <NumberFormat displayType={"text"} value={record._id} />
-      </div>
-    ),
+    dataIndex: "appointment_id",
   },
   {
     title: "Patient",
@@ -76,7 +66,6 @@ const tableColumns = [
     ),
   },
 ];
-
 const TodaysAppointments = () => {
   const [appointmentRecords, setAppointmentRecords] = useState(null);
 
@@ -92,9 +81,9 @@ const TodaysAppointments = () => {
         if (Array.isArray(data.appointments)) {
           setAppointmentRecords(data.appointments);
         } else {
-          console.error("Invalid data structure:", data);
+          // console.error("Invalid data structure:", data);
         }
-        console.log(data.appointments);
+        // console.log(data.appointments);
       } catch (error) {
         console.error("Error fetching appointments:", error.message);
         // You can set an error state or show a notification to the user
@@ -129,27 +118,15 @@ const Appointments = () => {
       >
         <Flex className="mb-1" mobileFlex={false}>
           <div className="mr-md-3 mb-3">
-            <Input
-              placeholder="Search"
-              prefix={<SearchOutlined />}
-              //   onChange={(e) => onSearch(e)}
-            />
+            <Input placeholder="Search" prefix={<SearchOutlined />} />
           </div>
           <div className="mb-3">
             <Select
               defaultValue="All"
               className="w-100"
               style={{ minWidth: 180 }}
-              //   onChange={handleShowStatus}
               placeholder="Status"
-            >
-              {/* <Option value="All">All payment </Option>
-              {paymentStatusList.map((elm) => (
-                <Option key={elm} value={elm}>
-                  {elm}
-                </Option>
-              ))} */}
-            </Select>
+            ></Select>
           </div>
         </Flex>
         <div>

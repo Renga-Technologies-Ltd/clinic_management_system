@@ -57,31 +57,41 @@ const Invoice = (props) => {
       <Card>
         {invoiceData && (
           <div className="printable-content">
-            <div className="d-md-flex justify-content-md-between">
-              <div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              {/* Logo and Address */}
+              <div style={{ width: "50%" }}>
                 <img src="/img/logo.png" alt="" />
-                <address>
-                  <p>
-                    <span className="font-weight-semibold text-dark font-size-md">
-                      Mahapatra Medi-Care Limited
-                    </span>
-                    <br />
-                    <span>6th Floor; B Wing, Doctor's Park</span>
-                    <br />
-                    <span>3rd Parklands Avenue</span>
-                    <br />
-                    <span>P.O Box: 38158 -00628</span>
-                    <br />
-                    <span>Nairobi, Kenya</span>
-                    <br />
-                    <abbr className="text-dark" title="Phone">
-                      Phone:
-                    </abbr>
-                    <span> (254)743349929</span>
-                  </p>
-                </address>
               </div>
-              <div className="mt-3 text-right">
+              {/* Receipt Details */}
+              <div style={{ width: "50%", textAlign: "right" }}>
+                <p>
+                  <span className="font-weight-semibold text-dark font-size-md">
+                    <strong>Mahapatra Medi-Care Limited</strong>
+                  </span>
+                  <br />
+                  <span>6th Floor; B Wing, Doctor's Park</span>
+                  <br />
+                  <span>3rd Parklands Avenue</span>
+                  <br />
+                  <span>P.O Box: 38158 -00628</span>
+                  <br />
+                  <span>Nairobi, Kenya</span>
+                  <br />
+                  <abbr className="text-dark" title="Phone">
+                    Phone:
+                  </abbr>
+                  <span> (254)743349929</span>
+                </p>
+              </div>
+            </div>
+            <div className="mt-3">
+              <address>
                 <h2 className="mb-1 font-weight-semibold">
                   Receipt: {invoiceData.receipt_id}
                 </h2>
@@ -98,9 +108,7 @@ const Invoice = (props) => {
                     <br />
                   </p>
                 </address>
-              </div>
-            </div>
-            <div className="mt-3">
+              </address>
               {/* Display invoice narration here */}
               <hr />
               <p>
@@ -122,6 +130,14 @@ const Invoice = (props) => {
                 <hr />
                 <br /> Method of payment:{" "}
                 <strong> {invoiceData.paymentMethod} </strong>
+              </p>
+              <hr></hr>
+              <p>
+                <strong>Received by: </strong>
+                <span>
+                  {invoiceData.receivedBy.profile.firstName}{" "}
+                  {invoiceData.receivedBy.profile.lastName}
+                </span>
               </p>
             </div>
           </div>
