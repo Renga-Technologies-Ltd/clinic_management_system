@@ -123,14 +123,15 @@ const extraNavTree = [
         icon: FileTextOutlined,
         breadcrumb: true,
         submenu: [
-          {
-            key: "extra-pages-profile",
-            path: `${APP_PREFIX_PATH}/pages/profile`,
-            title: "sidenav.pages.profile",
-            icon: "",
-            breadcrumb: false,
-            submenu: [],
-          },
+          // to be added later
+          // {
+          //   key: "extra-pages-profile",
+          //   path: `${APP_PREFIX_PATH}/pages/profile`,
+          //   title: "sidenav.pages.profile",
+          //   icon: "",
+          //   breadcrumb: false,
+          //   submenu: [],
+          // },
           {
             key: "extra-pages-list",
             path: `${APP_PREFIX_PATH}/pages/user-list`,
@@ -161,7 +162,7 @@ const receptionDashBoardNavTree = ReceptionDashboard.filter((item) => {
 });
 
 const filteredAppsNavTree = appsNavTree.filter((item) => {
-  const allowedRoles = ["Doctor", "Nurse", "Reception"];
+  const allowedRoles = ["Doctor", "Nurse", "Reception","Admin"];
   return allowedRoles.includes(getUserRole()) || !item.isGroupTitle;
 });
 

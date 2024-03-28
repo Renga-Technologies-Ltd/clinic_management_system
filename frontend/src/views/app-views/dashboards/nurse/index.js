@@ -164,7 +164,9 @@ const NurseDashboard = () => {
   const userRoles = userData?.roles || [];
 
   const isAdminOrDoctor =
-    userRoles.includes("Admin") || userRoles.includes("Doctor");
+    userRoles.includes("Admin") ||
+    userRoles.includes("Doctor") ||
+    userRoles.includes("Nurse");
 
   if (!isAdminOrDoctor) {
     // Render welcome card and redirection links for non-Doctor and non-Admin users
@@ -172,11 +174,7 @@ const NurseDashboard = () => {
       <div>
         <h1>Welcome!</h1>
         <p>You are not authorized to access this dashboard.</p>
-        {userRoles.includes("Nurse") && (
-          <Button onClick={() => navigate("/app/dashboards/nurse")}>
-            Go to Nurse Dashboard
-          </Button>
-        )}
+
         {userRoles.includes("Reception") && (
           <Button onClick={() => navigate("/app/dashboards/reception")}>
             Go to Reception Dashboard
