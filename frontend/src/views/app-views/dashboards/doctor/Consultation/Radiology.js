@@ -61,6 +61,7 @@ const RadilogyRequest = (data) => {
   }, [requestData]); // Run the effect only when requestData changes
 
   // Function to print the document
+
   const printDocument = () => {
     const printableContent = document.querySelector(".printable-content");
     const printWindow = window.open("", "_blank");
@@ -124,6 +125,18 @@ const RadilogyRequest = (data) => {
 
 // Component to display the document template
 const DocumentTemplate = ({ requestData }) => {
+  const formatDate = (dateString) => {
+    const options = {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false, // Use 24-hour format
+    };
+    const date = new Date(dateString);
+    return date.toLocaleString("en-GB", options);
+  };
   return (
     <div>
       <div className="printable-content">
@@ -155,7 +168,7 @@ const DocumentTemplate = ({ requestData }) => {
             <h2 className="mb-1 font-weight-semibold">
               Document: {requestData.request_id}
             </h2>
-            <p>Date Created: {requestData.date_created}</p>
+            <p>Date Created: {formatDate(requestData.createdAt)}</p>
             <address>
               <p>
                 <span className="font-weight-semibold text-dark font-size-md">
