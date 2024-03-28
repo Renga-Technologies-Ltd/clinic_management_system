@@ -141,12 +141,22 @@ const DocumentTemplate = ({ requestData }) => {
     <div>
       <div className="printable-content">
         <div className="d-md-flex justify-content-md-between">
-          <div>
-            <img src="/img/logo.png" alt="" />
-            <address>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            {/* Logo and Address */}
+            <div style={{ width: "50%" }}>
+              <img src="/img/logo.png" alt="" />
+            </div>
+            {/* Receipt Details */}
+            <div style={{ width: "50%", textAlign: "right" }}>
               <p>
                 <span className="font-weight-semibold text-dark font-size-md">
-                  Mahapatra Medi-Care Limited
+                  <strong>Mahapatra Medi-Care Limited</strong>
                 </span>
                 <br />
                 <span>6th Floor; B Wing, Doctor's Park</span>
@@ -162,7 +172,7 @@ const DocumentTemplate = ({ requestData }) => {
                 </abbr>
                 <span> (254)743349929</span>
               </p>
-            </address>
+            </div>
           </div>
           <div className="mt-3 text-right">
             <h2 className="mb-1 font-weight-semibold">

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PageHeaderAlt from "components/layout-components/PageHeaderAlt";
-import { Tabs, Form, Button, message } from "antd";
+import { Tabs, Form, Button, message, Modal } from "antd";
 import Flex from "components/shared-components/Flex";
 import { useParams } from "react-router-dom";
 import History from "./History";
@@ -14,14 +14,26 @@ const Consultation = (props) => {
   const appointment_id = useParams().appointment_id;
   const [form] = Form.useForm();
   const [submitLoading, setSubmitLoading] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [requestData, setRequestData] = useState(null);
+  const [doctorData, setRequestDataDoctor] = useState(null);
+  const [patientData, setRequestDataPatient] = useState(null);
   const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
+  const showModal = (postData, patient, doctor) => {
+    setModalVisible(true);
+    setRequestData(postData);
+    setRequestDataDoctor(doctor);
+    setRequestDataPatient(patient);
+    console.log(postData); // Set the data received from the API to state
+  };
   const onFinish = async () => {
     setSubmitLoading(true);
     try {
       const values = await form.validateFields();
       // Include appointment_id in the form values
-      const formData = { ...values, appointment_id };
+      const app_id = appointment_id;
+      const formData = { ...values, app_id };
       // console.log(formData, appointment_id);
 
       const apiUrl = `${base_apiUrl}/addMedicalRecords`;
@@ -35,13 +47,16 @@ const Consultation = (props) => {
 
       // Make the API request
       const response = await fetch(apiUrl, requestOptions);
-
       if (response.ok) {
         const data = await response.json();
         setSubmitLoading(false);
         message.success(data.message);
+        const { newDoctorObservations, patient, doctor } = data;
+        // setModalVisible(medicalRecordId);
+        showModal(newDoctorObservations, patient, doctor);
+        console.log("medicalRecordId", newDoctorObservations);
         form.resetFields();
-        goBack();
+        // goBack();
       } else {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
@@ -52,8 +67,22 @@ const Consultation = (props) => {
     }
   };
   const goBack = () => {
-    //console.log(row); // Log the row object to the console
     navigate(`/app/dashboards/doctor`);
+  };
+
+  const hideModal = () => {
+    goBack();
+    setModalVisible(false);
+  };
+  const printDocument = () => {
+    const printableContent = document.querySelector(".printable-content");
+    const printWindow = window.open("", "_blank");
+    printWindow.document.open();
+    printWindow.document.write("<html><head><title>Print</title></head><body>");
+    printWindow.document.write(printableContent.innerHTML);
+    printWindow.document.write("</body></html>");
+    printWindow.document.close();
+    printWindow.print();
   };
 
   return (
@@ -116,8 +145,118 @@ const Consultation = (props) => {
             ]}
           />
         </div>
+        <Modal
+          title="Radiology Requests Summary"
+          visible={modalVisible}
+          onCancel={hideModal}
+          footer={[
+            <Button key="close" onClick={hideModal}>
+              Close
+            </Button>,
+            <Button key="print" type="primary" onClick={printDocument}>
+              Print
+            </Button>,
+          ]}
+        >
+          {/* Pass requestData as props to DocumentTemplate */}
+          <DocumentTemplate
+            formData={form.getFieldsValue()}
+            requestData={requestData}
+            patientData={patientData}
+            doctorData={doctorData}
+          />
+        </Modal>
       </Form>
     </>
+  );
+};
+// Component to display the document template
+const DocumentTemplate = ({ requestData, patientData, doctorData }) => {
+  const formatDate = (dateString) => {
+    const options = {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false, // Use 24-hour format
+    };
+    const date = new Date(dateString);
+    return date.toLocaleString("en-GB", options);
+  };
+  return (
+    <div>
+      <div className="printable-content">
+        <div className="d-md-flex justify-content-md-between">
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            {/* Logo and Address */}
+            <div style={{ width: "50%" }}>
+              <img src="/img/logo.png" alt="" />
+            </div>
+            {/* Receipt Details */}
+            <div style={{ width: "50%", textAlign: "right" }}>
+              <p>
+                <span className="font-weight-semibold text-dark font-size-md">
+                  <strong>Mahapatra Medi-Care Limited</strong>
+                </span>
+                <br />
+                <span>6th Floor; B Wing, Doctor's Park</span>
+                <br />
+                <span>3rd Parklands Avenue</span>
+                <br />
+                <span>P.O Box: 38158 -00628</span>
+                <br />
+                <span>Nairobi, Kenya</span>
+                <br />
+                <abbr className="text-dark" title="Phone">
+                  Phone:
+                </abbr>
+                <span> (254)743349929</span>
+              </p>
+            </div>
+          </div>
+          <div className="mt-3 text-right">
+            <h2 className="mb-1 font-weight-semibold">
+              Appointment: {patientData.appointment_id}
+            </h2>
+            <p>Date and Time: {formatDate(requestData.createdAt)}</p>
+            <hr></hr>
+            <h3>Patient Details</h3>
+            <p>Name: {patientData.name}</p>
+            <p>Phone: {patientData.phoneNumber}</p>
+            <p>Email: {patientData.emailAdress}</p>
+            <p>DOB: {patientData.dob}</p>
+            <p>Gender: {patientData.gender}</p>
+          </div>
+          <hr></hr>
+        </div>
+        <h3>Details</h3>
+        <div className="mt-3">
+          <strong>
+            <h4>Treatment plan:</h4>
+          </strong>
+          <p>{requestData.treatment.treatment_plan}</p> <br />
+          <strong>
+            <h4>Prescription</h4>
+          </strong>
+          <p>{requestData.treatment.prescription}</p>
+          <br />
+          <strong>
+            <h4>Treatment plan:</h4>
+          </strong>
+          <p>{requestData.treatment.follow_up_advice}</p>
+          <br />
+          <hr />
+        </div>
+        Doctor's Name: {doctorData.name}
+      </div>
+    </div>
   );
 };
 

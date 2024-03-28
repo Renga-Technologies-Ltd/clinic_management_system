@@ -156,24 +156,71 @@ const patientController = {
   },
   addMedicalRecords: async (req, res, next) => {
     try {
-      const { appointment_id, history, examination, diagnosis, treatment } =
-        req.body;
-      const patient = await Appointment.findById(appointment_id);
-      const patient_id = patient.patient;
+      const { app_id, history, examination, diagnosis, treatment } = req.body;
+
+      // Fetch appointment details and populate patient and doctor fields
+      const appointment = await Appointment.findById(app_id).populate([
+        "patient",
+        "doctor",
+      ]);
+
+      if (!appointment) {
+        console.log("Appointment not found");
+        return res.status(404).json({ message: "Appointment not found" });
+      }
+
+      const { patient, doctor } = appointment;
+      console.log("Appointment details:", appointment);
+
+      const {
+        _id: patient_id,
+        firstName: patientFirstName,
+        lastName: patientLastName,
+        dob: dateOfBirth,
+        phoneNumber: contactNumber,
+        gender: gender,
+        emailAddress: emailAddress,
+      } = patient;
+      const {
+        _id: doctor_id,
+        profile: { firstName: doctorFirstName, lastName: doctorLastName },
+      } = doctor;
+
       const newDoctorObservations = new DoctorObservations({
-        appointment: appointment_id,
+        appointment: app_id,
         patient: patient_id,
+        patientName: `${patientFirstName} ${patientLastName}`, // Include patient name
+        doctor: doctor_id,
+        doctorName: `${doctorFirstName} ${doctorLastName}`, // Include doctor name
         history,
         examination,
         diagnosis,
         treatment,
       });
+
       await newDoctorObservations.save();
-      await Appointment.findByIdAndUpdate(appointment_id, {
+
+      // Update appointment to mark doctor readings as true
+      await Appointment.findByIdAndUpdate(app_id, {
         doctorReadings: true,
       });
+
       res.status(200).json({
         message: "Medical records added successfully",
+        patient: {
+          id: patient_id,
+          patient_id: patient.patient_id,
+          name: `${patientFirstName} ${patientLastName}`,
+          appointment_id: appointment.appointment_id,
+          dob: patient.dateOfBirth,
+          phoneNumber: patient.contactNumber,
+          gender: patient.gender,
+          emailAddress: patient.emailAddress,
+        }, // Include patient details in response
+        doctor: {
+          id: doctor_id,
+          name: `${doctorFirstName} ${doctorLastName}`,
+        }, // Include doctor details in response
         newDoctorObservations,
       });
     } catch (error) {

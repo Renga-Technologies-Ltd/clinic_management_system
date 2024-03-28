@@ -11,6 +11,17 @@ const doctorObservationsSchema = new mongoose.Schema({
     ref: "Patient",
     required: true,
   },
+  patientName: {
+    type: String,
+  },
+  doctor: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  doctorName: {
+    type: String,
+  },
   history: {
     present_illness: String,
     past_illness: String,

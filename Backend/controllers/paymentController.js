@@ -15,7 +15,7 @@ const paymentController = {
         .padStart(2, "0")}${currentDate.getDate().toString().padStart(2, "0")}`;
 
       const todayCount = await Payment.countDocuments({
-        createdAt: {
+        timeOfPayment: {
           $gte: new Date(
             currentDate.getFullYear(),
             currentDate.getMonth(),
