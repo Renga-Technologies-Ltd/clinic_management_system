@@ -32,8 +32,7 @@ export const LoginForm = (props) => {
   } = props;
 
   const onLogin = (values) => {
-    showLoading();
-   
+    showLoading();   
     signIn(values);
   };
 

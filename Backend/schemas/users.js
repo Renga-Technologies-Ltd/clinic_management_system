@@ -15,6 +15,7 @@ const userSchema = new mongoose.Schema({
     medicalLicense: { type: String }, // Example: Medical license number
     specialization: { type: String }, // Example: Cardiologist, Nurse, Pharmacist, etc.
   },
+  createdAt: { type: Date, default: Date.now },
 });
 const User = mongoose.model("User", userSchema);
 

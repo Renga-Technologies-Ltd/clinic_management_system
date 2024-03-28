@@ -148,13 +148,43 @@ const TodaysAppointments = () => {
       <Table
         pagination={false}
         columns={tableColumns}
-        dataSource={appointmentRecords && appointmentRecords.filter(appointment => !appointment.nurseReadings)}
+        dataSource={
+          appointmentRecords &&
+          appointmentRecords.filter((appointment) => !appointment.nurseReadings)
+        }
         rowKey="id"
       />
     </Card>
   );
 };
 const NurseDashboard = () => {
+  const navigate = useNavigate();
+
+  const userData = JSON.parse(localStorage.getItem("userDetails"));
+  const userRoles = userData?.roles || [];
+
+  const isAdminOrDoctor =
+    userRoles.includes("Admin") || userRoles.includes("Doctor");
+
+  if (!isAdminOrDoctor) {
+    // Render welcome card and redirection links for non-Doctor and non-Admin users
+    return (
+      <div>
+        <h1>Welcome!</h1>
+        <p>You are not authorized to access this dashboard.</p>
+        {userRoles.includes("Nurse") && (
+          <Button onClick={() => navigate("/app/dashboards/nurse")}>
+            Go to Nurse Dashboard
+          </Button>
+        )}
+        {userRoles.includes("Reception") && (
+          <Button onClick={() => navigate("/app/dashboards/reception")}>
+            Go to Reception Dashboard
+          </Button>
+        )}
+      </div>
+    );
+  }
   return (
     <>
       <Row gutter={16}>

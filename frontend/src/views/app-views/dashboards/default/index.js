@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Row, Col, Button, Avatar, Dropdown, Table,Tag } from "antd";
+import { useSelector } from "react-redux";
+import { Row, Col, Button, Avatar, Dropdown, Table, Tag } from "antd";
 import StatisticWidget from "components/shared-components/StatisticWidget";
 import ChartWidget from "components/shared-components/ChartWidget";
 import AvatarStatus from "components/shared-components/AvatarStatus";
@@ -21,11 +22,12 @@ import {
   FileExcelOutlined,
   PrinterOutlined,
   PlusOutlined,
-  EllipsisOutlined,  
+  EllipsisOutlined,
   ReloadOutlined,
 } from "@ant-design/icons";
 import utils from "utils";
-import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
 
 const MembersChart = (props) => <ApexChart {...props} />;
 
@@ -154,6 +156,33 @@ export const DefaultDashboard = () => {
   const [newMembersData] = useState(NewMembersData);
   const [recentTransactionData] = useState(RecentTransactionData);
   const { direction } = useSelector((state) => state.theme);
+  const navigate = useNavigate();
+
+  const userData = JSON.parse(localStorage.getItem("userDetails"));
+  const userRoles = userData?.roles || [];
+
+  const isAdminOrDoctor =
+    userRoles.includes("Admin") || userRoles.includes("Doctor");
+
+  if (!isAdminOrDoctor) {
+    // Render welcome card and redirection links for non-Doctor and non-Admin users
+    return (
+      <div>
+        <h1>Welcome!</h1>
+        <p>You are not authorized to access this dashboard.</p>
+        {userRoles.includes("Nurse") && (
+          <Button onClick={() => navigate("/app/dashboards/nurse")}>
+            Go to Nurse Dashboard
+          </Button>
+        )}
+        {userRoles.includes("Reception") && (
+          <Button onClick={() => navigate("/app/dashboards/reception")}>
+            Go to Reception Dashboard
+          </Button>
+        )}
+      </div>
+    );  
+  }
 
   return (
     <>
@@ -224,7 +253,7 @@ export const DefaultDashboard = () => {
                   />
                   <div>
                     <Button
-                    // change logo to bill 
+                      // change logo to bill
                       icon={<UserAddOutlined />}
                       type="default"
                       size="small"

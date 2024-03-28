@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Card, Table, Tag, Button } from "antd";
+import { Row, Col, Card, Table, Tag, Button, message } from "antd";
 import moment from "moment";
 import DataDisplayWidget from "components/shared-components/DataDisplayWidget";
 
@@ -64,15 +64,20 @@ const DisplayButtons = () => (
 const TodaysAppointments = () => {
   const [appointmentRecords, setAppointmentRecords] = useState(null);
   const navigate = useNavigate();
-  const viewDetails = (row) => {
+  const attendTo = (row) => {
     console.log(row); // Log the row object to the console
     navigate(`/app/dashboards/doctor/consultation/${row}`);
+  };
+  const viewDetails = (row) => {
+    console.log(row); // Log the row object to the console
+    message.info("Viewing details for appointment ID: " + row);
+    // navigate(`/app/dashboards/doctor/consultation/${row}`);
   };
 
   const tableColumns = [
     {
       title: "Appointment ID",
-      dataIndex: "_id",
+      dataIndex: "appointment_id",
       render: (_, record) => (
         <div>
           <NumberFormat displayType={"text"} value={record._id} />
@@ -130,7 +135,7 @@ const TodaysAppointments = () => {
           return <Tag color="red">Not Attended To</Tag>;
         } else if (nurseReadings && !doctorReadings) {
           return <Tag color="blue">Waiting for Doctor</Tag>;
-        } else if (doctorReadings && nurseReadings) {
+        } else if (doctorReadings) {
           return <Tag color="green">Completed</Tag>;
         }
 
@@ -151,13 +156,20 @@ const TodaysAppointments = () => {
     },
     {
       title: "Actions",
-      dataIndex: "",
-      sorter: (a, b) => utils.antdTableSorter(a, b, "doctor"),
-      render: (record) => (
-        <>
-          <Button onClick={() => viewDetails(record._id)}>Attend to</Button>
-        </>
-      ),
+      dataIndex: "appointmentStatus",
+      sorter: (a, b) => utils.antdTableSorter(a, b, "appointmentStatus"),
+      render: (text, record) => {
+        const { doctorReadings } = record;
+        if (!doctorReadings) {
+          return (
+            <>
+              <Button onClick={() => attendTo(record._id)}>Attend to</Button>
+            </>
+          );
+        } else {
+          return <Button onClick={() => viewDetails(record._id)}>View</Button>;
+        }
+      },
     },
   ];
 
@@ -189,18 +201,40 @@ const TodaysAppointments = () => {
       <Table
         pagination={false}
         columns={tableColumns}
-        dataSource={
-          appointmentRecords &&
-          appointmentRecords.filter(
-            (appointment) => !appointment.doctorReadings
-          )
-        }
+        dataSource={appointmentRecords}
         rowKey="id"
       />
     </Card>
   );
 };
 const DoctorDash = () => {
+  const navigate = useNavigate();
+
+  const userData = JSON.parse(localStorage.getItem("userDetails"));
+  const userRoles = userData?.roles || [];
+
+  const isAdminOrDoctor =
+    userRoles.includes("Admin") || userRoles.includes("Doctor");
+
+  if (!isAdminOrDoctor) {
+    // Render welcome card and redirection links for non-Doctor and non-Admin users
+    return (
+      <div>
+        <h1>Welcome!</h1>
+        <p>You are not authorized to access this dashboard.</p>
+        {userRoles.includes("Nurse") && (
+          <Button onClick={() => navigate("/app/dashboards/nurse")}>
+            Go to Nurse Dashboard
+          </Button>
+        )}
+        {userRoles.includes("Reception") && (
+          <Button onClick={() => navigate("/app/dashboards/reception")}>
+            Go to Reception Dashboard
+          </Button>
+        )}
+      </div>
+    );
+  }
   return (
     <>
       <Row gutter={16}>

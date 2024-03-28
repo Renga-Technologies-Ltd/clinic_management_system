@@ -8,6 +8,7 @@ import {
   CalendarOutlined,
   PlusCircleOutlined,
 } from "@ant-design/icons";
+
 import { APP_PREFIX_PATH } from "configs/AppConfig";
 
 const getUserRole = () => {
@@ -53,7 +54,6 @@ const ReceptionDashboard = [
     submenu: [],
   },
 ];
-const appointmentNavTree = [];
 const appsNavTree = [
   {
     key: "apps",
@@ -139,30 +139,6 @@ const extraNavTree = [
             breadcrumb: true,
             submenu: [],
           },
-          // {
-          //   key: "extra-pages-invoice",
-          //   path: `${APP_PREFIX_PATH}/pages/invoice`,
-          //   title: "sidenav.pages.invoice",
-          //   icon: "",
-          //   breadcrumb: true,
-          //   submenu: [],
-          // },
-          // {
-          //   key: "extra-pages-faq",
-          //   path: `${APP_PREFIX_PATH}/pages/faq`,
-          //   title: "sidenav.pages.faq",
-          //   icon: "",
-          //   breadcrumb: false,
-          //   submenu: [],
-          // },
-          // {
-          //   key: "extra-pages-setting",
-          //   path: `${APP_PREFIX_PATH}/pages/setting`,
-          //   title: "sidenav.pages.setting",
-          //   icon: "",
-          //   breadcrumb: true,
-          //   submenu: [],
-          // },
         ],
       },
     ],
@@ -170,35 +146,18 @@ const extraNavTree = [
 ];
 
 const doctorDashBoardNavTree = doctorDashboard.filter((item) => {
-  const doctorAllowedRoles = ["Doctor", "Admin"];
-  return (
-    (doctorAllowedRoles.includes(getUserRole()) &&
-      item.key === "dashboards-doctor") ||
-    !item.isGroupTitle
-  );
+  const allowedRoles = ["Doctor", "Admin"];
+  return allowedRoles.includes(getUserRole()) || !item.isGroupTitle;
 });
-const appointmentNavTreeFiltered = appointmentNavTree.filter((item) => {
-  const allowedRoles = ["Doctor", "Nurse", "Reception", "Admin"];
-  return (
-    (allowedRoles.includes(getUserRole()) && item.key === "appointments") ||
-    !item.isGroupTitle
-  );
-});
+
 const nurseDashBoardNavTree = nurseDashboard.filter((item) => {
-  const doctorAllowedRoles = ["Nurse", "Admin"];
-  return (
-    (doctorAllowedRoles.includes(getUserRole()) &&
-      item.key === "dashboards-doctor") ||
-    !item.isGroupTitle
-  );
+  const nurseAllowedRoles = ["Nurse", "Admin"];
+  return nurseAllowedRoles.includes(getUserRole()) || !item.isGroupTitle;
 });
+
 const receptionDashBoardNavTree = ReceptionDashboard.filter((item) => {
-  const doctorAllowedRoles = ["Reception", "Admin"];
-  return (
-    (doctorAllowedRoles.includes(getUserRole()) &&
-      item.key === "dashboards-doctor") ||
-    !item.isGroupTitle
-  );
+  const receptionistAllowedRoles = ["Reception", "Admin"];
+  return receptionistAllowedRoles.includes(getUserRole()) || !item.isGroupTitle;
 });
 
 const filteredAppsNavTree = appsNavTree.filter((item) => {
@@ -212,12 +171,13 @@ const filteredExtraNavTree = extraNavTree.filter((item) => {
 });
 
 const navigationConfig = [
-  ...doctorDashBoardNavTree,
-  ...nurseDashBoardNavTree,
   ...receptionDashBoardNavTree,
+  ...nurseDashBoardNavTree,
+  ...doctorDashBoardNavTree,
   ...filteredAppsNavTree,
   ...filteredExtraNavTree,
-  ...appointmentNavTreeFiltered,
+  // ...extraNavTree,
+  // ...appointmentNavTreeFiltered,
 ];
 
 export default navigationConfig;

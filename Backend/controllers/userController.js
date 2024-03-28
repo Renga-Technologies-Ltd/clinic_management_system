@@ -13,9 +13,38 @@ const userController = {
       }
       const saltRounds = 10;
       const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+      const currentDate = new Date();
+      const formattedDate = `${currentDate
+        .getFullYear()
+        .toString()
+        .slice(-2)}${(currentDate.getMonth() + 1)
+        .toString()
+        .padStart(2, "0")}${currentDate.getDate().toString().padStart(2, "0")}`;
+
+      const todayCount = await User.countDocuments({
+        createdAt: {
+          $gte: new Date(
+            currentDate.getFullYear(),
+            currentDate.getMonth(),
+            currentDate.getDate()
+          ),
+          $lt: new Date(
+            currentDate.getFullYear(),
+            currentDate.getMonth(),
+            currentDate.getDate() + 1
+          ),
+        },
+      });
+
+      // Generate custom patient ID (MMC-DD/MM/YYYY-number)
+      const customId = `MMC-P${formattedDate}${(todayCount + 1)
+        .toString()
+        .padStart(3, "0")}`;
       // Create a new user
       const newUser = new User({
         username,
+        user_id: customId,
         password: hashedPassword,
         roles,
         profile,
@@ -58,8 +87,36 @@ const userController = {
         medicalLicense,
         specialization: "General Medicine",
       };
+      const currentDate = new Date();
+      const formattedDate = `${currentDate
+        .getFullYear()
+        .toString()
+        .slice(-2)}${(currentDate.getMonth() + 1)
+        .toString()
+        .padStart(2, "0")}${currentDate.getDate().toString().padStart(2, "0")}`;
+
+      const todayCount = await User.countDocuments({
+        createdAt: {
+          $gte: new Date(
+            currentDate.getFullYear(),
+            currentDate.getMonth(),
+            currentDate.getDate()
+          ),
+          $lt: new Date(
+            currentDate.getFullYear(),
+            currentDate.getMonth(),
+            currentDate.getDate() + 1
+          ),
+        },
+      });
+
+      // Generate custom patient ID (MMC-DD/MM/YYYY-number)
+      const customId = `MMC-P${formattedDate}${(todayCount + 1)
+        .toString()
+        .padStart(3, "0")}`;
       const newUser = new User({
         username,
+        user_id: customId,
         password: hashedPassword,
         roles: user_roles,
         profile,

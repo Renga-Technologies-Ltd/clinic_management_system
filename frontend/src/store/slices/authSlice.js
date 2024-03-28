@@ -1,6 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import AuthService from "services/AuthService";
+import { history } from "services/history";
+import { APP_PREFIX_PATH } from "configs/AppConfig";
 const base_apiUrl = process.env.REACT_APP_BASE_URL;
+
 
 export const initialState = {
   loading: false,
@@ -27,12 +30,14 @@ export const signIn = createAsyncThunk(
 
       if (response.ok) {
         const result = await response.json();
-        console.log(result);
+        // console.log(result);
         const AUTH_TOKEN = result.token; // Adjust accordingly based on your API response structure
         const user_id = result.user.id; // Adjust accordingly based on your API response structure
         const user =
           result.user.profile.firstName + " " + result.user.profile.lastName;
         const userDetails = result.user;
+        const userRoles = result.user.roles;
+        redirectToDashboard(userRoles);
 
         localStorage.setItem("AUTH_TOKEN", AUTH_TOKEN);
         localStorage.setItem("user_id", user_id);
@@ -50,6 +55,28 @@ export const signIn = createAsyncThunk(
     }
   }
 );
+const redirectToDashboard = (userRoles) => {
+  console.log("logged in user roles", userRoles);
+  const role = userRoles[0];
+  // Assuming userRoles is an array
+  const hasAdminRole = role.includes("Admin");
+  const hasDoctorRole = role.includes("Doctor");
+  const hasNurseRole = role.includes("Nurse");
+  const hasReceptionistRole = role.includes("Reception");
+  if (hasAdminRole) {
+    history.push("/app/dashboards/default");
+  } else if (hasDoctorRole) {
+    history.push("/app/dashboards/doctor");
+  } else if (hasNurseRole) {
+    history.push("/app/dashboards/nurse");
+  } else if (hasReceptionistRole) {
+    history.push("/app/dashboards/reception");
+  } else {
+    // message.error("Unknown role"); // Handle unknown roles as needed
+    console.log("Unknown role");
+    // history.push("/app/dashboards"); // Default dashboard for unknown roles
+  }
+};
 
 export const signUp = createAsyncThunk(
   "auth/signUp",
