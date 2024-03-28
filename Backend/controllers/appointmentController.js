@@ -204,11 +204,12 @@ const appointmentController = {
       const appointment = await Appointment.findById(appointment_id)
         .populate("patient", "firstName lastName patient_id") // Replace "firstName" with the actual field you want to retrieve from the Patient model
         .populate("doctor", "profile.firstName profile.lastName user_id") // Access subfields in the profile object
-        .populate("bookedBy", "profile.firstName profile.lastName user_id"); // Access subfields in the profile object
+        .populate("bookedBy", "profile.firstName profile.lastName profile.user_id"); // Access subfields in the profile object
 
       if (!appointment) {
         return res.status(404).json({ message: "Appointment not found" });
       }
+      console.log("Appointment data:", appointment);
       res.status(200).json({ appointment });
     } catch (error) {
       console.error("Error fetching appointment data:", error);

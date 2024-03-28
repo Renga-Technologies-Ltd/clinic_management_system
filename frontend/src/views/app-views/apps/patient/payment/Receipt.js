@@ -7,14 +7,18 @@ const base_apiUrl = process.env.REACT_APP_BASE_URL;
 const Invoice = (props) => {
   const receipt = props.paymentId;
   const [invoiceData, setInvoiceData] = useState(null); // Initialize state as null
+  const [appoinmentId, setAppoinmentId] = useState(null);
+  const [labRecords, setLabRecords] = useState(null);
 
   useEffect(() => {
     const fetchInvoiceData = async () => {
       try {
         const response = await fetch(`${base_apiUrl}/getPayment/${receipt}`);
         const responseData = await response.json();
+        console.log(responseData);
         if (response.ok) {
-          setInvoiceData(responseData.payment); // Set fetched invoice data to state
+          setInvoiceData(responseData.payment);
+          setAppoinmentId(responseData.appointment);
         } else {
           console.error("Error fetching invoice data:", responseData.message);
         }
@@ -22,9 +26,24 @@ const Invoice = (props) => {
         console.error("Error fetching invoice data:", error);
       }
     };
+    const fetchLabRecords = async () => {
+      try {
+        const response = await fetch(
+          `${base_apiUrl}/getLabResults/${appoinmentId}`
+        );
+        const data = await response.json();
+        setLabRecords(data);
+
+        console.log(data);
+      } catch (error) {
+        console.log("Error:", error);
+      }
+    };
 
     if (receipt) {
-      fetchInvoiceData(); // Fetch invoice data only if receipt ID exists
+      fetchInvoiceData();
+      fetchLabRecords();
+      // Fetch invoice data only if receipt ID exists
     }
   }, [receipt]); // Fetch invoice data whenever receipt ID changes
 
@@ -125,12 +144,20 @@ const Invoice = (props) => {
                   {" "}
                   {formatDate(invoiceData.timeOfPayment)}
                 </strong> for{" "}
-                <strong> {invoiceData.paymentType} consultation.</strong> <br />
+                <strong>
+                  {invoiceData.paymentType === "Lab" &&
+                  labRecords &&
+                  labRecords.labResults &&
+                  labRecords.labResults.length > 0
+                    ? labRecords.labResults[0].labRequest.testType
+                    : invoiceData.paymentType} Consultation
+                </strong>
                 <br />
                 <hr />
                 <br /> Method of payment:{" "}
                 <strong> {invoiceData.paymentMethod} </strong>
               </p>
+
               <hr></hr>
               <p>
                 <strong>Received by: </strong>

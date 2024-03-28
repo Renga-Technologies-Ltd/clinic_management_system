@@ -6,6 +6,7 @@ import NextOfKin from "./NextOfKin";
 import MedicalRecords from "./MedicalRecords";
 import AppointmentRecords from "./AppointmentRecords";
 import Flex from "components/shared-components/Flex";
+import moment from "moment";
 const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
 const DetailsForm = (props) => {

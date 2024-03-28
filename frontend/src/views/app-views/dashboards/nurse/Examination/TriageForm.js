@@ -30,7 +30,7 @@ const TriageForm = (data) => {
             <>
               <p>
                 <strong>Appointment ID:</strong>{" "}
-                {`${appointmentRecords.bookedBy.appointment_id}`}
+                {`${appointmentRecords.appointment_id}`}
               </p>
               <p>
                 <strong>Patient Name:</strong>{" "}
@@ -38,7 +38,7 @@ const TriageForm = (data) => {
               </p>
               <p>
                 <strong>Patient ID:</strong>{" "}
-                {appointmentRecords.patient.user_id}
+                {appointmentRecords.patient.patient_id}
               </p>
               {/* Add more patient details as needed */}
             </>

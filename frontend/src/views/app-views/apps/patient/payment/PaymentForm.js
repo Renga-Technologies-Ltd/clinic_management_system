@@ -38,7 +38,7 @@ const PaymentForm = (props) => {
           <Row gutter={16}>
             <Col xs={24} sm={24} md={12}>
               <Form.Item label="Appointment Id" name="patient">
-                <span>{appointment._id}</span>
+                <span>{appointment.appointment_id}</span>
               </Form.Item>
             </Col>
           </Row>
@@ -62,8 +62,8 @@ const PaymentForm = (props) => {
             <Col xs={24} sm={24} md={12}>
               <Form.Item label="Payment type" name="paymentType">
                 <Select placeholder="Select payment type">
-                  <Option value="first_time">First time consultation</Option>
-                  <Option value="follow-up">Follow up with 7 days</Option>
+                  <Option value="First Time">First time consultation</Option>
+                  <Option value="Follow Up">Follow up with 7 days</Option>
                   <Option value="Lab">Lab payments</Option>
                 </Select>
               </Form.Item>

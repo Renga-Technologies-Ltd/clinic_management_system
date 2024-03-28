@@ -50,8 +50,7 @@ const GeneralField = (props) => (
             >
               <Select placeholder="Select gender">
                 <Option value="Male">Male</Option>
-                <Option value="Female">Female</Option>
-                <Option value="Other">Other</Option>
+                <Option value="Female">Female</Option>                
               </Select>
             </Form.Item>
           </Col>

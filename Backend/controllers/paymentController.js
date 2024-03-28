@@ -31,7 +31,7 @@ const paymentController = {
       console.log("Today's payments count:", todayCount);
 
       // Generate custom patient ID (MMC-DD/MM/YYYY-number)
-      const customId = `MMC${formattedDate}${(todayCount + 1)
+      const customId = `MMC-REC${formattedDate}${(todayCount + 1)
         .toString()
         .padStart(3, "0")}`;
       const newPayment = new Payment({

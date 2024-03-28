@@ -31,7 +31,17 @@ const labController = {
       res.status(500).json({ message: "Internal Server Error" });
     }
   },
-  getLabResults: async (req, res, next) => {},
+  getLabResults: async (req, res, next) => {
+    try {
+      const appoinment_id = req.params.id;
+      const labResults = await Lab.find({ appointment: appoinment_id });
+      console.log("Lab results:", labResults);
+      res.status(200).json({ labResults });
+    } catch (error) {
+      console.error("Error getting lab results:", error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  },
   getLabRequest: async (req, res, next) => {
     try {
       const todayStart = new Date();

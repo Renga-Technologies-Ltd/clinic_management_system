@@ -1,6 +1,7 @@
 import React from "react";
 import { Row, Col, Card, Form } from "antd";
 import { PhoneOutlined, MailOutlined } from "@ant-design/icons";
+import moment from "moment";
 
 const GeneralField = (props) => {
   const { patientData } = props;
@@ -37,7 +38,10 @@ const GeneralField = (props) => {
           <Row gutter={16}>
             <Col xs={24} sm={24} md={12}>
               <Form.Item label="Date of Birth" name="dateOfBirth">
-                <span>{dateOfBirth}</span>
+                <span>
+                  {moment(dateOfBirth).format("MMMM Do YYYY")}
+                  {}
+                </span>
               </Form.Item>
             </Col>
             <Col xs={24} sm={24} md={12}>
@@ -90,11 +94,7 @@ const GeneralField = (props) => {
         </Card>
       </Col>
       <Col xs={24} sm={24} md={7}>
-        <Card title="Patient Photo">
-          {/* <Dragger readOnly>
-            <img src={props.uploadedImg} alt="avatar" className="img-fluid" />
-          </Dragger> */}
-        </Card>
+        <Card title="Patient Photo"></Card>
       </Col>
     </Row>
   );
