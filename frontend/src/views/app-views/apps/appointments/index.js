@@ -1,23 +1,35 @@
 import React, { useState, useEffect } from "react";
-import { Card, Table, Tag } from "antd";
+import { Card, Table, Tag, message, Button } from "antd";
 import moment from "moment";
 import NumberFormat from "react-number-format";
+import { useNavigate } from "react-router-dom";
 
 import utils from "utils";
 const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
 const AppointmentList = () => {
   const [appointmentRecords, setAppointmentRecords] = useState(null);
+  const navigate = useNavigate();
+  const viewDetails = (row) => {
+    console.log(row); // Log the row object to the console
+    message.info("Viewing details for appointment ID: " + row);
+    navigate(`/app/dashboards/doctor/viewconsultation/${row}`);
+  };
+  const editDetails = (row) => {
+    console.log(row);
+    message.info("Viewing details for appointment ID: " + row);
+    navigate(`/app/dashboards/doctor/editconsultation/${row}`);
+  };
+  const attendTo = (row) => {
+    console.log(row); // Log the row object to the console
+    navigate(`/app/dashboards/doctor/consultation/${row}`);
+  };
 
   const tableColumns = [
     {
       title: "Appointment ID",
-      dataIndex: "_id",
-      render: (_, record) => (
-        <div>
-          <NumberFormat displayType={"text"} value={record._id} />
-        </div>
-      ),
+      dataIndex: "appointment_id",
+      render: (_, record) => <div>{record.appointment_id}</div>,
     },
     {
       title: "Patient",
@@ -87,6 +99,28 @@ const AppointmentList = () => {
         }
 
         return null;
+      },
+    },
+    {
+      title: "Actions",
+      dataIndex: "appointmentStatus",
+      sorter: (a, b) => utils.antdTableSorter(a, b, "appointmentStatus"),
+      render: (text, record) => {
+        const { doctorReadings } = record;
+        if (!doctorReadings) {
+          return (
+            <>
+              <Button onClick={() => attendTo(record._id)}>Attend to</Button>
+            </>
+          );
+        } else {
+          return (
+            <>
+              <Button onClick={() => viewDetails(record._id)}>View</Button>
+              <Button onClick={() => editDetails(record._id)}>Edit</Button>
+            </>
+          );
+        }
       },
     },
   ];

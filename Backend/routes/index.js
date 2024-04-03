@@ -81,6 +81,7 @@ router.get("/getNurseReadings/:id", appointmentController.getNurseReadings);
 //patient medical records
 router.post("/addMedicalRecords", patientController.addMedicalRecords);
 router.get("/getMedicalrecords/:id", patientController.getMedicalRecords);
+router.get("/getApprecords/:appointment", patientController.getApprecords);
 //  payments sections
 router.post("/makepayments", paymentController.createPayment);
 router.get("/allPayments", paymentController.fetchAllPayments);

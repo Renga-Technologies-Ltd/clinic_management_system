@@ -3,11 +3,10 @@ import { Row, Col, Card, Table, Tag, Button, message } from "antd";
 import moment from "moment";
 import DataDisplayWidget from "components/shared-components/DataDisplayWidget";
 
-import NumberFormat from "react-number-format";
 import { Link } from "react-router-dom";
 import {
   OrderedListOutlined,
-  ReconciliationOutlined,
+  d,
   UserAddOutlined,
   BarChartOutlined,
 } from "@ant-design/icons";
@@ -48,7 +47,7 @@ const DisplayButtons = () => (
           avatarSize={55}
         />
       </Link>
-      <Link to="/billing-page">
+      {/* <Link to="/billing-page">
         <DataDisplayWidget
           icon={<ReconciliationOutlined />}
           title="Bills and Payments"
@@ -56,7 +55,7 @@ const DisplayButtons = () => (
           vertical={true}
           avatarSize={55}
         />
-      </Link>
+      </Link> */}
     </Col>
   </Row>
 );
@@ -71,18 +70,19 @@ const TodaysAppointments = () => {
   const viewDetails = (row) => {
     console.log(row); // Log the row object to the console
     message.info("Viewing details for appointment ID: " + row);
-    // navigate(`/app/dashboards/doctor/consultation/${row}`);
+    navigate(`/app/dashboards/doctor/viewconsultation/${row}`);
+  };
+  const editDetails = (row) => {
+    console.log(row);
+    message.info("Viewing details for appointment ID: " + row);
+    navigate(`/app/dashboards/doctor/editconsultation/${row}`);
   };
 
   const tableColumns = [
     {
       title: "Appointment ID",
       dataIndex: "appointment_id",
-      render: (_, record) => (
-        <div>
-          <NumberFormat displayType={"text"} value={record._id} />
-        </div>
-      ),
+      render: (_, record) => <div>{record.appointment_id}</div>,
     },
     {
       title: "Patient",
@@ -167,7 +167,12 @@ const TodaysAppointments = () => {
             </>
           );
         } else {
-          return <Button onClick={() => viewDetails(record._id)}>View</Button>;
+          return (
+            <>
+              <Button onClick={() => viewDetails(record._id)}>View</Button>
+              <Button onClick={() => editDetails(record._id)}>Edit</Button>
+            </>
+          );
         }
       },
     },

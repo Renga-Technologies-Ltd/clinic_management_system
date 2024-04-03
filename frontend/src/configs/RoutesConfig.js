@@ -61,6 +61,20 @@ export const protectedRoutes = [
       import("views/app-views/dashboards/doctor/Consultation")
     ),
   },
+  {
+    key: "dashboard.doctor.editconsultation",
+    path: `${APP_PREFIX_PATH}/dashboards/doctor/editconsultation/:appointment_id`,
+    component: React.lazy(() =>
+      import("views/app-views/dashboards/doctor/EditConsultation")
+    ),
+  },
+  {
+    key: "dashboard.doctor.viewconsultation",
+    path: `${APP_PREFIX_PATH}/dashboards/doctor/viewconsultation/:appointment_id`,
+    component: React.lazy(() =>
+      import("views/app-views/dashboards/doctor/ViewConsultation")
+    ),
+  },
   //end main dashboard
   {
     key: "apps",

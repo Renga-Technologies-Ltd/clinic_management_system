@@ -3,6 +3,7 @@ const DoctorObservations = require("../schemas/doctorObservations");
 
 const Appointment = require("../schemas/appointment");
 const User = require("../schemas/users");
+const NurseReadings = require("../schemas/nurseReadings");
 
 const patientController = {
   createPatient: async (req, res, next) => {
@@ -240,6 +241,48 @@ const patientController = {
       res.status(500).json({ message: "Internal Server Error" });
     }
   },
+  getApprecords: async (req, res, next) => {
+    try {
+      const appointmentId = req.params.appointment;
+      const appointment = await Appointment.findById(appointmentId)
+        .populate("patient")
+        .populate("doctor")
+        .exec();
+
+      if (!appointment) {
+        return res.status(404).json({ message: "Appointment not found" });
+      }
+      const observations = await DoctorObservations.findOne({
+        appointment: appointmentId,
+      }).exec();
+
+
+     
+
+      const nurseReadings = await NurseReadings.findOne({
+        appointment: appointmentId,
+      }).exec();
+
+      // if (!nurseReadings) {
+      //   return null;
+      // }
+
+      const patient = appointment.patient;
+
+      const appointmentDetails = {
+        appointment: appointment,
+        observations: observations,
+        nurseReadings: nurseReadings,
+        patient: patient,
+      };
+
+      res.status(200).json({ appointmentDetails });
+    } catch (error) {
+      console.error("Error getting medical records:", error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  },
+
   fetchPatientsAndAppointmentsOverTime: async (req, res, next) => {
     try {
       // Fetch all patients from the backend

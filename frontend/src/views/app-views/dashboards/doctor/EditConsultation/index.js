@@ -9,7 +9,7 @@ import ClinicalExamination from "./ClinicalExamination";
 import Treatment from "./Treatment";
 import { useNavigate } from "react-router-dom";
 
-const Consultation = (props) => {
+const EditCOnsultation = (props) => {
   const navigate = useNavigate();
   const appointment_id = useParams().appointment_id;
   const [form] = Form.useForm();
@@ -297,4 +297,4 @@ const DocumentTemplate = ({ requestData, patientData, doctorData }) => {
   );
 };
 
-export default Consultation;
+export default EditCOnsultation;
