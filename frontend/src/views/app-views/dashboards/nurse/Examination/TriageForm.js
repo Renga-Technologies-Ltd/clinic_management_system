@@ -5,6 +5,9 @@ const base_apiUrl = process.env.REACT_APP_BASE_URL;
 const TriageForm = (data) => {
   const appointment_id = data.appointment_id;
   const [appointmentRecords, setAppointmentRecords] = useState(null);
+  const [weight, setWeight] = useState(null);
+  const [height, setHeight] = useState(null);
+  const [bmi, setBMI] = useState(null);
   useEffect(() => {
     const fetchAppointmentData = async () => {
       try {
@@ -19,8 +22,16 @@ const TriageForm = (data) => {
     };
     fetchAppointmentData();
   }, [appointment_id]);
-  //   console.log(appointmentRecords);
-  //   console.log(appointment_id);
+
+  console.log("patient", bmi);
+
+  const handleWeightChange = (e) => {
+    setWeight(e.target.value);
+  };
+
+  const handleHeightChange = (e) => {
+    setHeight(e.target.value);
+  };
   return (
     <Row gutter={16}>
       <Col xs={24} sm={24} md={17}>
@@ -118,35 +129,6 @@ const TriageForm = (data) => {
             </Col>
             <Col xs={24} sm={24} md={8}>
               <Form.Item
-                label="Height"
-                name={["appointment", "height"]}
-                rules={[{ required: true, message: "Please enter height" }]}
-              >
-                <Input placeholder="Height" type="number" />
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row gutter={16}>
-            <Col xs={24} sm={24} md={8}>
-              <Form.Item
-                label="Weight"
-                name={["appointment", "weight"]}
-                rules={[{ required: true, message: "Please enter weight" }]}
-              >
-                <Input placeholder="Weight" type="number" />
-              </Form.Item>
-            </Col>
-            <Col xs={24} sm={24} md={8}>
-              <Form.Item
-                label="Pulse"
-                name={["appointment", "pulse"]}
-                rules={[{ required: true, message: "Please enter pulse" }]}
-              >
-                <Input placeholder="Pulse Oximetry" type="number" />
-              </Form.Item>
-            </Col>
-            <Col xs={24} sm={24} md={8}>
-              <Form.Item
                 label="Pain Level"
                 name={["appointment", "painLevel"]}
                 rules={[{ required: true, message: "Please enter pain level" }]}
@@ -165,6 +147,37 @@ const TriageForm = (data) => {
                 <Input placeholder="SpO2" type="number" />
               </Form.Item>
             </Col>
+          </Row>
+          <Row gutter={16}>
+            <Row gutter={16}>
+              <Col xs={24} sm={24} md={8}>
+                <Form.Item label="Weight" name={["appointment", "weight"]}>
+                  <Input
+                    placeholder="Weight"
+                    type="number"
+                    onChange={handleWeightChange}
+                  />
+                </Form.Item>
+              </Col>
+              <Col xs={24} sm={24} md={8}>
+                <Form.Item label="Height" name={["appointment", "height"]}>
+                  <Input
+                    placeholder="Height"
+                    type="number"
+                    onChange={handleHeightChange}
+                  />
+                </Form.Item>
+              </Col>
+              <Col xs={24} sm={24} md={8}>
+                <Form.Item
+                  label="Patient BMI"
+                  name={["appointment", "bmi"]}
+                  initialValue={bmi}
+                >
+                  {weight / (height / 100) ** 2}
+                </Form.Item>
+              </Col>
+            </Row>
           </Row>
         </Card>
       </Col>

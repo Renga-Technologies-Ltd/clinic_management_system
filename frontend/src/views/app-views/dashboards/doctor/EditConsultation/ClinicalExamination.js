@@ -9,17 +9,17 @@ const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
 const ClinicalExamination = (data) => {
   const appointment_id = data.appointment_id;
+  
+  const initialValues =
+    data.initialValues?.appointmentDetails?.observations?.examination; // Add optional chaining here
   const [appointmentRecords, setAppointmentRecords] = useState(null);
   const [labRequestNeeded, setLabRequestNeeded] = useState(false);
   const [showLabRequestForm, setShowLabRequestForm] = useState(false);
   const [showRadioRequestForm, setShowRadioRequestForm] = useState(false);
   const [form] = Form.useForm();
-
   // Handle lab request change
   const sendRequest = async () => {
-    const setSubmitLoading = (loading) => {
-      console.log("loading", loading);
-    };
+    const setSubmitLoading = (loading) => {};
     try {
       const values = await form.validateFields();
       const user_id = localStorage.getItem("user_id");
@@ -53,11 +53,9 @@ const ClinicalExamination = (data) => {
     }
   };
   const handleLabRequestChange = (value) => {
-    // Update the state based on the radio button selection
     setLabRequestNeeded(value === true);
   };
   const handleRadioRequestChange = (value) => {
-    // Update the state based on the radio button selection
     setShowRadioRequestForm(value === true);
   };
   useEffect(() => {
@@ -80,7 +78,6 @@ const ClinicalExamination = (data) => {
       <Col xs={24} sm={24} md={14}>
         <Card title="Patient Details">
           {appointmentRecords?.patient ? (
-            // Access nested properties correctly
             <>
               <p>
                 <strong>Appointment ID:</strong>{" "}
@@ -94,22 +91,22 @@ const ClinicalExamination = (data) => {
                 <strong>Patient ID:</strong>{" "}
                 {appointmentRecords.patient.patient_id}
               </p>
-              {/* Add more patient details as needed */}
             </>
           ) : (
             <p>No patient details available</p>
           )}
         </Card>
-        <Card title="Examination">
+        <Card title="Clinical Examination">
           <Row gutter={16}>
             <Col xs={24} sm={24} md={24}>
               <Form.Item
-                label="Clinical Examination"
+                label="Examination"
                 name={["examination", "clinical_examination"]}
+                initialValue={initialValues?.clinical_examination}
               >
                 <TextArea
                   rows={6}
-                  placeholder="Clinical Examination"
+                  placeholder="Examination"
                   type="text"
                 />
               </Form.Item>
@@ -120,6 +117,7 @@ const ClinicalExamination = (data) => {
               <Form.Item
                 label="General Examination"
                 name={["examination", "general_examination"]}
+                initialValue={initialValues?.general_examination}
               >
                 <TextArea
                   rows={6}
@@ -134,6 +132,7 @@ const ClinicalExamination = (data) => {
               <Form.Item
                 label="Systemic Examination"
                 name={["examination", "systemic_examination"]}
+                initialValue={initialValues?.systemic_examination}
               >
                 <TextArea
                   rows={6}

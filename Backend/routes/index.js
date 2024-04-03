@@ -54,6 +54,7 @@ router.get("/allpatient", patientController.getPatients);
 router.get("/getPatient/:id", patientController.getPatientById);
 router.delete("/deletePatient", patientController.deletePatient);
 router.get("/getDoctors", patientController.getDoctors);
+router.put("/updateUser", userController.updateUser);
 
 router.get(
   "/patientsStats",
@@ -82,6 +83,7 @@ router.get("/getNurseReadings/:id", appointmentController.getNurseReadings);
 router.post("/addMedicalRecords", patientController.addMedicalRecords);
 router.get("/getMedicalrecords/:id", patientController.getMedicalRecords);
 router.get("/getApprecords/:appointment", patientController.getApprecords);
+router.put("/updateObservations/:id", patientController.updateObservations);
 //  payments sections
 router.post("/makepayments", paymentController.createPayment);
 router.get("/allPayments", paymentController.fetchAllPayments);

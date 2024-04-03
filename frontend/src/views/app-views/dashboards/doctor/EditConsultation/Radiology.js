@@ -9,7 +9,6 @@ const RadilogyRequest = (data) => {
   const appointment_id = data.appointment_id;
 
   const [form] = Form.useForm();
-  const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [requestData, setRequestData] = useState(null);
 
@@ -24,7 +23,7 @@ const RadilogyRequest = (data) => {
 
   const sendRequest = async (event) => {
     event.preventDefault(); // Prevent default form submission behavior
-    setLoading(true);
+
     try {
       const values = await form.validateFields();
       // Include appointment_id in the form values
@@ -45,7 +44,6 @@ const RadilogyRequest = (data) => {
         const data = await response.json();
         message.success(data.message);
         form.resetFields();
-        setLoading(false);
         showModal(data.request); // Pass the data received from the API
       } else {
         throw new Error(`HTTP error! Status: ${response.status}`);

@@ -169,7 +169,7 @@ const patientController = {
       }
 
       const { patient, doctor } = appointment;
-      console.log("Appointment details:", appointment);
+      // console.log("Appointment details:", appointment);
 
       const {
         _id: patient_id,
@@ -256,9 +256,6 @@ const patientController = {
         appointment: appointmentId,
       }).exec();
 
-
-     
-
       const nurseReadings = await NurseReadings.findOne({
         appointment: appointmentId,
       }).exec();
@@ -279,6 +276,30 @@ const patientController = {
       res.status(200).json({ appointmentDetails });
     } catch (error) {
       console.error("Error getting medical records:", error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  },
+  updateObservations: async (req, res, next) => {
+    try {
+      const id = req.params.id;
+      const { history, examination, diagnosis, treatment } = req.body;
+      const observations = await DoctorObservations.findOneAndUpdate(
+        { _id: id },
+        {
+          history,
+          examination,
+          diagnosis,
+          treatment,
+        },
+        { new: true }
+      );
+      console.log("Observations updated successfully:", observations);
+
+      res
+        .status(200)
+        .json({ message: "Observations updated successfully", observations });
+    } catch (error) {
+      console.error("Error updating observations:", error);
       res.status(500).json({ message: "Internal Server Error" });
     }
   },

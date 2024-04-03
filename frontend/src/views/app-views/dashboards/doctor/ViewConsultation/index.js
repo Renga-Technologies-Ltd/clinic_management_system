@@ -61,6 +61,11 @@ const ViewConsultation = (props) => {
   const goBack = () => {
     navigate(`/app/dashboards/doctor`);
   };
+  const editDetails = (row) => {
+    console.log(row);
+    message.info("Editings details for appointment ID: " + row);
+    navigate(`/app/dashboards/doctor/editconsultation/${row}`);
+  };
 
   const hideModal = () => {
     goBack();
@@ -90,6 +95,7 @@ const ViewConsultation = (props) => {
           >
             <h2 className="mb-3">Patient Examination</h2>
             <div className="mb-3">
+              <Button onClick={() => editDetails(appointment_id)}>Edit</Button>
               <Modal
                 title="Radiology Requests Summary"
                 visible={modalVisible}
@@ -172,13 +178,9 @@ const ViewConsultation = (props) => {
             <Card title="History">
               <h5>Present Illness</h5>
               <p>{observations?.history?.present_illness}</p>
-              <h5>Present Illness"</h5>
-              <span>{observations?.history?.present_illness}</span>
-
               <hr></hr>
               <h5>Past Illness</h5>
               <span>{observations?.history?.past_illness}</span>
-
               <hr></hr>
               <h5>Peraonal history</h5>
               <span>{observations?.history?.personal_history}</span>

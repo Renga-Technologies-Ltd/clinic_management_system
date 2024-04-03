@@ -6,6 +6,8 @@ const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
 const Treatment = (data) => {
   const appointment_id = data.appointment_id;
+  const initialValues =
+    data.initialValues?.appointmentDetails?.observations?.treatment;
   const [appointmentRecords, setAppointmentRecords] = useState(null);
   useEffect(() => {
     const fetchAppointmentData = async () => {
@@ -53,6 +55,7 @@ const Treatment = (data) => {
               <Form.Item
                 label="Treatment Plan"
                 name={["treatment", "treatment_plan"]}
+                initialValue={initialValues?.treatment_plan}
               >
                 <TextArea rows={6} placeholder="Treatment Plan" type="text" />
               </Form.Item>
@@ -63,6 +66,7 @@ const Treatment = (data) => {
               <Form.Item
                 label="Prescription"
                 name={["treatment", "prescription"]}
+                initialValue={initialValues?.prescription}
               >
                 <TextArea rows={6} placeholder="Prescription" type="text" />
               </Form.Item>
@@ -73,6 +77,7 @@ const Treatment = (data) => {
               <Form.Item
                 label="Follow Up Advice"
                 name={["treatment", "follow_up_advice"]}
+                initialValue={initialValues?.follow_up_advice}
               >
                 <TextArea rows={6} placeholder="Follow Up Advice" type="text" />
               </Form.Item>

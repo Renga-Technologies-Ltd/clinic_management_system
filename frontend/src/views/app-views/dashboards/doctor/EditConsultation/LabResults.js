@@ -1,9 +1,6 @@
 import React, { useState } from "react";
-import { Input, Upload, Col, Card, Form, message } from "antd";
+import { Upload, Col, Form, message } from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
-
-const base_apiUrl = process.env.REACT_APP_BASE_URL;
-const { TextArea } = Input;
 
 const getBase64 = (img, callback) => {
   const reader = new FileReader();

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PageHeaderAlt from "components/layout-components/PageHeaderAlt";
 import { Tabs, Form, Button, message, Modal } from "antd";
 import Flex from "components/shared-components/Flex";
@@ -8,66 +8,73 @@ import Diagnosis from "./Diagnosis";
 import ClinicalExamination from "./ClinicalExamination";
 import Treatment from "./Treatment";
 import { useNavigate } from "react-router-dom";
+const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
-const EditCOnsultation = (props) => {
+const EditConsultation = (props) => {
   const navigate = useNavigate();
   const appointment_id = useParams().appointment_id;
   const [form] = Form.useForm();
-  const [submitLoading, setSubmitLoading] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [requestData, setRequestData] = useState(null);
-  const [doctorData, setRequestDataDoctor] = useState(null);
-  const [patientData, setRequestDataPatient] = useState(null);
-  const [activeTab, setActiveTab] = useState("1");
-  const base_apiUrl = process.env.REACT_APP_BASE_URL;
+  const [formData, setFormData] = useState(null); // State to store fetched data
+  const [obserId, setObservId] = useState(null); // State to store fetched data
 
-  const showModal = (postData, patient, doctor) => {
-    setModalVisible(true);
-    setRequestData(postData);
-    setRequestDataDoctor(doctor);
-    setRequestDataPatient(patient);
-    console.log(postData); // Set the data received from the API to state
-  };
+  useEffect(() => {
+    const api = `${base_apiUrl}/getApprecords/${appointment_id}`;
+    const fetchData = async () => {
+      try {
+        const response = await fetch(api);
+        if (response.ok) {
+          const data = await response.json();
+          // Set form data after fetching
+          setFormData(data);
+          // Populate form fields with fetched data
+          form.setFieldsValue(data);
+          setObservId(data.appointmentDetails.observations._id);
+          // console.log("data id is");
+        } else {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        message.error("Failed to fetch data from the server.");
+      }
+    };
 
-  const onFinish = async () => {
-    setSubmitLoading(true);
+    fetchData(); // Call the fetchData function when the component mounts
+  }, [form]);
+
+  const onFinish = async (values) => {
     try {
-      const values = await form.validateFields();
-      // Include appointment_id in the form values
-      const app_id = appointment_id;
-      const formData = { ...values, app_id };
-      // console.log(formData, appointment_id);
-
-      const apiUrl = `${base_apiUrl}/addMedicalRecords`;
-      const requestOptions = {
-        method: "POST",
+      const update_api = `${base_apiUrl}/updateObservations/${obserId}`;
+      // Make PUT or PATCH request to update data on the server-side
+      const response = await fetch(update_api, {
+        method: "PUT", // or PATCH
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
-      };
-
-      // Make the API request
-      const response = await fetch(apiUrl, requestOptions);
+        body: JSON.stringify(values),
+      });
       if (response.ok) {
         const data = await response.json();
-        setSubmitLoading(false);
         message.success(data.message);
-        const { newDoctorObservations, patient, doctor } = data;
-        // setModalVisible(medicalRecordId);
-        showModal(newDoctorObservations, patient, doctor);
-        console.log("medicalRecordId", newDoctorObservations);
-        form.resetFields();
-        // goBack();
+        // Optionally, update the local state with the updated data
+        setFormData(data);
       } else {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
     } catch (error) {
-      setSubmitLoading(false);
       console.error("Error:", error);
-      message.error("Failed to submit the form. Please try again.");
+      message.error("Failed to update data on the server.");
     }
   };
+  const [activeTab, setActiveTab] = useState("1");
+
+  // const showModal = (postData, patient, doctor) => {
+  //   setModalVisible(true);
+  //   setRequestData(postData);
+  //   setRequestDataDoctor(doctor);
+  //   setRequestDataPatient(patient);
+  //   console.log(postData); // Set the data received from the API to state
+  // };
 
   const goBack = () => {
     navigate(`/app/dashboards/doctor`);
@@ -75,7 +82,7 @@ const EditCOnsultation = (props) => {
 
   const hideModal = () => {
     goBack();
-    setModalVisible(false);
+    // setModalVisible(false);
   };
 
   const printDocument = () => {
@@ -102,14 +109,14 @@ const EditCOnsultation = (props) => {
     const currentTabIndex = parseInt(activeTab);
     setActiveTab((currentTabIndex - 1).toString());
   };
+  // console.log(formData);
 
   return (
     <>
       <Form
-        layout="vertical"
         form={form}
-        name="advanced_search"
-        className="ant-advanced-search-form"
+        onFinish={onFinish}
+        initialValues={formData} // Set initial form values with fetched data
       >
         <PageHeaderAlt className="border-bottom" overlap>
           <div className="container">
@@ -133,7 +140,6 @@ const EditCOnsultation = (props) => {
                       type="primary"
                       onClick={() => onFinish()}
                       htmlType="submit"
-                      loading={submitLoading}
                     >
                       Save
                     </Button>
@@ -159,31 +165,49 @@ const EditCOnsultation = (props) => {
               {
                 label: "History",
                 key: "1",
-                children: <History appointment_id={appointment_id} />,
+                children: (
+                  <History
+                    appointment_id={appointment_id}
+                    initialValues={formData} // Pass the initialValues here
+                  />
+                ),
               },
               {
                 label: "Examination",
                 key: "2",
                 children: (
-                  <ClinicalExamination appointment_id={appointment_id} />
+                  <ClinicalExamination
+                    appointment_id={appointment_id}
+                    initialValues={formData} // Pass the initialValues here
+                  />
                 ),
               },
               {
                 label: "Diagnosis",
                 key: "3",
-                children: <Diagnosis appointment_id={appointment_id} />,
+                children: (
+                  <Diagnosis
+                    appointment_id={appointment_id}
+                    initialValues={formData} // Pass the initialValues here
+                  />
+                ),
               },
               {
                 label: "Treatment and Advice",
                 key: "4",
-                children: <Treatment appointment_id={appointment_id} />,
+                children: (
+                  <Treatment
+                    appointment_id={appointment_id}
+                    initialValues={formData} // Pass the initialValues here
+                  />
+                ),
               },
             ]}
           />
         </div>
         <Modal
           title="Radiology Requests Summary"
-          visible={modalVisible}
+          // visible={modalVisible}
           onCancel={hideModal}
           footer={[
             <Button key="close" onClick={hideModal}>
@@ -195,12 +219,7 @@ const EditCOnsultation = (props) => {
           ]}
         >
           {/* Pass requestData as props to DocumentTemplate */}
-          <DocumentTemplate
-            formData={form.getFieldsValue()}
-            requestData={requestData}
-            patientData={patientData}
-            doctorData={doctorData}
-          />
+          <DocumentTemplate formData={form.getFieldsValue()} />
         </Modal>
       </Form>
     </>
@@ -297,4 +316,4 @@ const DocumentTemplate = ({ requestData, patientData, doctorData }) => {
   );
 };
 
-export default EditCOnsultation;
+export default EditConsultation;

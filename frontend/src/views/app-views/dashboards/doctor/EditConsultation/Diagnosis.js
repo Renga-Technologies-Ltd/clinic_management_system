@@ -7,6 +7,9 @@ const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
 const Diagnosis = (data) => {
   const appointment_id = data.appointment_id;
+  // console.log(data.initialValues.appointmentDetails.observations);
+  const initialValues =
+    data.initialValues?.appointmentDetails?.observations?.diagnosis;
   const [appointmentRecords, setAppointmentRecords] = useState(null);
   useEffect(() => {
     const fetchAppointmentData = async () => {
@@ -55,6 +58,7 @@ const Diagnosis = (data) => {
               <Form.Item
                 label="Provisional Diagnosis"
                 name={["diagnosis", "provisional"]}
+                initialValue={initialValues?.provisional}
               >
                 <TextArea
                   rows={6}
@@ -69,6 +73,7 @@ const Diagnosis = (data) => {
               <Form.Item
                 label="Investigations advice"
                 name={["diagnosis", "investigations_advice"]}
+                initialValue={initialValues?.investigations_advice}
               >
                 <TextArea
                   rows={6}
@@ -83,6 +88,7 @@ const Diagnosis = (data) => {
               <Form.Item
                 label="Final diagnosis"
                 name={["diagnosis", "final_diagnosis"]}
+                initialValue={initialValues?.final_diagnosis}
               >
                 <TextArea rows={6} placeholder="Final diagnosis" type="text" />
               </Form.Item>

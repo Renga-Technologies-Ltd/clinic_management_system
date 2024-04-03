@@ -155,6 +155,20 @@ const TodaysAppointments = () => {
       ),
     },
     {
+      title: "Payment Status",
+      dataIndex: "paid",
+      key: "paid",
+      render: (paid, record) => (
+        <>
+          {paid ? (
+            <Tag color="green">Paid</Tag>
+          ) : (
+            <Tag color="red">Not Paid</Tag>
+          )}
+        </>
+      ),
+    },
+    {
       title: "Actions",
       dataIndex: "appointmentStatus",
       sorter: (a, b) => utils.antdTableSorter(a, b, "appointmentStatus"),

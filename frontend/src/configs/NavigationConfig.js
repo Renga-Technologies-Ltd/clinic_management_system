@@ -63,14 +63,14 @@ const appsNavTree = [
     breadcrumb: false,
     isGroupTitle: true,
     submenu: [
-      {
-        key: "apps-calendar",
-        path: `${APP_PREFIX_PATH}/apps/calendar`,
-        title: "sidenav.apps.calendar",
-        icon: CalendarOutlined,
-        breadcrumb: true,
-        submenu: [],
-      },
+      // {
+      //   key: "apps-calendar",
+      //   path: `${APP_PREFIX_PATH}/apps/calendar`,
+      //   title: "sidenav.apps.calendar",
+      //   icon: CalendarOutlined,
+      //   breadcrumb: true,
+      //   submenu: [],
+      // },
       {
         key: "apps-appointments",
         path: `${APP_PREFIX_PATH}/apps/appointments`,
@@ -124,14 +124,14 @@ const extraNavTree = [
         breadcrumb: true,
         submenu: [
           // to be added later
-          // {
-          //   key: "extra-pages-profile",
-          //   path: `${APP_PREFIX_PATH}/pages/profile`,
-          //   title: "sidenav.pages.profile",
-          //   icon: "",
-          //   breadcrumb: false,
-          //   submenu: [],
-          // },
+          {
+            key: "extra-pages-profile",
+            path: `${APP_PREFIX_PATH}/pages/profile`,
+            title: "sidenav.pages.profile",
+            icon: "",
+            breadcrumb: false,
+            submenu: [],
+          },
           {
             key: "extra-pages-list",
             path: `${APP_PREFIX_PATH}/pages/user-list`,
@@ -162,7 +162,7 @@ const receptionDashBoardNavTree = ReceptionDashboard.filter((item) => {
 });
 
 const filteredAppsNavTree = appsNavTree.filter((item) => {
-  const allowedRoles = ["Doctor", "Nurse", "Reception","Admin"];
+  const allowedRoles = ["Doctor", "Nurse", "Reception", "Admin"];
   return allowedRoles.includes(getUserRole()) || !item.isGroupTitle;
 });
 

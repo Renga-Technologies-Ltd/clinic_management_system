@@ -6,6 +6,9 @@ const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
 const History = (data) => {
   const appointment_id = data.appointment_id;
+  const initialValues =
+    data.initialValues?.appointmentDetails?.observations?.history; // Add optional chaining here
+  const [loading, setLoading] = useState(true); // State to track loading status
   const [appointmentRecords, setAppointmentRecords] = useState(null);
   useEffect(() => {
     const fetchAppointmentData = async () => {
@@ -15,18 +18,22 @@ const History = (data) => {
         );
         const data = await response.json();
         setAppointmentRecords(data.appointment);
+        setLoading(false); // Mark loading as false after data is fetched
       } catch (error) {
         console.error("Error:", error);
       }
     };
     fetchAppointmentData();
   }, [appointment_id]);
-  //   console.log(appointmentRecords);
-  //   console.log(appointment_id);
+  // console.log(initialValues);
+  if (loading) {
+    return <div>Loading...</div>; // Render a loading indicator while data is being fetched
+  }
+
   return (
     <Row gutter={16}>
       <Col xs={24} sm={24} md={17}>
-      <Card title="Patient Details">
+        <Card title="Patient Details">
           {appointmentRecords?.patient ? (
             // Access nested properties correctly
             <>
@@ -54,6 +61,7 @@ const History = (data) => {
               <Form.Item
                 label="History of present illness"
                 name={["history", "present_illness"]}
+                initialValue={initialValues?.present_illness}
               >
                 <TextArea
                   rows={6}
@@ -68,6 +76,7 @@ const History = (data) => {
               <Form.Item
                 label="History of past illness"
                 name={["history", "past_illness"]}
+                initialValue={initialValues?.past_illness}
               >
                 <TextArea
                   rows={6}
@@ -82,6 +91,7 @@ const History = (data) => {
               <Form.Item
                 label="Personal History"
                 name={["history", "personal_history"]}
+                initialValue={initialValues?.personal_history}
               >
                 <TextArea rows={6} placeholder="Personal History" type="text" />
               </Form.Item>
@@ -92,6 +102,7 @@ const History = (data) => {
               <Form.Item
                 label="Menstrual History"
                 name={["history", "menstraul_history"]}
+                initialValue={initialValues?.menstraul_history}
               >
                 <TextArea rows={6} placeholder="Menstral History" type="text" />
               </Form.Item>

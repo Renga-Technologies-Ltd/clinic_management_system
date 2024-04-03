@@ -130,6 +130,34 @@ const userController = {
     }
   },
   //edit user
+  updateUser: async (req, res, next) => {
+    try {
+      const username = req.body.username; // Get the username from the request body
+      const updates = req.body.profile; // Extracting profile updates from req.body
+
+      // Constructing an object to hold only the fields that need to be updated
+      const updateFields = {};
+      if (updates.firstName)
+        updateFields["profile.firstName"] = updates.firstName;
+      if (updates.lastName) updateFields["profile.lastName"] = updates.lastName;
+
+      // Updating the user document with only the specified fields
+      const updatedUser = await User.findOneAndUpdate(
+        { username: username }, // Finding the user by username
+        updateFields,
+        { new: true }
+      );
+
+      console.log("User updated successfully:", updatedUser);
+
+      res
+        .status(200)
+        .json({ message: "User updated successfully", user: updatedUser });
+    } catch (error) {
+      console.error("Error updating user:", error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  },
   editUser: async (req, res, next) => {
     try {
       const { userid, username, password, roles, profile } = req.body;

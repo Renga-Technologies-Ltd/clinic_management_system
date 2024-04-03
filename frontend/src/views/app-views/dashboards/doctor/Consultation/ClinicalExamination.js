@@ -100,18 +100,14 @@ const ClinicalExamination = (data) => {
             <p>No patient details available</p>
           )}
         </Card>
-        <Card title="Examination">
+        <Card title="Clinical Examination">
           <Row gutter={16}>
             <Col xs={24} sm={24} md={24}>
               <Form.Item
-                label="Clinical Examination"
+                label="Examination"
                 name={["examination", "clinical_examination"]}
               >
-                <TextArea
-                  rows={6}
-                  placeholder="Clinical Examination"
-                  type="text"
-                />
+                <TextArea rows={6} placeholder="Examination" type="text" />
               </Form.Item>
             </Col>
           </Row>
