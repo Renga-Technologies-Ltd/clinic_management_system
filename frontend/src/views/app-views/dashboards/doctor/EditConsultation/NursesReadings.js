@@ -44,17 +44,58 @@ const NurseReading = (data) => {
               <strong>Respiratory Rate:</strong> {nurseReadings.respiratoryRate}
             </p>
             <p>
-              <strong>Height:</strong> {nurseReadings.height}
+              <strong>Height:</strong> {nurseReadings.height} cm
             </p>
             <p>
-              <strong>Weight:</strong> {nurseReadings.weight}
+              <strong>Weight:</strong> {nurseReadings.weight} KG
             </p>
-            <p>
-              <strong>Pulse Oximetry:</strong> {nurseReadings.pulseOximetry}
-            </p>
+
             <p>
               <strong>Pain Level:</strong> {nurseReadings.painLevel}
             </p>
+            <hr></hr>
+            <p>
+              <strong>Patient BMI: </strong>{" "}
+              {nurseReadings &&
+                (
+                  nurseReadings.weight /
+                  ((nurseReadings.height / 100) * (nurseReadings.height / 100))
+                ).toFixed(2)}
+            </p>
+            {(() => {
+              const bmi =
+                nurseReadings &&
+                nurseReadings.weight /
+                  ((nurseReadings.height / 100) * (nurseReadings.height / 100));
+              let bmiCategory = "";
+              if (bmi < 18.5) {
+                bmiCategory = "Underweight";
+              } else if (bmi >= 18.5 && bmi < 25) {
+                bmiCategory = "Normal weight";
+              } else if (bmi >= 25 && bmi < 30) {
+                bmiCategory = "Overweight";
+              } else {
+                bmiCategory = "Obese";
+              }
+              let color = "";
+              switch (bmiCategory) {
+                case "Underweight":
+                  color = "#FF6347"; // Red
+                  break;
+                case "Normal weight":
+                  color = "#32CD32"; // Green
+                  break;
+                case "Overweight":
+                  color = "#FFA500"; // Orange
+                  break;
+                case "Obese":
+                  color = "#FF4500"; // Dark Orange
+                  break;
+                default:
+                  color = "black";
+              }
+              return <p style={{ color }}>{bmiCategory}</p>;
+            })()}
             {/* Add more patient details as needed */}
           </>
         ) : (
