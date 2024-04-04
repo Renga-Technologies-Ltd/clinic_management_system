@@ -8,6 +8,7 @@ import Diagnosis from "./Diagnosis";
 import ClinicalExamination from "./ClinicalExamination";
 import Treatment from "./Treatment";
 import { useNavigate } from "react-router-dom";
+import moment from "moment";
 
 const Consultation = (props) => {
   const navigate = useNavigate();
@@ -56,7 +57,7 @@ const Consultation = (props) => {
         const { newDoctorObservations, patient, doctor } = data;
         // setModalVisible(medicalRecordId);
         showModal(newDoctorObservations, patient, doctor);
-        console.log("medicalRecordId", newDoctorObservations);
+        // console.log("medicalRecordId", newDoctorObservations);
         form.resetFields();
         // goBack();
       } else {
@@ -206,7 +207,6 @@ const Consultation = (props) => {
     </>
   );
 };
-
 // Component to display the document template
 const DocumentTemplate = ({ requestData, patientData, doctorData }) => {
   const formatDate = (dateString) => {
@@ -268,7 +268,8 @@ const DocumentTemplate = ({ requestData, patientData, doctorData }) => {
             <p>Name: {patientData.name}</p>
             <p>Phone: {patientData.phoneNumber}</p>
             <p>Email: {patientData.emailAdress}</p>
-            <p>DOB: {patientData.dob}</p>
+            <p>DOB:{moment(patientData.dob).format("MMMM Do YYYY")}</p>
+
             <p>Gender: {patientData.gender}</p>
           </div>
           <hr></hr>
@@ -276,16 +277,16 @@ const DocumentTemplate = ({ requestData, patientData, doctorData }) => {
         <h3>Details</h3>
         <div className="mt-3">
           <strong>
-            <h4>Treatment plan:</h4>
+            <h4>Treatment Plan:</h4>
           </strong>
           <p>{requestData.treatment.treatment_plan}</p> <br />
           <strong>
-            <h4>Prescription</h4>
+            <h4>Prescription:</h4>
           </strong>
           <p>{requestData.treatment.prescription}</p>
           <br />
           <strong>
-            <h4>Treatment plan:</h4>
+            <h4>Follow Up Advice:</h4>
           </strong>
           <p>{requestData.treatment.follow_up_advice}</p>
           <br />

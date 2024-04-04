@@ -172,9 +172,9 @@ const TriageForm = (data) => {
                 <Form.Item
                   label="Patient BMI"
                   name={["appointment", "bmi"]}
-                  initialValue={bmi}
+                  // initialValue={bmi}
                 >
-                  {weight / (height / 100) ** 2}
+                  {(weight / (height / 100) ** 2).toFixed(2) || 0}
                 </Form.Item>
               </Col>
             </Row>

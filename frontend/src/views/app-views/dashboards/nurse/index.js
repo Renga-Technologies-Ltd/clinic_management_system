@@ -3,7 +3,7 @@ import { Row, Col, Card, Table, Menu, Tag, Button } from "antd";
 import moment from "moment";
 import DataDisplayWidget from "components/shared-components/DataDisplayWidget";
 import Flex from "components/shared-components/Flex";
-import NumberFormat from "react-number-format";
+// import NumberFormat from "react-number-format";
 import { Link } from "react-router-dom";
 import { OrderedListOutlined, EyeOutlined } from "@ant-design/icons";
 import utils from "utils";
@@ -50,11 +50,7 @@ const TodaysAppointments = () => {
     {
       title: "Appointment ID",
       dataIndex: "_id",
-      render: (_, record) => (
-        <div>
-          <NumberFormat displayType={"text"} value={record._id} />
-        </div>
-      ),
+      render: (_, record) => <div>{record.appointment_id}</div>,
     },
     {
       title: "Patient",

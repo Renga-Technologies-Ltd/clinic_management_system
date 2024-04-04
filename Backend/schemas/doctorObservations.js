@@ -23,10 +23,11 @@ const doctorObservationsSchema = new mongoose.Schema({
     type: String,
   },
   history: {
+    chief_complaints: String,
     present_illness: String,
     past_illness: String,
+    family_history: String,
     personal_history: String,
-    menstraul_history: String,
   },
   examination: {
     clinical_examination: String,

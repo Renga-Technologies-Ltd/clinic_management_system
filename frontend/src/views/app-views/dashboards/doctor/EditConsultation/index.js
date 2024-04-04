@@ -16,6 +16,12 @@ const EditConsultation = (props) => {
   const [form] = Form.useForm();
   const [formData, setFormData] = useState(null); // State to store fetched data
   const [obserId, setObservId] = useState(null); // State to store fetched data
+  const [submitLoading, setSubmitLoading] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [requestData, setRequestData] = useState(null);
+  const [doctorData, setRequestDataDoctor] = useState(null);
+  const [patientData, setRequestDataPatient] = useState(null);
+  const [appointmentRecords, setAppointmentRecords] = useState(null);
 
   useEffect(() => {
     const api = `${base_apiUrl}/getApprecords/${appointment_id}`;
@@ -38,7 +44,19 @@ const EditConsultation = (props) => {
         message.error("Failed to fetch data from the server.");
       }
     };
-
+    const fetchAppointmentData = async () => {
+      try {
+        const response = await fetch(
+          `${base_apiUrl}/appointment/${appointment_id}`
+        );
+        const data = await response.json();
+        setAppointmentRecords(data.appointment);
+        //setLoading(false); // Mark loading as false after data is fetched
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+    fetchAppointmentData();
     fetchData(); // Call the fetchData function when the component mounts
   }, [form]);
 
@@ -56,8 +74,12 @@ const EditConsultation = (props) => {
       if (response.ok) {
         const data = await response.json();
         message.success(data.message);
+        const { observations, patient, doctor } = data;
         // Optionally, update the local state with the updated data
         setFormData(data);
+        console.log(observations);
+        // showModal(observations, patient, doctor);
+        goBack();
       } else {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
@@ -68,13 +90,13 @@ const EditConsultation = (props) => {
   };
   const [activeTab, setActiveTab] = useState("1");
 
-  // const showModal = (postData, patient, doctor) => {
-  //   setModalVisible(true);
-  //   setRequestData(postData);
-  //   setRequestDataDoctor(doctor);
-  //   setRequestDataPatient(patient);
-  //   console.log(postData); // Set the data received from the API to state
-  // };
+  const showModal = (postData, patient, doctor) => {
+    setModalVisible(true);
+    setRequestData(postData);
+    setRequestDataDoctor(doctor);
+    setRequestDataPatient(patient);
+    console.log(postData); // Set the data received from the API to state
+  };
 
   const goBack = () => {
     navigate(`/app/dashboards/doctor`);
@@ -82,7 +104,7 @@ const EditConsultation = (props) => {
 
   const hideModal = () => {
     goBack();
-    // setModalVisible(false);
+    setModalVisible(false);
   };
 
   const printDocument = () => {
@@ -114,8 +136,11 @@ const EditConsultation = (props) => {
   return (
     <>
       <Form
+        layout="vertical"
         form={form}
         onFinish={onFinish}
+        // name="advanced_search"
+        className="ant-advanced-search-form"
         initialValues={formData} // Set initial form values with fetched data
       >
         <PageHeaderAlt className="border-bottom" overlap>
@@ -207,7 +232,7 @@ const EditConsultation = (props) => {
         </div>
         <Modal
           title="Radiology Requests Summary"
-          // visible={modalVisible}
+          visible={modalVisible}
           onCancel={hideModal}
           footer={[
             <Button key="close" onClick={hideModal}>
@@ -219,7 +244,13 @@ const EditConsultation = (props) => {
           ]}
         >
           {/* Pass requestData as props to DocumentTemplate */}
-          <DocumentTemplate formData={form.getFieldsValue()} />
+          <DocumentTemplate
+            formData={form.getFieldsValue()}
+            requestData={requestData}
+            patientData={patientData}
+            doctorData={doctorData}
+            pagedata={appointmentRecords}
+          />
         </Modal>
       </Form>
     </>

@@ -293,11 +293,27 @@ const patientController = {
         },
         { new: true }
       );
+      const appointment = observations.appointment;
+
+      const appointmentDetails = await Appointment.findById(
+        appointment
+      ).populate(["patient", "doctor"]);
+      const { patient, doctor } = appointment;
+      // console.log("Appointment details:", appointment);
+
+      // const {
+      //   _id: doctor_id,
+      //   profile: { firstName: doctorFirstName, lastName: doctorLastName },
+      // } = doctor;
+
       console.log("Observations updated successfully:", observations);
 
-      res
-        .status(200)
-        .json({ message: "Observations updated successfully", observations });
+      res.status(200).json({
+        message: "Observations updated successfully",
+        patient, // Include patient details in response
+        doctor, // Include doctor details in response
+        observations,
+      });
     } catch (error) {
       console.error("Error updating observations:", error);
       res.status(500).json({ message: "Internal Server Error" });

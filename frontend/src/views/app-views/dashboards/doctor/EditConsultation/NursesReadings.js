@@ -99,7 +99,7 @@ const NurseReading = (data) => {
             {/* Add more patient details as needed */}
           </>
         ) : (
-          <p>No patient details available</p>
+          <p>Triage Data not available</p>
         )}
       </Col>
     </Row>

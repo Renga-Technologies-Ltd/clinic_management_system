@@ -67,12 +67,12 @@ const Diagnosis = (data) => {
           <Row gutter={16}>
             <Col xs={24} sm={24} md={24}>
               <Form.Item
-                label="Investigations advice"
+                label="Investigations Advice"
                 name={["diagnosis", "investigations_advice"]}
               >
                 <TextArea
                   rows={6}
-                  placeholder="Investigations advice"
+                  placeholder="Investigations Advice"
                   type="text"
                 />
               </Form.Item>
@@ -81,10 +81,10 @@ const Diagnosis = (data) => {
           <Row gutter={16}>
             <Col xs={24} sm={24} md={24}>
               <Form.Item
-                label="Final diagnosis"
+                label="Final Diagnosis"
                 name={["diagnosis", "final_diagnosis"]}
               >
-                <TextArea rows={6} placeholder="Final diagnosis" type="text" />
+                <TextArea rows={6} placeholder="Final Diagnosis" type="text" />
               </Form.Item>
             </Col>
           </Row>

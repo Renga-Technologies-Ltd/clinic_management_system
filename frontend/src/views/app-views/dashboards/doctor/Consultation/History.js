@@ -26,7 +26,7 @@ const History = (data) => {
   return (
     <Row gutter={16}>
       <Col xs={24} sm={24} md={17}>
-      <Card title="Patient Details">
+        <Card title="Patient Details">
           {appointmentRecords?.patient ? (
             // Access nested properties correctly
             <>
@@ -52,7 +52,17 @@ const History = (data) => {
           <Row gutter={16}>
             <Col xs={24} sm={24} md={24}>
               <Form.Item
-                label="History of present illness"
+                label="Chief Complaints"
+                name={["history", "chief_complaints"]}
+              >
+                <TextArea rows={6} placeholder="Chief Complaints" type="text" />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col xs={24} sm={24} md={24}>
+              <Form.Item
+                label="History of Present Illness"
                 name={["history", "present_illness"]}
               >
                 <TextArea
@@ -66,14 +76,24 @@ const History = (data) => {
           <Row gutter={16}>
             <Col xs={24} sm={24} md={24}>
               <Form.Item
-                label="History of past illness"
+                label="History of Past Illness"
                 name={["history", "past_illness"]}
               >
                 <TextArea
                   rows={6}
-                  placeholder="History of past illness"
+                  placeholder="History of Past Illness"
                   type="text"
                 />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col xs={24} sm={24} md={24}>
+              <Form.Item
+                label="Family History"
+                name={["history", "family_history"]}
+              >
+                <TextArea rows={6} placeholder="Personal History" type="text" />
               </Form.Item>
             </Col>
           </Row>
@@ -84,16 +104,6 @@ const History = (data) => {
                 name={["history", "personal_history"]}
               >
                 <TextArea rows={6} placeholder="Personal History" type="text" />
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row gutter={16}>
-            <Col xs={24} sm={24} md={24}>
-              <Form.Item
-                label="Menstrual History"
-                name={["history", "menstraul_history"]}
-              >
-                <TextArea rows={6} placeholder="Menstral History" type="text" />
               </Form.Item>
             </Col>
           </Row>

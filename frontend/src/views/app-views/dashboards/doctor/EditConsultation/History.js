@@ -29,6 +29,7 @@ const History = (data) => {
   if (loading) {
     return <div>Loading...</div>; // Render a loading indicator while data is being fetched
   }
+  console.log(initialValues);
 
   return (
     <Row gutter={16}>
@@ -59,7 +60,18 @@ const History = (data) => {
           <Row gutter={16}>
             <Col xs={24} sm={24} md={24}>
               <Form.Item
-                label="History of present illness"
+                label="Chief Complaints"
+                name={["history", "chief_complaints"]}
+                initialValue={initialValues?.chief_complaints}
+              >                
+                <TextArea rows={6} placeholder="Chief Complaints" type="text" />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col xs={24} sm={24} md={24}>
+              <Form.Item
+                label="History of Present Illness"
                 name={["history", "present_illness"]}
                 initialValue={initialValues?.present_illness}
               >
@@ -74,7 +86,7 @@ const History = (data) => {
           <Row gutter={16}>
             <Col xs={24} sm={24} md={24}>
               <Form.Item
-                label="History of past illness"
+                label="History of Past Illness"
                 name={["history", "past_illness"]}
                 initialValue={initialValues?.past_illness}
               >
@@ -89,22 +101,22 @@ const History = (data) => {
           <Row gutter={16}>
             <Col xs={24} sm={24} md={24}>
               <Form.Item
-                label="Personal History"
-                name={["history", "personal_history"]}
-                initialValue={initialValues?.personal_history}
+                label="Family History"
+                name={["history", "family_history"]}
+                initialValue={initialValues?.family_history}
               >
-                <TextArea rows={6} placeholder="Personal History" type="text" />
+                <TextArea rows={6} placeholder="Family HistorY" type="text" />
               </Form.Item>
             </Col>
           </Row>
           <Row gutter={16}>
             <Col xs={24} sm={24} md={24}>
               <Form.Item
-                label="Menstrual History"
-                name={["history", "menstraul_history"]}
-                initialValue={initialValues?.menstraul_history}
+                label="Personal History"
+                name={["history", "personal_history"]}
+                initialValue={initialValues?.personal_history}
               >
-                <TextArea rows={6} placeholder="Menstral History" type="text" />
+                <TextArea rows={6} placeholder="Personal History" type="text" />
               </Form.Item>
             </Col>
           </Row>
