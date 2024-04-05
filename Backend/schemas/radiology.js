@@ -9,11 +9,11 @@ const radiologyRequestSchema = new mongoose.Schema(
     },
     request_id: {
       type: String,
-      required: true,
+      required: false,
     },
     description: {
       type: String,
-      required: true,
+      required: false,
     },
     // Add other fields as needed
   },

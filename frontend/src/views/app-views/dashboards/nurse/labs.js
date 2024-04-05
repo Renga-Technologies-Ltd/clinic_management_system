@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card, Table, Tag, Button } from "antd";
+import { Card, Table, Tag, Button, message } from "antd";
 import moment from "moment";
 import NumberFormat from "react-number-format";
 import { useNavigate } from "react-router-dom";
@@ -9,8 +9,9 @@ const base_apiUrl = process.env.REACT_APP_BASE_URL;
 const LabRequest = () => {
   const [appointmentRecords, setAppointmentRecords] = useState(null);
   const navigate = useNavigate();
-  const handlePayment = (appointmentId) => {
-    navigate(`/app/apps/patient/pay-appointment/${appointmentId}`);
+  const handleLab = (appointmentId) => {
+    message.info("Attending to patient");
+    navigate(`/app/apps/patient/handlelab/${appointmentId}`);
   };
   const tableColumns = [
     {
@@ -26,7 +27,7 @@ const LabRequest = () => {
       dataIndex: "appointmentTime",
       sorter: (a, b) => utils.antdTableSorter(a, b, "appointmentTime"),
       render: (appointmentTime) => (
-        <span>{moment(appointmentTime).format("MMMM Do YYYY, h:mm a")}</span>
+        <span>{moment(appointmentTime).format("MMMM Do YYYY, h:mm")}</span>
       ),
     },
     {
@@ -39,8 +40,9 @@ const LabRequest = () => {
         </span>
       ),
     },
+
     {
-      title: "Payment Status",
+      // title: "Payment Status",
       dataIndex: "paid",
       key: "paid",
       render: (paid, record) => (
@@ -48,8 +50,20 @@ const LabRequest = () => {
           {paid ? (
             <Tag color="green">Paid</Tag>
           ) : (
-            <Button onClick={() => handlePayment(record.appointment._id)}>
-              Pay Now
+            <Tag color="red">Not Paid</Tag>
+          )}
+        </>
+      ),
+    },
+    {
+      dataIndex: "labResults",
+      render: (labResults, record) => (
+        <>
+          {labResults ? (
+            <Tag color="green">Patient attended to</Tag>
+          ) : (
+            <Button onClick={() => handleLab(record._id)}>
+              Attend to patient
             </Button>
           )}
         </>

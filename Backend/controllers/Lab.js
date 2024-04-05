@@ -26,22 +26,58 @@ const labController = {
   },
   addLabResults: async (req, res, next) => {
     try {
+      const { results, testType, id, description } = req.body;
+
+      // Construct the updated labResults object
+      const labResults = { results, testType, description };
+      console.log(labResults);
+      console.log("ID:", id);
+
+      // Update the labResults field in the document
+      const newResults = await Lab.findByIdAndUpdate(
+        id, // Assuming id is the _id of the document to be updated
+        { $set: { labResults } }, // Use $set operator to only update the labResults field
+        { new: true }
+      );
+
+      console.log("New results:", newResults);
+
+      // Send response with updated labResults
+      res.status(201).json({
+        message: "Lab results added successfully",
+        labResults: newResults.labResults,
+      });
     } catch (error) {
       console.error("Error adding lab results:", error);
       res.status(500).json({ message: "Internal Server Error" });
     }
   },
+
   getLabResults: async (req, res, next) => {
     try {
       const appoinment_id = req.params.id;
+      console.log("Appointment ID:", appoinment_id);
       const labResults = await Lab.find({ appointment: appoinment_id });
-      console.log("Lab results:", labResults);
+      console.log("Lab results: ", labResults);
       res.status(200).json({ labResults });
     } catch (error) {
       console.error("Error getting lab results:", error);
       res.status(500).json({ message: "Internal Server Error" });
     }
   },
+  getLabResultsbyId: async (req, res, next) => {
+    try {
+      const id = req.params.id;
+      // console.log("Appointment ID:", id);
+      const labResults = await Lab.findById(id);
+      console.log("Lab results: ", labResults);
+      res.status(200).json({ labResults });
+    } catch (error) {
+      console.error("Error getting lab results:", error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  },
+
   getLabRequest: async (req, res, next) => {
     try {
       const todayStart = new Date();
@@ -49,16 +85,21 @@ const labController = {
 
       const todayEnd = new Date();
       todayEnd.setHours(23, 59, 59, 999);
-      // const { appointment_id } = req.body;
+
       const labRequest = await Lab.find({
         createdAt: {
           $gte: todayStart,
           $lt: todayEnd,
         },
+      }).populate({
+        path: "appointment",
+        populate: { path: "patient" },
       });
+
+      console.log("Lab requests:", labRequest);
       res.status(200).json({ labRequest });
     } catch (error) {
-      console.error("Error getting lab request:", error);
+      console.error("Error getting lab requests:", error);
       res.status(500).json({ message: "Internal Server Error" });
     }
   },

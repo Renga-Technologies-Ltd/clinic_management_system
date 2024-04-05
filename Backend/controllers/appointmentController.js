@@ -143,6 +143,23 @@ const appointmentController = {
       res.status(500).json({ message: error });
     }
   },
+  getRaiologyRecords: async (req, res, next) => {
+    try {
+      const appointment_id = req.params.id;
+      console.log("Appointment ID:", appointment_id);
+      const radiologyRecords = await RadiologyRequest.find({
+        appointmentId: appointment_id,
+      });
+      console.log("Radiology records:", radiologyRecords);
+      res.status(200).json({
+        radiologyRecords,
+        message: "Radiology records fetched successfully",
+      });
+    } catch (error) {
+      console.error("Error fetching radiology records:", error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  },
   fetchAppointments: async (req, res, next) => {
     try {
       const todayAppointments = await Appointment.find({})
@@ -204,7 +221,10 @@ const appointmentController = {
       const appointment = await Appointment.findById(appointment_id)
         .populate("patient", "firstName lastName patient_id") // Replace "firstName" with the actual field you want to retrieve from the Patient model
         .populate("doctor", "profile.firstName profile.lastName user_id") // Access subfields in the profile object
-        .populate("bookedBy", "profile.firstName profile.lastName profile.user_id"); // Access subfields in the profile object
+        .populate(
+          "bookedBy",
+          "profile.firstName profile.lastName profile.user_id"
+        ); // Access subfields in the profile object
 
       if (!appointment) {
         return res.status(404).json({ message: "Appointment not found" });

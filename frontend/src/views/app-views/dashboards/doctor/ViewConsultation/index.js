@@ -6,6 +6,8 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import NurseReading from "../Consultation/NursesReadings";
+import LabResults from "./LabResults";
+import RadiologyResults from "./RadiologyResults";
 // import { use } from "i18next";
 const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
@@ -229,6 +231,12 @@ const ViewConsultation = (props) => {
         <Col xs={24} sm={24} md={7}>
           <Card title="Triage Results">
             <NurseReading appointment_id={appointment_id} />
+          </Card>
+          <Card title="Lab Results">
+            <LabResults appointment_id={appointment_id} />
+          </Card>
+          <Card title="Radiology Results">
+            <RadiologyResults appointment_id={appointment_id} />
           </Card>
         </Col>
       </Row>

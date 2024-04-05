@@ -1,4 +1,5 @@
 const Appointment = require("../schemas/appointment");
+const Lab = require("../schemas/lab");
 const Payment = require("../schemas/payment");
 const paymentController = {
   createPayment: async (req, res, next) => {
@@ -43,6 +44,12 @@ const paymentController = {
         paymentMethod,
       });
       await newPayment.save();
+      if (paymentType === "Lab") {
+        await Lab.findOneAndUpdate(
+          { appointment: appointment },
+          { $set: { paid: true } }
+        );
+      }
       await Appointment.findByIdAndUpdate(appointment, {
         $set: { paid: true },
       });

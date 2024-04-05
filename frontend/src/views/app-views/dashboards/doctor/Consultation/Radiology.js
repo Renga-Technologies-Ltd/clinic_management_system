@@ -17,11 +17,9 @@ const RadilogyRequest = (data) => {
     setModalVisible(true);
     setRequestData(postData); // Set the data received from the API to state
   };
-
   const hideModal = () => {
     setModalVisible(false);
   };
-
   const sendRequest = async (event) => {
     event.preventDefault(); // Prevent default form submission behavior
     setLoading(true);
@@ -29,7 +27,6 @@ const RadilogyRequest = (data) => {
       const values = await form.validateFields();
       // Include appointment_id in the form values
       const formData = { ...values, appointment_id };
-
       const apiUrl = `${base_apiUrl}/radiology`;
       const requestOptions = {
         method: "POST",

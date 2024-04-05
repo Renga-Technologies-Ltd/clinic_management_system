@@ -70,6 +70,7 @@ router.get(
   appointmentController.findAppointment
 );
 router.post("/radiology", appointmentController.radiologyRequest);
+router.get("/radiology/:id", appointmentController.getRaiologyRecords);
 //get todays appointments
 router.get("/allAppointments", appointmentController.fetchAllAppointments);
 //get all appointments
@@ -92,9 +93,11 @@ router.get("/getPayment/:receipt", paymentController.getPayment);
 router.get("/getpaymentperUser/:user_id", paymentController.getPaymentPerUser);
 
 //lab section
+// addLabResults
 router.post("/addLabRequest", labController.addLabRequest);
 router.post("/addLabResults", labController.addLabResults);
 router.get("/getLabRequest", labController.getLabRequest);
+router.get("/getLabResultsbyId/:id", labController.getLabResultsbyId);
 router.get("/getLabResults/:id", labController.getLabResults);
 router.post("/addLabTest", labController.addLabTest);
 

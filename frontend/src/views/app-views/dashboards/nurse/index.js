@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Card, Table, Menu, Tag, Button } from "antd";
+import { Row, Tabs, Col, Card, Table, Menu, Tag, Button } from "antd";
 import moment from "moment";
 import DataDisplayWidget from "components/shared-components/DataDisplayWidget";
 import Flex from "components/shared-components/Flex";
@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { OrderedListOutlined, EyeOutlined } from "@ant-design/icons";
 import utils from "utils";
 import { useNavigate } from "react-router-dom";
+import LabRequest from "./labs";
 
 const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
@@ -218,9 +219,24 @@ const NurseDashboard = () => {
         </Col>
       </Row>
       <Row gutter={16}>
-        <Col xs={24} sm={24} md={24} lg={24}>
-          <TodaysAppointments />
-        </Col>
+        <div className="container">
+          <Tabs
+            defaultActiveKey="1"
+            style={{ marginTop: 30 }}
+            items={[
+              {
+                label: "Appointments",
+                key: "1",
+                children: <TodaysAppointments />,
+              },
+              {
+                label: "Lab Requests",
+                key: "2",
+                children: <LabRequest />,
+              },
+            ]}
+          />
+        </div>
       </Row>
     </>
   );

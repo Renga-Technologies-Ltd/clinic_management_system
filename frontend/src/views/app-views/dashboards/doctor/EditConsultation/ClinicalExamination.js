@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Input, Row, Col, Card, Form, Radio, message } from "antd";
 import NurseReading from "./NursesReadings";
-import LabRequest from "./Lab";
-import LabResults from "./LabResults";
-import RadilogyRequest from "./Radiology";
+import LabResults from "../Consultation/LabResults";
+import LabRequest from "../Consultation/Lab";
+import RadilogyRequest from "../Consultation/Radiology";
+
 const { TextArea } = Input;
 const base_apiUrl = process.env.REACT_APP_BASE_URL;
 

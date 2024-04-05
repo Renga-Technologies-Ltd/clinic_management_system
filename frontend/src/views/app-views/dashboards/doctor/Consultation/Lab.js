@@ -6,7 +6,7 @@ const { TextArea } = Input;
 const LabRequest = ({ sendRequest, form, setShowLabResults }) => {
   // const appointment_id = data.appointment_id;
   const [submitLoading, setSubmitLoading] = useState(false);
-  // 
+  //
 
   // const sendRequest = async () => {
   //   try {
@@ -57,16 +57,7 @@ const LabRequest = ({ sendRequest, form, setShowLabResults }) => {
           </Form.Item>
         </Col>
         <Col xs={24} sm={24} md={24}>
-          <Form.Item
-            label="Test Description"
-            name={"testDescription"}
-            rules={[
-              {
-                required: true,
-                message: "Describe the test to be done",
-              },
-            ]}
-          >
+          <Form.Item label="Test Description" name={"testDescription"}>
             <TextArea
               placeholder="Describe the test to be done"
               type="number"

@@ -43,7 +43,7 @@ const DisplayButtons = () => (
           avatarSize={55}
         />
       </Link>
-      <Link to="/billing-page">
+      {/* <Link to="/billing-page">
         <DataDisplayWidget
           icon={<ReconciliationOutlined />}
           title="Bills and Payments"
@@ -51,7 +51,7 @@ const DisplayButtons = () => (
           vertical={true}
           avatarSize={55}
         />
-      </Link>
+      </Link> */}
     </Col>
   </Row>
 );
@@ -64,6 +64,7 @@ const ReceptionDashboard = () => {
           <DisplayButtons />
         </Col>
       </Row>
+      {/* <br></br> */}
       <Row gutter={16}>
         <div className="container">
           <Tabs

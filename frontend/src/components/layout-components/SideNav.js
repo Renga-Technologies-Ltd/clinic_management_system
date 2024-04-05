@@ -16,7 +16,7 @@ export const SideNav = ({navCollapsed, routeInfo, hideGroupTitle, currentTheme }
   return (
     <Sider 
       css={css`
-        height: calc(100vh - ${TEMPLATE.HEADER_HEIGHT}px); 
+        height: calc(110vh - ${TEMPLATE.HEADER_HEIGHT}px); 
         position: fixed !important;
         top: ${TEMPLATE.HEADER_HEIGHT}px;
         box-shadow: 0 1px 4px -1px rgba(0,0,0,.15);
