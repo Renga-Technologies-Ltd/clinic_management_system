@@ -24,6 +24,17 @@ const getUserRole = () => {
   // Default role if user details are not available or roles are not defined
   return "Admin";
 };
+const dashBoardnav = [
+  {
+    key: "apps",
+    path: `${APP_PREFIX_PATH}/apps`,
+    title: "sidenav.apps-nav",
+    icon: AppstoreOutlined,
+    breadcrumb: false,
+    isGroupTitle: true,
+    submenu: [],
+  },
+];
 const doctorDashboard = [
   {
     key: "dashboards-doctor",
@@ -172,6 +183,7 @@ const filteredExtraNavTree = extraNavTree.filter((item) => {
 });
 
 const navigationConfig = [
+  ...dashBoardnav,
   ...receptionDashBoardNavTree,
   ...nurseDashBoardNavTree,
   ...doctorDashBoardNavTree,
