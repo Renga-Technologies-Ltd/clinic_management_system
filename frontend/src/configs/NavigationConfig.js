@@ -124,14 +124,14 @@ const extraNavTree = [
         breadcrumb: true,
         submenu: [
           // to be added later
-          {
-            key: "extra-pages-profile",
-            path: `${APP_PREFIX_PATH}/pages/profile`,
-            title: "sidenav.pages.profile",
-            icon: "",
-            breadcrumb: false,
-            submenu: [],
-          },
+          // {
+          //   key: "extra-pages-profile",
+          //   path: `${APP_PREFIX_PATH}/pages/profile`,
+          //   title: "sidenav.pages.profile",
+          //   icon: "",
+          //   breadcrumb: false,
+          //   submenu: [],
+          // },
           {
             key: "extra-pages-list",
             path: `${APP_PREFIX_PATH}/pages/user-list`,
