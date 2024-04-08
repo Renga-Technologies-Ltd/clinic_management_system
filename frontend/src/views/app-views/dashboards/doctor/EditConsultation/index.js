@@ -342,14 +342,14 @@ const DocumentTemplate = ({ requestData, patientData, doctorData }) => {
         </div>
         <h3>Details</h3>
         <div className="mt-3">
-          <strong>
+          {/* <strong>
             <h4>Treatment Plan:</h4>
           </strong>
           <p>
             {" "}
             <pre>{requestData.treatment.treatment_plan}</pre>
           </p>{" "}
-          <br />
+          <br /> */}
           <strong>
             <h4>Prescription:</h4>
           </strong>
