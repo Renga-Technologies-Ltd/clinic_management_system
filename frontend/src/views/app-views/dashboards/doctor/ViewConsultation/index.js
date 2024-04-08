@@ -178,6 +178,9 @@ const ViewConsultation = (props) => {
           </Card>
           <Card title="Medical Information">
             <Card title="History">
+              <h5>Chief Complaint</h5>
+              <p>{observations?.history?.chief_complaints}</p>
+              <hr></hr>
               <h5>Present Illness</h5>
               <p>{observations?.history?.present_illness}</p>
               <hr></hr>
