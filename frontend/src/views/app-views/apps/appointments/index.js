@@ -89,16 +89,17 @@ const AppointmentList = () => {
       sorter: (a, b) => utils.antdTableSorter(a, b, "appointmentStatus"),
       render: (text, record) => {
         const { doctorReadings, nurseReadings } = record;
-
         if (!doctorReadings && !nurseReadings) {
           return <Tag color="red">Not Attended To</Tag>;
+        } else if (!nurseReadings && doctorReadings) {
+          return <Tag color="blue">Triage not done</Tag>;
+        } else if (doctorReadings) {
         } else if (nurseReadings && !doctorReadings) {
           return <Tag color="blue">Waiting for Doctor</Tag>;
-        } else if (doctorReadings && nurseReadings) {
+        } else if (doctorReadings) {
           return <Tag color="green">Completed</Tag>;
         }
-
-        return null;
+        return <Tag color="green">Completed</Tag>;
       },
     },
     {
