@@ -142,7 +142,11 @@ const TodaysAppointments = () => {
       sorter: (a, b) => utils.antdTableSorter(a, b, "doctor"),
       render: (record) => (
         <>
-          <Button onClick={() => viewDetails(record._id)}>Attend to</Button>
+          {record.nurseReadings ? (
+            <Tag color="green">Attended to</Tag>
+          ) : (
+            <Button onClick={() => viewDetails(record._id)}>Attend to</Button>
+          )}
         </>
       ),
     },
