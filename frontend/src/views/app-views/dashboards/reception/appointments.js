@@ -111,7 +111,7 @@ const TodaysAppointments = () => {
         const todayStart = moment().startOf("day"); // Get the start of today
         const todayEnd = moment().endOf("day"); // Get the end of today
 
-        const response = await fetch(`${base_apiUrl}/allAppointments`);
+        const response = await fetch(`${base_apiUrl}/Appointments`);
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
