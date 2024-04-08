@@ -60,18 +60,7 @@ const appointmentController = {
   },
   fetchAllAppointments: async (req, res, next) => {
     try {
-      const todayStart = new Date();
-      todayStart.setHours(0, 0, 0, 0);
-
-      const todayEnd = new Date();
-      todayEnd.setHours(23, 59, 59, 999);
-
-      const todayAppointments = await Appointment.find({
-        createdAt: {
-          $gte: todayStart,
-          $lt: todayEnd,
-        },
-      })
+      const todayAppointments = await Appointment.find()
         .populate({
           path: "patient",
           model: "Patient",

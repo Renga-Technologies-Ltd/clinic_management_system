@@ -108,17 +108,23 @@ const TodaysAppointments = () => {
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
+        const todayStart = moment().startOf("day"); // Get the start of today
+        const todayEnd = moment().endOf("day"); // Get the end of today
+
         const response = await fetch(`${base_apiUrl}/allAppointments`);
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const data = await response.json();
         if (Array.isArray(data.appointments)) {
-          setAppointmentRecords(data.appointments);
+          // Filter appointments for today's date
+          const todayAppointments = data.appointments.filter((appointment) =>
+            moment(appointment.appointmentTime).isBetween(todayStart, todayEnd)
+          );
+          setAppointmentRecords(todayAppointments);
         } else {
           console.error("Invalid data structure:", data);
         }
-        console.log(data.appointments);
       } catch (error) {
         console.error("Error fetching appointments:", error.message);
         // You can set an error state or show a notification to the user
