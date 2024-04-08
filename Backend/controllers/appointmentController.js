@@ -67,7 +67,7 @@ const appointmentController = {
       todayEnd.setHours(23, 59, 59, 999);
 
       const todayAppointments = await Appointment.find({
-        appointmentTime: {
+        createdAt: {
           $gte: todayStart,
           $lt: todayEnd,
         },
