@@ -7,6 +7,7 @@ import History from "./History";
 import Diagnosis from "./Diagnosis";
 import ClinicalExamination from "./ClinicalExamination";
 import Treatment from "./Treatment";
+import moment from "moment";
 import { useNavigate } from "react-router-dom";
 const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
@@ -22,6 +23,14 @@ const EditConsultation = (props) => {
   const [doctorData, setRequestDataDoctor] = useState(null);
   const [patientData, setRequestDataPatient] = useState(null);
   const [appointmentRecords, setAppointmentRecords] = useState(null);
+
+  const showModal = (postData, patient, doctor) => {
+    setModalVisible(true);
+    setRequestData(postData);
+    setRequestDataDoctor(doctor);
+    setRequestDataPatient(patient);
+    console.log(postData); // Set the data received from the API to state
+  };
 
   useEffect(() => {
     const api = `${base_apiUrl}/getApprecords/${appointment_id}`;
@@ -58,7 +67,7 @@ const EditConsultation = (props) => {
     };
     fetchAppointmentData();
     fetchData(); // Call the fetchData function when the component mounts
-  }, [form]);
+  }, []);
 
   const onFinish = async (values) => {
     try {
@@ -73,30 +82,26 @@ const EditConsultation = (props) => {
       });
       if (response.ok) {
         const data = await response.json();
+        setSubmitLoading(false);
         message.success(data.message);
         const { observations, patient, doctor } = data;
         // Optionally, update the local state with the updated data
         setFormData(data);
-        console.log(observations);
+        console.log("new doctors patient", observations);
+        showModal(observations, patient, doctor);
+        // console.log(observations);
         // showModal(observations, patient, doctor);
-        goBack();
+        // goBack();
       } else {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
     } catch (error) {
+      setSubmitLoading(true);
       console.error("Error:", error);
-      message.error("Failed to update data on the server.");
+      message.error("Failed to submit the form. Please try again.");
     }
   };
   const [activeTab, setActiveTab] = useState("1");
-
-  const showModal = (postData, patient, doctor) => {
-    setModalVisible(true);
-    setRequestData(postData);
-    setRequestDataDoctor(doctor);
-    setRequestDataPatient(patient);
-    console.log(postData); // Set the data received from the API to state
-  };
 
   const goBack = () => {
     navigate(`/app/dashboards/doctor`);
@@ -165,6 +170,7 @@ const EditConsultation = (props) => {
                       type="primary"
                       onClick={() => onFinish()}
                       htmlType="submit"
+                      loading={submitLoading}
                     >
                       Save
                     </Button>
@@ -259,6 +265,10 @@ const EditConsultation = (props) => {
 
 // Component to display the document template
 const DocumentTemplate = ({ requestData, patientData, doctorData }) => {
+  console.log("requested data", requestData);
+  console.log(patientData);
+  console.log(doctorData);
+
   const formatDate = (dateString) => {
     const options = {
       day: "2-digit",
@@ -312,36 +322,65 @@ const DocumentTemplate = ({ requestData, patientData, doctorData }) => {
             <h2 className="mb-1 font-weight-semibold">
               Appointment: {patientData.appointment_id}
             </h2>
-            <p>Date and Time: {formatDate(requestData.createdAt)}</p>
-            <hr></hr>
-            <h3>Patient Details</h3>
-            <p>Name: {patientData.name}</p>
-            <p>Phone: {patientData.phoneNumber}</p>
-            <p>Email: {patientData.emailAdress}</p>
-            <p>DOB: {patientData.dob}</p>
-            <p>Gender: {patientData.gender}</p>
+            {/* <p>Date and Time: {formatDate(requestData.createdAt)}</p> */}
+            <hr />
+            <div style={{ display: "flex" }}>
+              <div style={{ flex: 1 }}>
+                <p>Name: {patientData.name}</p>
+                <p>
+                  DOB: {moment(patientData.dob).format("Do MMMM YYYY")},{" "}
+                  {patientData.gender}
+                </p>
+              </div>
+              <div style={{ flex: 1, textAlign: "left" }}>
+                <p>Phone: {patientData.phoneNumber}</p>
+                <p>Email: {patientData.emailAdress}</p>
+              </div>
+            </div>
           </div>
           <hr></hr>
         </div>
         <h3>Details</h3>
         <div className="mt-3">
           <strong>
-            <h4>Treatment plan:</h4>
+            <h4>Treatment Plan:</h4>
           </strong>
-          <p>{requestData.treatment.treatment_plan}</p> <br />
-          <strong>
-            <h4>Prescription</h4>
-          </strong>
-          <p>{requestData.treatment.prescription}</p>
+          <p>
+            {" "}
+            <pre>{requestData.treatment.treatment_plan}</pre>
+          </p>{" "}
           <br />
           <strong>
-            <h4>Treatment plan:</h4>
+            <h4>Prescription:</h4>
           </strong>
-          <p>{requestData.treatment.follow_up_advice}</p>
+          <p>
+            <pre>{requestData.treatment.prescription}</pre>
+          </p>
+          <br />
+          <strong>
+            <h4>
+              <pre>Follow Up Advice:</pre>
+            </h4>
+          </strong>
+          <p>
+            <pre>{requestData.treatment.follow_up_advice}</pre>
+          </p>
           <br />
           <hr />
         </div>
-        Doctor's Name: {doctorData.name}
+        <div className="mt-3 text-right">
+          <div style={{ display: "flex" }}>
+            <div style={{ flex: 1 }}>
+              <img src="/img/signature.png" alt="Doctors Signature" />
+              <br />
+              {doctorData.name}
+              <p>(Consultant Physician)</p>
+            </div>
+            <div style={{ flex: 1, textAlign: "right" }}>
+              <div style={{ width: "100%" }}></div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

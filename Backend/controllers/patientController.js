@@ -298,20 +298,25 @@ const patientController = {
       const appointmentDetails = await Appointment.findById(
         appointment
       ).populate(["patient", "doctor"]);
-      const { patient, doctor } = appointment;
-      // console.log("Appointment details:", appointment);
-
-      // const {
-      //   _id: doctor_id,
-      //   profile: { firstName: doctorFirstName, lastName: doctorLastName },
-      // } = doctor;
-
-      console.log("Observations updated successfully:", observations);
+      const { patient, doctor } = appointmentDetails; // Fix here
+      // console.log("Appointment details:", appointmentDetails);
+      // console.log("Observations updated successfully:", observations);
 
       res.status(200).json({
         message: "Observations updated successfully",
-        patient, // Include patient details in response
-        doctor, // Include doctor details in response
+        patient: {
+          id: patient._id,
+          patient_id: patient.patient_id,
+          name: `${patient.firstName} ${patient.lastName}`,
+          dob: patient.dob,
+          phoneNumber: patient.phoneNumber,
+          gender: patient.gender,
+          emailAddress: patient.emailAddress,
+        }, // Include patient details in response
+        doctor: {
+          id: doctor._id,
+          name: `${doctor.profile.firstName} ${doctor.profile.lastName}`,
+        }, // Include doctor details in response
         observations,
       });
     } catch (error) {

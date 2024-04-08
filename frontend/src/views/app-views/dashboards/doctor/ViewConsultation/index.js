@@ -179,54 +179,85 @@ const ViewConsultation = (props) => {
           <Card title="Medical Information">
             <Card title="History">
               <h5>Chief Complaint</h5>
-              <p>{observations?.history?.chief_complaints}</p>
+              <p>
+                {" "}
+                <pre>{observations?.history?.chief_complaints}</pre>
+              </p>
               <hr></hr>
               <h5>Present Illness</h5>
-              <p>{observations?.history?.present_illness}</p>
+              <p>
+                {" "}
+                <pre>{observations?.history?.present_illness}</pre>
+              </p>
               <hr></hr>
               <h5>Past Illness</h5>
-              <span>{observations?.history?.past_illness}</span>
+              <span>
+                <pre>{observations?.history?.past_illness}</pre>
+              </span>
+              <hr></hr>
+              <h5>Family History</h5>
+              <span>
+                <pre>{observations?.history?.family_history}</pre>
+              </span>
               <hr></hr>
               <h5>Personal History</h5>
-              <span>{observations?.history?.personal_history}</span>
-
+              <span>
+                <pre>{observations?.history?.personal_history}</pre>
+              </span>
               <hr></hr>
             </Card>
             <Card title="Examination">
               <h5>Clinical Examination</h5>
-              <span>{observations?.examination?.clinical_examination}</span>
-
+              <span>
+                <pre>{observations?.examination?.clinical_examination}</pre>
+              </span>
               <hr></hr>
               <h5>General Examination</h5>
-              <span>{observations?.examination?.general_examination}</span>
+              <span>
+                {" "}
+                <pre>{observations?.examination?.general_examination}</pre>
+              </span>
 
               <hr></hr>
               <h5>Systemic Examination</h5>
-              <span>{observations?.examination?.systemic_examination}</span>
+              <span>
+                <pre> {observations?.examination?.systemic_examination}</pre>
+              </span>
               <hr></hr>
             </Card>
             <Card title="Diagnosis">
               <h5>Provisional Diagnosis</h5>
-              <span>{observations?.diagnosis?.provisional}</span>
+              <span>
+                <pre>{observations?.diagnosis?.provisional}</pre>
+              </span>
               <hr></hr>
               <h5>Investigations Advice</h5>
-              <span>{observations?.diagnosis?.investigations_advice}</span>
+              <span>
+                <pre>{observations?.diagnosis?.investigations_advice}</pre>
+              </span>
 
               <hr></hr>
               <h5>Final Diagnosis</h5>
-              <span>{observations?.diagnosis?.final_diagnosis}</span>
+              <span>
+                <pre>{observations?.diagnosis?.final_diagnosis}</pre>
+              </span>
               <hr></hr>
             </Card>
             <Card title="Treatment">
               <h5>Treatment Plan</h5>
-              <span>{observations?.treatment?.treatment_plan}</span>
+              <span>
+                <pre>{observations?.treatment?.treatment_plan}</pre>
+              </span>
               <hr></hr>
               <h5>Prescription</h5>
-              <span>{observations?.treatment?.prescription}</span>
-
+              <span>
+                <pre>{observations?.treatment?.prescription}</pre>
+              </span>
               <hr></hr>
               <h5>Follow up Advice</h5>
-              <span>{observations?.treatment?.follow_up_advice}</span>
+              <span>
+                <pre>{observations?.treatment?.follow_up_advice}</pre>
+              </span>
               <hr></hr>
             </Card>
           </Card>
@@ -235,10 +266,10 @@ const ViewConsultation = (props) => {
           <Card title="Triage Results">
             <NurseReading appointment_id={appointment_id} />
           </Card>
-          <Card title="Lab Results">
+          <Card title="Internal Investigation Results">
             <LabResults appointment_id={appointment_id} />
           </Card>
-          <Card title="Radiology Results">
+          <Card title="External Investigation">
             <RadiologyResults appointment_id={appointment_id} />
           </Card>
         </Col>
@@ -247,93 +278,122 @@ const ViewConsultation = (props) => {
   );
 };
 
-// const DocumentTemplate = ({ requestData, patientData, doctorData }) => {
-//   const formatDate = (dateString) => {
-//     const options = {
-//       day: "2-digit",
-//       month: "2-digit",
-//       year: "numeric",
-//       hour: "2-digit",
-//       minute: "2-digit",
-//       hour12: false, // Use 24-hour format
-//     };
-//     const date = new Date(dateString);
-//     return date.toLocaleString("en-GB", options);
-//   };
-//   return (
-//     <div>
-//       <div className="printable-content">
-//         <div className="d-md-flex justify-content-md-between">
-//           <div
-//             style={{
-//               display: "flex",
-//               justifyContent: "space-between",
-//               alignItems: "center",
-//             }}
-//           >
-//             {/* Logo and Address */}
-//             <div style={{ width: "50%" }}>
-//               <img src="/img/logo.png" alt="" />
-//             </div>
-//             {/* Receipt Details */}
-//             <div style={{ width: "50%", textAlign: "right" }}>
-//               <p>
-//                 <span className="font-weight-semibold text-dark font-size-md">
-//                   <strong>Mahapatra Medi-Care Limited</strong>
-//                 </span>
-//                 <br />
-//                 <span>6th Floor; B Wing, Doctor's Park</span>
-//                 <br />
-//                 <span>3rd Parklands Avenue</span>
-//                 <br />
-//                 <span>P.O Box: 38158 -00628</span>
-//                 <br />
-//                 <span>Nairobi, Kenya</span>
-//                 <br />
-//                 <abbr className="text-dark" title="Phone">
-//                   Phone:
-//                 </abbr>
-//                 <span> (254)743349929</span>
-//               </p>
-//             </div>
-//           </div>
-//           <div className="mt-3 text-right">
-//             <h2 className="mb-1 font-weight-semibold">
-//               Appointment: {patientData.appointment_id}
-//             </h2>
-//             <p>Date and Time: {formatDate(requestData.createdAt)}</p>
-//             <hr></hr>
-//             <h3>Patient Details</h3>
-//             <p>Name: {patientData.name}</p>
-//             <p>Phone: {patientData.phoneNumber}</p>
-//             <p>Email: {patientData.emailAdress}</p>
-//             <p>DOB: {patientData.dob}</p>
-//             <p>Gender: {patientData.gender}</p>
-//           </div>
-//           <hr></hr>
-//         </div>
-//         <h3>Details</h3>
-//         <div className="mt-3">
-//           <strong>
-//             <h4>Treatment plan:</h4>
-//           </strong>
-//           <p>{requestData.treatment.treatment_plan}</p> <br />
-//           <strong>
-//             <h4>Prescription</h4>
-//           </strong>
-//           <p>{requestData.treatment.prescription}</p>
-//           <br />
-//           <strong>
-//             <h4>Treatment plan:</h4>
-//           </strong>
-//           <p>{requestData.treatment.follow_up_advice}</p>
-//           <br />
-//           <hr />
-//         </div>
-//         Doctor's Name: {doctorData.name}
-//       </div>
-//     </div>
-//   );
-// };
+const DocumentTemplate = ({ requestData, patientData, doctorData }) => {
+  const formatDate = (dateString) => {
+    const options = {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false, // Use 24-hour format
+    };
+    const date = new Date(dateString);
+    return date.toLocaleString("en-GB", options);
+  };
+  return (
+    <div>
+      <div className="printable-content">
+        <div className="d-md-flex justify-content-md-between">
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            {/* Logo and Address */}
+            <div style={{ width: "50%" }}>
+              <img src="/img/logo.png" alt="" />
+            </div>
+            {/* Receipt Details */}
+            <div style={{ width: "50%", textAlign: "right" }}>
+              <p>
+                <span className="font-weight-semibold text-dark font-size-md">
+                  <strong>Mahapatra Medi-Care Limited</strong>
+                </span>
+                <br />
+                <span>6th Floor; B Wing, Doctor's Park</span>
+                <br />
+                <span>3rd Parklands Avenue</span>
+                <br />
+                <span>P.O Box: 38158 -00628</span>
+                <br />
+                <span>Nairobi, Kenya</span>
+                <br />
+                <abbr className="text-dark" title="Phone">
+                  Phone:
+                </abbr>
+                <span> (254)743349929</span>
+              </p>
+            </div>
+          </div>
+          <div className="mt-3 text-right">
+            <h2 className="mb-1 font-weight-semibold">
+              Appointment: {patientData.appointment_id}
+            </h2>
+            <p>Date and Time: {formatDate(requestData.createdAt)}</p>
+            <hr />
+            <div style={{ display: "flex" }}>
+              <div style={{ flex: 1 }}>
+                <p>Name: {patientData.name}</p>
+                <p>
+                  DOB: {moment(patientData.dob).format("Do MMMM YYYY")},{" "}
+                  {patientData.gender}
+                </p>
+              </div>
+              <div style={{ flex: 1, textAlign: "left" }}>
+                <p>Phone: {patientData.phoneNumber}</p>
+                <p>Email: {patientData.emailAdress}</p>
+              </div>
+            </div>
+          </div>
+          <hr></hr>
+        </div>
+        <h3>Details</h3>
+        <div className="mt-3">
+          <strong>
+            <h4>Treatment Plan:</h4>
+          </strong>
+          <p>
+            {" "}
+            <pre>{requestData.treatment.treatment_plan}</pre>
+          </p>{" "}
+          <br />
+          <strong>
+            <h4>Prescription:</h4>
+          </strong>
+          <p>
+            <pre>{requestData.treatment.prescription}</pre>
+          </p>
+          <br />
+          <strong>
+            <h4>
+              <pre>Follow Up Advice:</pre>
+            </h4>
+          </strong>
+          <p>
+            <pre>{requestData.treatment.follow_up_advice}</pre>
+          </p>
+          <br />
+          <hr />
+        </div>
+        <div className="mt-3 text-right">
+          <div style={{ display: "flex" }}>
+            <div style={{ flex: 1 }}>
+              {doctorData.name}
+              <p>Consultant Physician</p>
+            </div>
+            <div style={{ flex: 1, textAlign: "right" }}>
+              <div style={{ width: "100%" }}>
+                <img src="/img/signature.png" alt="Doctors Signature" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default ViewConsultation;

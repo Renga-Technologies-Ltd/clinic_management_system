@@ -28,25 +28,11 @@ const AppointmentRecords = (props) => {
     fetchAppointments();
   }, [patientId]);
 
-  // const fetchUserDetails = async (userId) => {
-  //   try {
-  //     const apiUrl = `${base_apiUrl}/getUser/${userId}`;
-  //     const response = await fetch(apiUrl);
-  //     const data = await response.json();
-  //     return data;
-  //   } catch (error) {
-  //     console.error("Error fetching user details:", error);
-  //   }
-  // };
   const tableColumns = [
     {
       title: "Appointment ID",
-      dataIndex: "_id",
-      render: (_, record) => (
-        <div>
-          <NumberFormat displayType={"text"} value={record._id} />
-        </div>
-      ),
+      dataIndex: "appointment_id",
+      render: (_, record) => <div>{record.appointment_id}</div>,
     },
     {
       title: "Patient",

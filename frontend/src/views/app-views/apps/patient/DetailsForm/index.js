@@ -3,10 +3,11 @@ import PageHeaderAlt from "components/layout-components/PageHeaderAlt";
 import { Tabs } from "antd";
 import GeneralField from "./GeneralField";
 import NextOfKin from "./NextOfKin";
-import MedicalRecords from "./MedicalRecords";
+import PatientDocuments from "./MedicalRecords";
 import AppointmentRecords from "./AppointmentRecords";
 import Flex from "components/shared-components/Flex";
 import moment from "moment";
+import Patient from "..";
 const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
 const DetailsForm = (props) => {
@@ -61,9 +62,9 @@ const DetailsForm = (props) => {
               children: <NextOfKin patientData={patientData} />,
             },
             {
-              label: "Medical Records",
+              label: "Patients docomunts",
               key: "3",
-              children: <MedicalRecords patientId={patientId} />,
+              children: <PatientDocuments patientId={patientId} />,
             },
             {
               label: "Appointments",

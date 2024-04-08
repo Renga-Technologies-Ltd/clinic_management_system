@@ -278,7 +278,6 @@ const DocumentTemplate = ({ requestData, patientData, doctorData }) => {
               </div>
             </div>
           </div>
-
           <hr></hr>
         </div>
         <h3>Details</h3>
@@ -309,7 +308,17 @@ const DocumentTemplate = ({ requestData, patientData, doctorData }) => {
           <br />
           <hr />
         </div>
-        Doctor's Name: {doctorData.name}
+        <div className="mt-3 text-right">
+          <div style={{ display: "flex" }}>
+            <div style={{ flex: 1 }}>{doctorData.name}
+            <p>Consultant Physician</p></div>
+            <div style={{ flex: 1, textAlign: "right" }}>
+            <div style={{ width: "100%" }}>            
+              <img src="/img/signature.png" alt="Doctors Signature" />
+            </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

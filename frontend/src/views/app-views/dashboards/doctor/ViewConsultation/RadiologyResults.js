@@ -31,8 +31,8 @@ const RadiologyResults = (data) => {
           <>
             <p>
               <strong>Test Description</strong>{" "}
-              {`${radiologyResults.description}`}
             </p>
+            {`${radiologyResults.description}`}
           </>
         ) : (
           <p>Radiology Data not available</p>

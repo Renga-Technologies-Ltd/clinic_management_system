@@ -5,7 +5,7 @@ import utils from "utils";
 import moment from "moment";
 const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
-const MedicalRecords = (props) => {
+const PatientDocuments = (props) => {
   const { patientId } = props;
 
   const [medicalRecords, setMedicalRecords] = useState(null);
@@ -70,4 +70,4 @@ const MedicalRecords = (props) => {
   );
 };
 
-export default MedicalRecords;
+export default PatientDocuments;

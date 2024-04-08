@@ -68,7 +68,7 @@ const LabResults = (data) => {
         labRequest && labRequest.labRequest ? labRequest.labRequest : {}
       } // Set initial values here
     >
-      <Card title="Lab Results">
+      <Card title="Internal Investigation">
         <h5>Test Type:</h5>
         <p>
           <strong>
@@ -87,7 +87,7 @@ const LabResults = (data) => {
           </strong>
         </p>
       </Card>
-      <Card title="Lab Results">
+      <Card title="External Investigation">
         <Col xs={24} sm={24} md={24}>
           <Form.Item label="Describe" name={"description"}>
             <TextArea placeholder="Describe done test results" type="text" />

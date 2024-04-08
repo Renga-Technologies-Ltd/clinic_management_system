@@ -16,12 +16,8 @@ const TodaysAppointments = () => {
   const tableColumns = [
     {
       title: "Appointment ID",
-      dataIndex: "_id",
-      render: (_, record) => (
-        <div>
-          <NumberFormat displayType={"text"} value={record._id} />
-        </div>
-      ),
+      dataIndex: "appointment_id",
+      render: (_, record) => <div>{record.appointment_id}</div>,
     },
     {
       title: "Patient",
