@@ -187,7 +187,7 @@ const ViewConsultation = (props) => {
               <h5>Past Illness</h5>
               <span>{observations?.history?.past_illness}</span>
               <hr></hr>
-              <h5>Peraonal history</h5>
+              <h5>Personal History</h5>
               <span>{observations?.history?.personal_history}</span>
 
               <hr></hr>
@@ -206,7 +206,7 @@ const ViewConsultation = (props) => {
               <hr></hr>
             </Card>
             <Card title="Diagnosis">
-              <h5>Provisional</h5>
+              <h5>Provisional Diagnosis</h5>
               <span>{observations?.diagnosis?.provisional}</span>
               <hr></hr>
               <h5>Investigations Advice</h5>
@@ -221,7 +221,7 @@ const ViewConsultation = (props) => {
               <h5>Treatment Plan</h5>
               <span>{observations?.treatment?.treatment_plan}</span>
               <hr></hr>
-              <h5>Prescriptione</h5>
+              <h5>Prescription</h5>
               <span>{observations?.treatment?.prescription}</span>
 
               <hr></hr>
