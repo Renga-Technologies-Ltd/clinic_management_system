@@ -176,10 +176,7 @@ const TodaysAppointments = () => {
       <Table
         pagination={false}
         columns={tableColumns}
-        dataSource={
-          appointmentRecords &&
-          appointmentRecords.filter((appointment) => !appointment.nurseReadings)
-        }
+        dataSource={appointmentRecords}
         rowKey="id"
       />
     </Card>

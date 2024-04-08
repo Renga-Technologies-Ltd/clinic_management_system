@@ -214,12 +214,12 @@ export const DefaultDashboard = () => {
         </Col>
         <Col xs={24} sm={24} md={24} lg={6}>
           <GoalWidget
-            title="Monthly Target"
+            title=""
             value={87}
-            subtitle="You need abit more effort to hit monthly target"
-            extra={<Button type="primary">Learn More</Button>}
+            subtitle="New Patients"
+            // extra={<Button type="primary">Learn More</Button>}
           />
-          <StatisticWidget
+          {/* <StatisticWidget
             title={
               <MembersChart
                 options={memberChartOption}
@@ -230,7 +230,7 @@ export const DefaultDashboard = () => {
             // value="17,329"
             status={3.7}
             subtitle="Active members"
-          />
+          /> */}
         </Col>
       </Row>
       <Row gutter={16}>

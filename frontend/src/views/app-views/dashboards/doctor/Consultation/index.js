@@ -263,15 +263,22 @@ const DocumentTemplate = ({ requestData, patientData, doctorData }) => {
               Appointment: {patientData.appointment_id}
             </h2>
             <p>Date and Time: {formatDate(requestData.createdAt)}</p>
-            <hr></hr>
-            <h3>Patient Details</h3>
-            <p>Name: {patientData.name}</p>
-            <p>Phone: {patientData.phoneNumber}</p>
-            <p>Email: {patientData.emailAdress}</p>
-            <p>DOB:{moment(patientData.dob).format("MMMM Do YYYY")}</p>
-
-            <p>Gender: {patientData.gender}</p>
+            <hr />
+            <div style={{ display: "flex" }}>
+              <div style={{ flex: 1 }}>
+                <p>Name: {patientData.name}</p>
+                <p>
+                  DOB: {moment(patientData.dob).format("Do MMMM YYYY")},{" "}
+                  {patientData.gender}
+                </p>
+              </div>
+              <div style={{ flex: 1, textAlign: "left" }}>
+                <p>Phone: {patientData.phoneNumber}</p>
+                <p>Email: {patientData.emailAdress}</p>
+              </div>
+            </div>
           </div>
+
           <hr></hr>
         </div>
         <h3>Details</h3>
@@ -279,16 +286,26 @@ const DocumentTemplate = ({ requestData, patientData, doctorData }) => {
           <strong>
             <h4>Treatment Plan:</h4>
           </strong>
-          <p>{requestData.treatment.treatment_plan}</p> <br />
+          <p>
+            {" "}
+            <pre>{requestData.treatment.treatment_plan}</pre>
+          </p>{" "}
+          <br />
           <strong>
             <h4>Prescription:</h4>
           </strong>
-          <p>{requestData.treatment.prescription}</p>
+          <p>
+            <pre>{requestData.treatment.prescription}</pre>
+          </p>
           <br />
           <strong>
-            <h4>Follow Up Advice:</h4>
+            <h4>
+              <pre>Follow Up Advice:</pre>
+            </h4>
           </strong>
-          <p>{requestData.treatment.follow_up_advice}</p>
+          <p>
+            <pre>{requestData.treatment.follow_up_advice}</pre>
+          </p>
           <br />
           <hr />
         </div>
