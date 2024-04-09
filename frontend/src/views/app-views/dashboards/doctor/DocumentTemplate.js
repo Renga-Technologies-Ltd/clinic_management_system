@@ -86,25 +86,19 @@ const DocumentTemplate = ({ requestData, patientData, doctorData }) => {
           <strong>
             <h4>Prescription:</h4>
           </strong>
+          <pre>
+            <p>{requestData.treatment && requestData.treatment.prescription}</p>
+          </pre>
           <strong>
-            <h4>Prescription:</h4>
+            <hr></hr> <h4>Follow Up Advice:</h4>
           </strong>
-          <p>
-            <pre>
-              {requestData.treatment && requestData.treatment.prescription}
-            </pre>
-          </p>
 
-          <br />
-          <strong>
-            <h4>
-              <pre>Follow Up Advice:</pre>
-            </h4>
-          </strong>
-          <p>
-            <pre>{requestData.treatment && requestData.treatment.follow_up_advice}</pre>
-          </p>
-          <br />
+          <pre>
+            <p>
+              {requestData.treatment && requestData.treatment.follow_up_advice}
+            </p>
+          </pre>
+
           <hr />
         </div>
         <div className="mt-3 text-right">
