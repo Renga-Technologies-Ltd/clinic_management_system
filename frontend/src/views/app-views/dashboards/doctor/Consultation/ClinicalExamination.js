@@ -143,7 +143,7 @@ const ClinicalExamination = (data) => {
       </Col>
       <Col xs={24} sm={24} md={8}>
         {/* Card for Lab Request */}
-        <Card className="align-items-center" title="Lab Section">
+        <Card className="align-items-center" title="Internal Investigation">
           <Radio.Group onChange={(e) => handleLabRequestChange(e.target.value)}>
             <Radio value={true}>Yes</Radio>
             <Radio value={false}>No</Radio>
@@ -161,7 +161,7 @@ const ClinicalExamination = (data) => {
             )
           )}
         </Card>
-        <Card className="align-items-center" title="Radiology">
+        <Card className="align-items-center" title="External Investigation">
           <Radio.Group
             onChange={(e) => handleRadioRequestChange(e.target.value)}
           >

@@ -87,7 +87,7 @@ const LabResults = (data) => {
           </strong>
         </p>
       </Card>
-      <Card title="External Investigation">
+      <Card title="Results Section">
         <Col xs={24} sm={24} md={24}>
           <Form.Item label="Describe" name={"description"}>
             <TextArea placeholder="Describe done test results" type="text" />

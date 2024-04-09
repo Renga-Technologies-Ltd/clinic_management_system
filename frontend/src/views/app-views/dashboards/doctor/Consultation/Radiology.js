@@ -98,7 +98,7 @@ const RadilogyRequest = (data) => {
       </Col>
 
       <Modal
-        title="Radiology Requests Summary"
+        title="External Requests Summary"
         visible={modalVisible}
         onCancel={hideModal}
         footer={[

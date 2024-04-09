@@ -165,7 +165,7 @@ const ClinicalExamination = (data) => {
             )
           )}
         </Card>
-        <Card className="align-items-center" title="Internal Investigation">
+        <Card className="align-items-center" title="External Investigation">
           <Radio.Group
             onChange={(e) => handleRadioRequestChange(e.target.value)}
           >
