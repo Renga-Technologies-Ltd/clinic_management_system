@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Input, Row, Col, Card, Form } from "antd";
+import { Input, Row, Col, Card, Form, message } from "antd";
 import NurseReading from "./NursesReadings";
 const { TextArea } = Input;
 const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
 const History = (data) => {
-  const appointment_id = data.appointment_id;
-  const initialValues =
-    data.initialValues?.appointmentDetails?.observations?.history; // Add optional chaining here
+  const { appointment_id } = data;
+  // const initialValues =
+  //   data.initialValues?.appointmentDetails?.observations?.history;
   const [loading, setLoading] = useState(true); // State to track loading status
   const [appointmentRecords, setAppointmentRecords] = useState(null);
+  const [initialValues, setInitialValues] = useState(null);
   useEffect(() => {
     const fetchAppointmentData = async () => {
       try {
@@ -23,13 +24,30 @@ const History = (data) => {
         console.error("Error:", error);
       }
     };
+    const api = `${base_apiUrl}/getApprecords/${appointment_id}`;
+    const fetchData = async () => {
+      try {
+        const response = await fetch(api);
+        if (response.ok) {
+          const data = await response.json();
+          const formValues = data.appointmentDetails.observations.history;
+          setInitialValues(formValues);
+        } else {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        message.error("Failed to fetch data from the server.");
+      }
+    };
     fetchAppointmentData();
+    fetchData();
   }, [appointment_id]);
-  // console.log(initialValues);
+
   if (loading) {
     return <div>Loading...</div>; // Render a loading indicator while data is being fetched
   }
-  console.log(initialValues);
+  // console.log(initialValues);
 
   return (
     <Row gutter={16}>
@@ -63,8 +81,9 @@ const History = (data) => {
                 label="Chief Complaints"
                 name={["history", "chief_complaints"]}
                 initialValue={initialValues?.chief_complaints}
-              >                
+              >
                 <TextArea rows={6} placeholder="Chief Complaints" type="text" />
+                {}
               </Form.Item>
             </Col>
           </Row>
