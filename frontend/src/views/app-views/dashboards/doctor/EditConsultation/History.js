@@ -6,8 +6,6 @@ const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
 const History = (data) => {
   const { appointment_id } = data;
-  // const initialValues =
-  //   data.initialValues?.appointmentDetails?.observations?.history;
   const [loading, setLoading] = useState(true); // State to track loading status
   const [appointmentRecords, setAppointmentRecords] = useState(null);
   const [initialValues, setInitialValues] = useState(null);
@@ -48,7 +46,6 @@ const History = (data) => {
     return <div>Loading...</div>; // Render a loading indicator while data is being fetched
   }
   // console.log(initialValues);
-
   return (
     <Row gutter={16}>
       <Col xs={24} sm={24} md={17}>
@@ -82,8 +79,12 @@ const History = (data) => {
                 name={["history", "chief_complaints"]}
                 initialValue={initialValues?.chief_complaints}
               >
-                <TextArea rows={6} placeholder="Chief Complaints" type="text" />
-                {}
+                <pre>{initialValues?.chief_complaints}</pre> {}
+                <TextArea
+                  rows={6}
+                  placeholder="Type to Edit Chief Complaints"
+                  type="text"
+                />
               </Form.Item>
             </Col>
           </Row>
@@ -94,9 +95,10 @@ const History = (data) => {
                 name={["history", "present_illness"]}
                 initialValue={initialValues?.present_illness}
               >
+                <pre>{initialValues?.present_illness}</pre> {}
                 <TextArea
                   rows={6}
-                  placeholder="History of present illness"
+                  placeholder="Type to edit History of present illness"
                   type="text"
                 />
               </Form.Item>
@@ -109,9 +111,10 @@ const History = (data) => {
                 name={["history", "past_illness"]}
                 initialValue={initialValues?.past_illness}
               >
+                <pre>{initialValues?.past_illness}</pre> {}
                 <TextArea
                   rows={6}
-                  placeholder="History of past illness"
+                  placeholder="Type to edit History of past illness"
                   type="text"
                 />
               </Form.Item>
@@ -124,7 +127,8 @@ const History = (data) => {
                 name={["history", "family_history"]}
                 initialValue={initialValues?.family_history}
               >
-                <TextArea rows={6} placeholder="Family HistorY" type="text" />
+                <pre>{initialValues?.family_history}</pre> {}
+                <TextArea rows={6} placeholder="Type to edit Family HistorY" type="text" />
               </Form.Item>
             </Col>
           </Row>
@@ -135,7 +139,9 @@ const History = (data) => {
                 name={["history", "personal_history"]}
                 initialValue={initialValues?.personal_history}
               >
-                <TextArea rows={6} placeholder="Personal History" type="text" />
+               <pre>{initialValues?.personal_history}</pre> {}
+                <TextArea rows={6} placeholder="Type to edit Personal History" type="text" />
+               
               </Form.Item>
             </Col>
           </Row>
