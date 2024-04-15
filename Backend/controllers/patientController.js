@@ -75,25 +75,32 @@ const patientController = {
     try {
       const {
         patientId,
+        patient_id,
         firstName,
         lastName,
         dateOfBirth,
         gender,
         contactNumber,
+        emailAddress,
         address,
         nextOfKin,
+        imageUrl,
       } = req.body;
       const patient = await Patient.findById(patientId);
       if (!patient) {
         return res.status(404).json({ message: "Patient not found" });
       }
+      patient.patient_id = patient_id;
       patient.firstName = firstName;
       patient.lastName = lastName;
       patient.dateOfBirth = dateOfBirth;
       patient.gender = gender;
       patient.contactNumber = contactNumber;
+      patient.emailAddress = emailAddress;
       patient.address = address;
       patient.nextOfKin = nextOfKin;
+      patient.imageUrl = imageUrl;
+
       await patient.save();
       res
         .status(200)
@@ -146,7 +153,7 @@ const patientController = {
       if (!patient) {
         return res.status(404).json({ message: "Patient not found" });
       }
-      await patient.remove();
+      await Patient.deleteOne({ _id: patientId }); // Use deleteOne to remove the document
       res.status(200).json({ message: "Patient deleted successfully" });
     } catch (error) {
       console.error("Error deleting patient:", error);

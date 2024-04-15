@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import moment from "moment";
 import { useSelector } from "react-redux";
 import { Row, Col, Button, Avatar, Dropdown, Table, Tag } from "antd";
 import StatisticWidget from "components/shared-components/StatisticWidget";
@@ -7,6 +8,7 @@ import AvatarStatus from "components/shared-components/AvatarStatus";
 import GoalWidget from "components/shared-components/GoalWidget";
 import Card from "components/shared-components/Card";
 import Flex from "components/shared-components/Flex";
+
 import {
   BandwidthChartData,
   AnnualStatisticData,
@@ -15,7 +17,7 @@ import {
   RecentTransactionData,
 } from "./DefaultDashboardData";
 import ApexChart from "react-apexcharts";
-import { apexLineChartDefaultOption, COLOR_2 } from "constants/ChartConstant";
+// import { apexLineChartDefaultOption, COLOR_2 } from "constants/ChartConstant";
 import { SPACER } from "constants/ThemeConstant";
 import {
   UserAddOutlined,
@@ -27,21 +29,7 @@ import {
 } from "@ant-design/icons";
 import utils from "utils";
 import { useNavigate } from "react-router-dom";
-
-
-const MembersChart = (props) => <ApexChart {...props} />;
-
-const memberChartOption = {
-  ...apexLineChartDefaultOption,
-  ...{
-    chart: {
-      sparkline: {
-        enabled: true,
-      },
-    },
-    colors: [COLOR_2],
-  },
-};
+const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
 const latestTransactionOption = [
   {
@@ -155,6 +143,9 @@ export const DefaultDashboard = () => {
   const [activeMembersData] = useState(ActiveMembersData);
   const [newMembersData] = useState(NewMembersData);
   const [recentTransactionData] = useState(RecentTransactionData);
+  const [appointmentRecords, setAppointmentRecords] = useState(null);
+  const [todayAppCount, setTodayAppCount] = useState(0);
+  const [allAppCount, setAppCount] = useState(0);
   const { direction } = useSelector((state) => state.theme);
   const navigate = useNavigate();
 
@@ -163,6 +154,39 @@ export const DefaultDashboard = () => {
 
   const isAdminOrDoctor =
     userRoles.includes("Admin") || userRoles.includes("Doctor");
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      try {
+        const todayStart = moment().startOf("day"); // Get the start of today
+        const todayEnd = moment().endOf("day"); // Get the end of today
+
+        const response = await fetch(`${base_apiUrl}/Appointments`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        if (Array.isArray(data.appointments)) {
+          // Filter appointments for today's date
+          const todayAppointments = data.appointments.filter((appointment) =>
+            moment(appointment.appointmentTime).isBetween(todayStart, todayEnd)
+          );
+          setAppointmentRecords(todayAppointments);
+          const numberOfAppointments = todayAppointments.length;
+          setTodayAppCount(numberOfAppointments);
+          console.log("Number of appointments:", numberOfAppointments);
+          //count all appointments
+          const allAppointments = data.appointments;
+          setAppCount(allAppointments.length);
+        } else {
+          console.error("Invalid data structure:", data);
+        }
+      } catch (error) {
+        console.error("Error fetching appointments:", error.message);
+        // You can set an error state or show a notification to the user
+      }
+    };
+    fetchAppointments();
+  }, []);
 
   if (!isAdminOrDoctor) {
     // Render welcome card and redirection links for non-Doctor and non-Admin users
@@ -181,7 +205,7 @@ export const DefaultDashboard = () => {
           </Button>
         )}
       </div>
-    );  
+    );
   }
 
   return (
@@ -215,22 +239,16 @@ export const DefaultDashboard = () => {
         <Col xs={24} sm={24} md={24} lg={6}>
           <GoalWidget
             title=""
-            value={87}
-            subtitle="New Patients"
+            value={allAppCount}
+            subtitle="All Appointments "
             // extra={<Button type="primary">Learn More</Button>}
           />
-          {/* <StatisticWidget
-            title={
-              <MembersChart
-                options={memberChartOption}
-                series={activeMembersData}
-                height={145}
-              />
-            }
-            // value="17,329"
-            status={3.7}
-            subtitle="Active members"
-          /> */}
+          <GoalWidget
+            title=""
+            value={todayAppCount}
+            subtitle="Todays Appointments"
+            // extra={<Button type="primary">Learn More</Button>}
+          />
         </Col>
       </Row>
       <Row gutter={16}>
