@@ -6,7 +6,7 @@ import DataDisplayWidget from "components/shared-components/DataDisplayWidget";
 import { Link } from "react-router-dom";
 import {
   OrderedListOutlined,
-  d,
+  ReconciliationOutlined,
   UserAddOutlined,
   BarChartOutlined,
 } from "@ant-design/icons";
@@ -47,15 +47,15 @@ const DisplayButtons = () => (
           avatarSize={55}
         />
       </Link>
-      {/* <Link to="/billing-page">
+      <Link to="/app/dashboards/default">
         <DataDisplayWidget
           icon={<ReconciliationOutlined />}
-          title="Bills and Payments"
+          title="Summary Dashboard"
           color="volcano"
           vertical={true}
           avatarSize={55}
         />
-      </Link> */}
+      </Link>
     </Col>
   </Row>
 );
