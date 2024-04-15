@@ -140,7 +140,7 @@ const History = (data) => {
                 initialValue={initialValues?.personal_history}
               >
                <pre>{initialValues?.personal_history}</pre> {}
-                <TextArea rows={6} placeholder="Type to edit Personal History" type="text" />
+                <TextArea rows={6} placeholder="Type to Personal History" type="text" />
                
               </Form.Item>
             </Col>

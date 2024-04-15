@@ -123,12 +123,12 @@ export const NavProfile = ({ mode }) => {
     <Dropdown placement="bottomRight" menu={{ items }} trigger={["click"]}>
       <NavItem mode={mode}>
         <Profile>
-          <Avatar src={userData.profile.profilePicture} />
+          <Avatar src={userData?.profile?.profilePicture} />
           <UserInfo className="profile-text">
             <Name>
-              {userData.profile.firstName} {userData.profile.lastName}
+              {/* {userData?.profile?.firstName} {userData?.profile.lastName} */}
             </Name>
-            <Title>{userData.roles}</Title>
+            <Title>{userData?.roles}</Title>
           </UserInfo>
         </Profile>
       </NavItem>
