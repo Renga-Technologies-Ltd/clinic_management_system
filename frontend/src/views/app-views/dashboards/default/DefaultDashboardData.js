@@ -49,9 +49,8 @@ export const ActiveMembersData = [
 
 export const NewMembersData = [
   {
-    img: "",
-    title: "",
-    name: "",
+    firstName: "",
+    patient_id: "",
   },
 ];
 

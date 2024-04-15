@@ -87,6 +87,7 @@ router.get("/getApprecords/:appointment", patientController.getApprecords);
 router.put("/updateObservations/:id", patientController.updateObservations);
 //  payments sections
 router.post("/makepayments", paymentController.createPayment);
+// router.get("/getPayments", paymentController.getPayments);
 router.get("/allPayments", paymentController.fetchAllPayments);
 router.get("/todaysPayments", paymentController.todaysPayments);
 router.get("/getPayment/:receipt", paymentController.getPayment);
