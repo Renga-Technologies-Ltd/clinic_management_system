@@ -6,6 +6,7 @@ const { authenticateToken } = require("../middleware/tokens");
 const appointmentController = require("../controllers/appointmentController");
 const labController = require("../controllers/Lab");
 
+
 const multer = require("multer");
 const path = require("path");
 const paymentController = require("../controllers/paymentController");
@@ -59,6 +60,10 @@ router.put("/updateUser", userController.updateUser);
 router.get(
   "/patientsStats",
   patientController.fetchPatientsAndAppointmentsOverTime
+);
+router.get(
+  "/appointmentStatistics",
+  appointmentController.appointmentStatistics
 );
 
 //appointment routes

@@ -1,4 +1,6 @@
+const moment = require("moment");
 const Appointment = require("../schemas/appointment");
+const DoctorObservations = require("../schemas/doctorObservations");
 const NurseReadings = require("../schemas/nurseReadings");
 const RadiologyRequest = require("../schemas/radiology");
 const appointmentController = {
@@ -360,6 +362,58 @@ const appointmentController = {
     } catch (error) {
       console.error("Error updating nurse reading:", error);
       res.status(500).json({ message: "Internal Server Error" });
+    }
+  },
+  appointmentStatistics: async (req, res, next) => {
+    try {
+      const todayStart = moment().startOf("day"); // Get the start of today
+      const todayEnd = moment().endOf("day"); // Get the end of today
+
+      // Fetch all appointments for today
+      const todayAppointments = await Appointment.find({
+        appointmentTime: { $gte: todayStart, $lte: todayEnd },
+      });
+
+      // Initialize arrays for appointment statistics
+      const appointmentsPerHour = Array(24).fill(0);
+      const completedAppointmentsPerHour = Array(24).fill(0);
+
+      // Calculate appointment statistics
+      for (const appointment of todayAppointments) {
+        const hour = moment(appointment.appointmentTime).hour();
+        appointmentsPerHour[hour]++;
+
+        // Check if there are doctor observations for the appointment
+        const doctorObservation = await DoctorObservations.findOne({
+          appointment: appointment._id,
+        });
+
+        if (doctorObservation) {
+          completedAppointmentsPerHour[hour]++;
+        }
+      }
+
+      // Prepare response data
+      const appointmentStatistics = {
+        series: [
+          {
+            name: "Number of appointments Per hour",
+            data: appointmentsPerHour,
+          },
+          {
+            name: "Number of appointments Completed Per hour",
+            data: completedAppointmentsPerHour,
+          },
+        ],
+        categories: Array.from({ length: 24 }, (_, i) =>
+          moment().hour(i).format("HH:mm")
+        ),
+      };
+
+      res.json(appointmentStatistics);
+    } catch (error) {
+      console.error("Error fetching appointment statistics:", error);
+      res.status(500).json({ error: "Internal Server Error" });
     }
   },
 };

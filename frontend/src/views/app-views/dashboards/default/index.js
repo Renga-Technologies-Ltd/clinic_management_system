@@ -8,14 +8,26 @@ import ChartWidget from "components/shared-components/ChartWidget";
 import GoalWidget from "components/shared-components/GoalWidget";
 import Card from "components/shared-components/Card";
 import { useNavigate } from "react-router-dom";
-import { BandwidthChartData } from "./DefaultDashboardData";
+// import { BandwidthChartData } from "./DefaultDashboardData";
 
 import utils from "utils";
 
 const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
 export const DefaultDashboard = () => {
-  const [visitorChartData] = useState(BandwidthChartData);
+  const [appointmentsStatics, setAppointmentsStatics] = useState({
+    series: [
+      {
+        name: "Number of appointments Per hour",
+        data: [],
+      },
+      {
+        name: "Number of appointments Completed Per hour",
+        data: [],
+      },
+    ],
+    categories: [],
+  });
 
   const [latestTransactionData, setlatestTransactionData] = useState([]);
   const [todayAppCount, setTodayAppCount] = useState(0);
@@ -106,6 +118,21 @@ export const DefaultDashboard = () => {
         setRegisteredPatients(newPatients);
       } catch (error) {}
     };
+    const fetchAppointmentsStatics = async () => {
+      try {
+        const response = await fetch(`${base_apiUrl}/appointmentStatistics`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        const { series, categories } = data;
+
+        setAppointmentsStatics({ series, categories });
+      } catch (error) {
+        console.error("Error fetching appointment statistics:", error.message);
+      }
+    };
+    fetchAppointmentsStatics();
     fetchAppointments();
     fetchAllPayments();
     fetchRegisteredPatients();
@@ -224,10 +251,14 @@ export const DefaultDashboard = () => {
             <Col span={24}>
               <ChartWidget
                 title="Appointment Statistics"
-                series={visitorChartData.series}
-                xAxis={visitorChartData.categories}
+                series={appointmentsStatics.series}
+                xAxis={appointmentsStatics.categories}
                 height={"400px"}
                 direction={direction}
+                yAxis={{
+                  tickCount: 10,
+                  formatter: (val) => Math.floor(val), // Round down to the nearest integer
+                }}
               />
             </Col>
           </Row>
