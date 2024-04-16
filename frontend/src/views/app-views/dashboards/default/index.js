@@ -200,13 +200,13 @@ export const DefaultDashboard = () => {
     {
       title: "All Registered Patients",
       value: registeredPatientscount,
-      status: registeredPatientscount > 0 ? 1 : -1,
+      // status: registeredPatientscount > 0 ? 1 : -1,
       subtitle: `Registered in the system`,
     },
     {
       title: "Today's Sales",
       value: totalPaid,
-      status: totalPaid > 0 ? 1 : -1,
+      // status: totalPaid > 0 ? 1 : -1,
       subtitle: `Sales made today`,
     },
   ];

@@ -115,13 +115,11 @@ const TodaysAppointments = () => {
           return <Tag color="red">Not Attended To</Tag>;
         } else if (!nurseReadings && doctorReadings) {
           return <Tag color="blue">Triage not done</Tag>;
-        } else if (doctorReadings) {
         } else if (nurseReadings && !doctorReadings) {
           return <Tag color="blue">Waiting for Doctor</Tag>;
         } else if (doctorReadings) {
           return <Tag color="green">Completed</Tag>;
         }
-
         return null;
       },
     },
