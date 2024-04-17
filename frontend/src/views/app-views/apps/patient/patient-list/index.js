@@ -87,11 +87,15 @@ const PatientList = () => {
       ),
     },
   ];
+  // const onSearch = (e) => {
+  //   const value = e.currentTarget.value;
+  //   const searchArray = e.currentTarget.value ? list : list;
+  //   const data = utils.wildCardSearch(searchArray, value);
+  //   setList(data);
+  // };
   const onSearch = (e) => {
-    const value = e.currentTarget.value;
-    const searchArray = e.currentTarget.value ? list : list;
-    const data = utils.wildCardSearch(searchArray, value);
-    setList(data);
+    const value = e.currentTarget.value.trim();
+    setList(value === "" ? [...list] : utils.wildCardSearch(list, value));
   };
 
   return (

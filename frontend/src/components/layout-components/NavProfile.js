@@ -69,32 +69,32 @@ const MenuItemSignOut = (props) => {
 };
 
 const items = [
-  {
-    key: "Edit Profile",
-    label: <MenuItem path="/" label="Edit Profile" icon={<EditOutlined />} />,
-  },
-  {
-    key: "Account Setting",
-    label: (
-      <MenuItem path="/" label="Account Setting" icon={<SettingOutlined />} />
-    ),
-  },
-  {
-    key: "Account Billing",
-    label: (
-      <MenuItem path="/" label="Account Billing" icon={<ShopOutlined />} />
-    ),
-  },
-  {
-    key: "Help Center",
-    label: (
-      <MenuItem
-        path="/"
-        label="Help Center"
-        icon={<QuestionCircleOutlined />}
-      />
-    ),
-  },
+  // {
+  //   key: "Edit Profile",
+  //   label: <MenuItem path="/" label="Edit Profile" icon={<EditOutlined />} />,
+  // },
+  // {
+  //   key: "Account Setting",
+  //   label: (
+  //     <MenuItem path="/" label="Account Setting" icon={<SettingOutlined />} />
+  //   ),
+  // },
+  // {
+  //   key: "Account Billing",
+  //   label: (
+  //     <MenuItem path="/" label="Account Billing" icon={<ShopOutlined />} />
+  //   ),
+  // },
+  // {
+  //   key: "Help Center",
+  //   label: (
+  //     <MenuItem
+  //       path="/"
+  //       label="Help Center"
+  //       icon={<QuestionCircleOutlined />}
+  //     />
+  //   ),
+  // },
   {
     key: "Sign Out",
     label: <MenuItemSignOut label="Sign Out" />,
@@ -107,7 +107,6 @@ export const NavProfile = ({ mode }) => {
     profile: {
       firstName: "",
       lastName: "",
-      profilePicture: "/img/avatars/thumb-1.jpg", // Default picture if not available
     },
   });
 
@@ -118,15 +117,17 @@ export const NavProfile = ({ mode }) => {
       setUserData(storedUserData);
     }
   }, []); // Empty dependency array ensures that this effect runs once on mount
+  // Generate profile picture initials
+  const initials = `${userData?.profile?.firstName[0]}${userData?.profile?.lastName[0]}`;
 
   return (
     <Dropdown placement="bottomRight" menu={{ items }} trigger={["click"]}>
       <NavItem mode={mode}>
         <Profile>
-          <Avatar src={userData?.profile?.profilePicture} />
+          <Avatar>{initials}</Avatar> {/* Use initials instead of the image */}
           <UserInfo className="profile-text">
             <Name>
-              {/* {userData?.profile?.firstName} {userData?.profile.lastName} */}
+              {userData?.profile?.firstName} {userData?.profile?.lastName}
             </Name>
             <Title>{userData?.roles}</Title>
           </UserInfo>
