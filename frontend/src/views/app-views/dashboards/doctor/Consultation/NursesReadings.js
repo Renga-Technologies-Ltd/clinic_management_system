@@ -50,6 +50,9 @@ const NurseReading = (data) => {
               <strong>Weight:</strong> {nurseReadings.weight} kg
             </p>
             <p>
+              <strong>SpO2:</strong> {nurseReadings.SpO2}
+            </p>
+            <p>
               <strong>Pain Level:</strong> {nurseReadings.painLevel}
             </p>
             <hr></hr>
