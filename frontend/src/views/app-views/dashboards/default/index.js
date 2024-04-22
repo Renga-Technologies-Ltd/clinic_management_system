@@ -210,6 +210,20 @@ export const DefaultDashboard = () => {
       subtitle: `Sales made today`,
     },
   ];
+  // const AnnualStatisticData = [
+  //   {
+  //     title: "All Registered Patients",
+  //     value: registeredPatientscount,
+  //     // status: registeredPatientscount > 0 ? 1 : -1,
+  //     subtitle: `Registered in the system`,
+  //   },
+  //   {
+  //     title: "Today's Sales",
+  //     value: totalPaid,
+  //     // status: totalPaid > 0 ? 1 : -1,
+  //     subtitle: `Sales made today`,
+  //   },
+  // ];
 
   if (!isAdminOrDoctor) {
     // Render welcome card and redirection links for non-Doctor and non-Admin users
@@ -264,13 +278,13 @@ export const DefaultDashboard = () => {
           </Row>
         </Col>
         <Col xs={24} sm={24} md={24} lg={6}>
-          <GoalWidget
+          <StatisticWidget
             title=""
             value={allAppCount}
             subtitle="All Appointments "
             // extra={<Button type="primary">Learn More</Button>}
           />
-          <GoalWidget
+          <StatisticWidget
             title=""
             value={todayAppCount}
             subtitle="Todays Appointments"

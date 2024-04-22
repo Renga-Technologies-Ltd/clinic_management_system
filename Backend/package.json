@@ -1,6 +1,7 @@
 {
   "name": "cms-api",
-  "version": "1.0.0",
+  "version": "1.0.2",
+  "namespace": "cms-api",
   "private": true,
   "scripts": {
     "start": "nodemon app.js"
