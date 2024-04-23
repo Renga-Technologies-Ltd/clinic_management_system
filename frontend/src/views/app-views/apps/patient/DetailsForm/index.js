@@ -6,8 +6,7 @@ import NextOfKin from "./NextOfKin";
 import PatientDocuments from "./MedicalRecords";
 import AppointmentRecords from "./AppointmentRecords";
 import Flex from "components/shared-components/Flex";
-import moment from "moment";
-import Patient from "..";
+
 const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
 const DetailsForm = (props) => {
@@ -62,7 +61,7 @@ const DetailsForm = (props) => {
               children: <NextOfKin patientData={patientData} />,
             },
             {
-              label: "Patients docomunts",
+              label: "Patients docoments",
               key: "3",
               children: <PatientDocuments patientId={patientId} />,
             },

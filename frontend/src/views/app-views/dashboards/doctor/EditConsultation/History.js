@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Input, Row, Col, Card, Form, message } from "antd";
 import NurseReading from "./NursesReadings";
-const { TextArea } = Input;
+// const { TextArea } = Input;
 const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
 const History = (data) => {
@@ -9,6 +9,7 @@ const History = (data) => {
   const [loading, setLoading] = useState(true); // State to track loading status
   const [appointmentRecords, setAppointmentRecords] = useState(null);
   const [initialValues, setInitialValues] = useState(null);
+  console.log(initialValues);
   useEffect(() => {
     const fetchAppointmentData = async () => {
       try {
@@ -71,80 +72,8 @@ const History = (data) => {
             <p>No patient details available</p>
           )}
         </Card>
-        <Card title="History">
-          <Row gutter={16}>
-            <Col xs={24} sm={24} md={24}>
-              <Form.Item
-                label="Chief Complaints"
-                name={["history", "chief_complaints"]}
-                initialValue={initialValues?.chief_complaints}
-              >
-                <pre>{initialValues?.chief_complaints}</pre> {}
-                <TextArea
-                  rows={6}
-                  placeholder="Type to Edit Chief Complaints"
-                  type="text"
-                />
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row gutter={16}>
-            <Col xs={24} sm={24} md={24}>
-              <Form.Item
-                label="History of Present Illness"
-                name={["history", "present_illness"]}
-                initialValue={initialValues?.present_illness}
-              >
-                <pre>{initialValues?.present_illness}</pre> {}
-                <TextArea
-                  rows={6}
-                  placeholder="Type to edit History of present illness"
-                  type="text"
-                />
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row gutter={16}>
-            <Col xs={24} sm={24} md={24}>
-              <Form.Item
-                label="History of Past Illness"
-                name={["history", "past_illness"]}
-                initialValue={initialValues?.past_illness}
-              >
-                <pre>{initialValues?.past_illness}</pre> {}
-                <TextArea
-                  rows={6}
-                  placeholder="Type to edit History of past illness"
-                  type="text"
-                />
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row gutter={16}>
-            <Col xs={24} sm={24} md={24}>
-              <Form.Item
-                label="Family History"
-                name={["history", "family_history"]}
-                initialValue={initialValues?.family_history}
-              >
-                <pre>{initialValues?.family_history}</pre> {}
-                <TextArea rows={6} placeholder="Type to edit Family HistorY" type="text" />
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row gutter={16}>
-            <Col xs={24} sm={24} md={24}>
-              <Form.Item
-                label="Personal History"
-                name={["history", "personal_history"]}
-                initialValue={initialValues?.personal_history}
-              >
-               <pre>{initialValues?.personal_history}</pre> {}
-                <TextArea rows={6} placeholder="Type to Personal History" type="text" />
-               
-              </Form.Item>
-            </Col>
-          </Row>
+        <Card title="Summary">
+          <p>Proceed to next page to edit Patient history</p>
         </Card>
       </Col>
       <Col xs={24} sm={24} md={7}>

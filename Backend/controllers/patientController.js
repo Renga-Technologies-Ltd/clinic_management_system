@@ -13,6 +13,7 @@ const patientController = {
         firstName,
         lastName,
         dateOfBirth,
+        age,
         gender,
         contactNumber,
         emailAddress,
@@ -52,6 +53,7 @@ const patientController = {
         firstName,
         lastName,
         dateOfBirth,
+        age,
         gender,
         contactNumber,
         emailAddress,
@@ -308,7 +310,7 @@ const patientController = {
       const { patient, doctor } = appointmentDetails; // Fix here
       // console.log("Appointment details:", appointmentDetails);
       // console.log("Observations updated successfully:", observations);
-
+      console.log("Observations updated successfully:", observations);
       res.status(200).json({
         message: "Observations updated successfully",
         patient: {

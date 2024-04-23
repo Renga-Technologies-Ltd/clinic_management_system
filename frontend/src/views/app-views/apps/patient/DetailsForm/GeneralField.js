@@ -42,6 +42,7 @@ const GeneralField = (props) => {
                   {moment(dateOfBirth).format("MMMM Do YYYY")}
                   {}
                 </span>
+                <span>; Age: {moment().diff(dateOfBirth, "years")}</span>
               </Form.Item>
             </Col>
             <Col xs={24} sm={24} md={12}>

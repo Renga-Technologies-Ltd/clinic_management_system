@@ -164,24 +164,23 @@ const EditConsultation = (props) => {
                   </Button>
                 ) : null}
 
-                {activeTab === "4" ? (
-                  <>
-                    <Button
-                      type="primary"
-                      onClick={() => onFinish()}
-                      htmlType="submit"
-                      loading={submitLoading}
-                    >
-                      Save
-                    </Button>
-                  </>
-                ) : (
-                  <>
-                    <Button type="primary" onClick={nextTab}>
-                      Next
-                    </Button>
-                  </>
-                )}
+                <Button
+                  type="primary"
+                  onClick={nextTab}
+                  htmlType="button"
+                  disabled={activeTab === "4"} // Disable Next on last tab
+                >
+                  Next
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={onFinish}
+                  htmlType="submit"
+                  loading={submitLoading}
+                  disabled={activeTab !== "4"} // Disable Save on last tab
+                >
+                  Save
+                </Button>
               </div>
             </Flex>
           </div>
