@@ -57,7 +57,7 @@ const ViewConsultation = (props) => {
   };
   const editDetails = (row) => {
     console.log(row);
-    message.info("Editings details for appointment ID: " + row);
+    // message.info("Editings details for appointment ID: " + row);
     navigate(`/app/dashboards/doctor/editconsultation/${row}`);
   };
 
@@ -95,7 +95,9 @@ const ViewConsultation = (props) => {
             <div className="mb-3">
               {isAdminOrDoctor && (
                 <>
-                  <Button onClick={editDetails}>Edit</Button>
+                  <Button onClick={() => editDetails(appointment_id)}>
+                    Edit
+                  </Button>
                 </>
               )}
               <Button onClick={goBack}>Back</Button>
