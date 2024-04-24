@@ -12,6 +12,11 @@ const tableColumns = [
   {
     title: "Appointment ID",
     dataIndex: "appointment_id",
+    render: (appointment_id, record) => (
+      <a href={`/app/dashboards/doctor/viewconsultation/${record._id}`}>
+        {appointment_id}
+      </a>
+    ),
   },
   {
     title: "Patient",
@@ -94,7 +99,7 @@ const TodaysAppointments = () => {
   }, []); // Empty dependency array to run once on mount
 
   return (
-    <Card title="Upcoming Appointments">
+    <Card title="Appointments">
       <Table
         pagination={false}
         columns={tableColumns}

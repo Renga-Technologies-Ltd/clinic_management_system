@@ -193,7 +193,7 @@ const EditConsultation = (props) => {
             onChange={handleTabChange}
             items={[
               {
-                label: "History",
+                label: "Summary",
                 key: "1",
                 children: (
                   <History
@@ -203,7 +203,7 @@ const EditConsultation = (props) => {
                 ),
               },
               {
-                label: "Examination",
+                label: "History and Examination",
                 key: "2",
                 children: (
                   <ClinicalExamination
