@@ -3,6 +3,7 @@ import { Row, Col, Card, Table, Tag } from "antd";
 import NumberFormat from "react-number-format";
 import utils from "utils";
 import moment from "moment";
+import { Link } from "react-router-dom";
 const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
 const AppointmentRecords = (props) => {
@@ -32,8 +33,13 @@ const AppointmentRecords = (props) => {
     {
       title: "Appointment ID",
       dataIndex: "appointment_id",
-      render: (_, record) => <div>{record.appointment_id}</div>,
+      render: (appointment_id, record) => (
+        <a href={`/app/dashboards/doctor/viewconsultation/${record._id}`}>
+          {appointment_id}
+        </a>
+      ),
     },
+
     {
       title: "Patient",
       dataIndex: "patient",

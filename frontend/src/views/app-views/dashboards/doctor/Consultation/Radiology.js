@@ -193,6 +193,19 @@ const DocumentTemplate = ({ requestData }) => {
           <br />
           <hr />
         </div>
+        <div className="mt-3 text-right">
+          <div style={{ display: "flex" }}>
+            <div style={{ flex: 1 }}>
+              <img src="/img/signature.png" alt="Doctors Signature" />
+              <br />
+              {/* {doctorData.name} */}
+              <p>Consultant Physician</p>
+            </div>
+            <div style={{ flex: 1, textAlign: "right" }}>
+              <div style={{ width: "100%" }}></div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

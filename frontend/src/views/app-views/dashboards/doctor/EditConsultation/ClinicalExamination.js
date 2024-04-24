@@ -10,9 +10,8 @@ const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
 const ClinicalExamination = (data) => {
   const appointment_id = data.appointment_id;
-  
-  const initialValues =
-    data.initialValues?.appointmentDetails?.observations?.examination; // Add optional chaining here
+
+  const initialValues = data.initialValues?.appointmentDetails?.observations; // Add optional chaining here
   const [appointmentRecords, setAppointmentRecords] = useState(null);
   const [labRequestNeeded, setLabRequestNeeded] = useState(false);
   const [showLabRequestForm, setShowLabRequestForm] = useState(false);
@@ -97,17 +96,28 @@ const ClinicalExamination = (data) => {
             <p>No patient details available</p>
           )}
         </Card>
-        <Card title="Clinical Examination">
+        <Card title="Patient History">
           <Row gutter={16}>
             <Col xs={24} sm={24} md={24}>
               <Form.Item
-                label="Examination"
-                name={["examination", "clinical_examination"]}
-                initialValue={initialValues?.clinical_examination}
+                label="Chief Complaints"
+                name={["history", "chief_complaints"]}
+                initialValue={initialValues?.history?.chief_complaints}
+              >
+                <TextArea rows={6} placeholder="Type to Edit Chief Complaints" type="text" />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col xs={24} sm={24} md={24}>
+              <Form.Item
+                label="History of Present Illness"
+                name={["history", "present_illness"]}
+                initialValue={initialValues?.history?.present_illness}
               >
                 <TextArea
                   rows={6}
-                  placeholder="Examination"
+                  placeholder="Type to edit History of present illness"
                   type="text"
                 />
               </Form.Item>
@@ -116,9 +126,67 @@ const ClinicalExamination = (data) => {
           <Row gutter={16}>
             <Col xs={24} sm={24} md={24}>
               <Form.Item
+                label="History of Past Illness"
+                name={["history", "past_illness"]}
+                initialValue={initialValues?.history?.past_illness}
+              >
+                <TextArea
+                  rows={6}
+                  placeholder="Type to edit History of past illness"
+                  type="text"
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col xs={24} sm={24} md={24}>
+              <Form.Item
+                label="Family History"
+                name={["history", "family_history"]}
+                initialValue={initialValues?.history?.family_history}
+              >
+                <TextArea
+                  rows={6}
+                  placeholder="Type to edit Family History"
+                  type="text"
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col xs={24} sm={24} md={24}>
+              <Form.Item
+                label="Personal History"
+                name={["history", "personal_history"]}
+                initialValue={initialValues?.history?.personal_history}
+              >
+                <TextArea
+                  rows={6}
+                  placeholder="Type to Personal History"
+                  type="text"
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+        </Card>
+        <Card title="Clinical Examination">
+          <Row gutter={16}>
+            <Col xs={24} sm={24} md={24}>
+              <Form.Item
+                label="Examination"
+                name={["examination", "clinical_examination"]}
+                initialValue={initialValues?.examination?.clinical_examination}
+              >
+                <TextArea rows={6} placeholder="Examination" type="text" />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col xs={24} sm={24} md={24}>
+              <Form.Item
                 label="General Examination"
                 name={["examination", "general_examination"]}
-                initialValue={initialValues?.general_examination}
+                initialValue={initialValues?.examination?.general_examination}
               >
                 <TextArea
                   rows={6}
@@ -133,7 +201,7 @@ const ClinicalExamination = (data) => {
               <Form.Item
                 label="Systemic Examination"
                 name={["examination", "systemic_examination"]}
-                initialValue={initialValues?.systemic_examination}
+                initialValue={initialValues?.examination?.systemic_examination}
               >
                 <TextArea
                   rows={6}

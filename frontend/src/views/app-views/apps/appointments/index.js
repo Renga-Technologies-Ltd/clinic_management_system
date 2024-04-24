@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Card, Table, Tag, message, Button } from "antd";
+import { Card, Table, Input, Tag, message, Button } from "antd";
 import moment from "moment";
-import NumberFormat from "react-number-format";
 import { useNavigate } from "react-router-dom";
+import Flex from "components/shared-components/Flex";
+import { SearchOutlined, ReloadOutlined } from "@ant-design/icons";
 
 import utils from "utils";
 const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
 const AppointmentList = () => {
-  const [appointmentRecords, setAppointmentRecords] = useState(null);
+  const [appointmentRecords, setList] = useState(null);
+  // const [list, setList] = useState([]);
   const navigate = useNavigate();
   const viewDetails = (row) => {
     console.log(row); // Log the row object to the console
@@ -135,7 +137,7 @@ const AppointmentList = () => {
         }
         const data = await response.json();
         if (Array.isArray(data.appointments)) {
-          setAppointmentRecords(data.appointments);
+          setList(data.appointments);
         } else {
           console.error("Invalid data structure:", data);
         }
@@ -147,16 +149,55 @@ const AppointmentList = () => {
     };
 
     fetchAppointments();
-  }, []); // Empty dependency array to run once on mount
+  }, []);
+  const onSearch = (e) => {
+    const value = e.currentTarget.value.trim();
+    setList(
+      value === ""
+        ? [...appointmentRecords]
+        : utils.wildCardSearch(appointmentRecords, value)
+    );
+  };
+
+  const handleRefresh = () => {
+    window.location.reload();
+  };
 
   return (
     <Card title="All appointments">
-      <Table
-        pagination={false}
-        columns={tableColumns}
-        dataSource={appointmentRecords}
-        rowKey="id"
-      />
+      <Flex
+        alignItems="center"
+        justifyContent="space-between"
+        mobileFlex={false}
+      >
+        <Flex className="mb-1" mobileFlex={false}>
+          <div className="mr-md-3 mb-3">
+            <Input
+              placeholder="Search"
+              prefix={<SearchOutlined />}
+              onChange={(e) => onSearch(e)}
+            />
+          </div>
+          <div>
+            <Button
+              onClick={handleRefresh}
+              // type="primary"
+              icon={<ReloadOutlined />}
+              block
+            >
+              Reload
+            </Button>
+          </div>
+        </Flex>
+      </Flex>
+      <div className="table-responsive">
+        <Table
+          pagination={false}
+          columns={tableColumns}
+          dataSource={appointmentRecords}
+          rowKey="id"
+        />
+      </div>
     </Card>
   );
 };

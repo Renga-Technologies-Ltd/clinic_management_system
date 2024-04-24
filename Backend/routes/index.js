@@ -41,6 +41,7 @@ router.post("/editUser", userController.editUser);
 router.get("/getUser/:user", userController.getUser);
 router.get("/users", userController.getUsers);
 // router.get("/getUsers", userController.getUsers);
+// /api/updateObservations/6627649c38d6afb3c891d155
 
 // creating a patient
 // router.post("/addPatient", authenticateToken, createPatient.createPatient);

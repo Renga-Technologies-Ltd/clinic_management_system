@@ -4,7 +4,9 @@ import {
   EyeOutlined,
   SearchOutlined,
   PlusCircleOutlined,
+  ReloadOutlined,
 } from "@ant-design/icons";
+import moment from "moment";
 import EllipsisDropdown from "components/shared-components/EllipsisDropdown";
 import Flex from "components/shared-components/Flex";
 import { useNavigate } from "react-router-dom";
@@ -73,6 +75,31 @@ const PatientList = () => {
       sorter: (a, b) => utils.antdTableSorter(a, b, "contactNumber"),
     },
     {
+      title: "DOB",
+      dataIndex: "dateOfBirth",
+      sorter: (a, b) => utils.antdTableSorter(a, b, "dateOfBirth"),
+      render: (dateOfBirth) => (
+        <span>{moment(dateOfBirth).format("DD/MM/YYYY")}</span>
+      ),
+    },
+    {
+      title: "Age",
+      dataIndex: "age",
+      render: (age, record) => {
+        if (age) {
+          return <span>{age}</span>; // If age is available, render it directly
+        } else if (record.dateOfBirth) {
+          // If age is not available but dateOfBirth is provided, calculate the age
+          return (
+            <span>{moment().diff(moment(record.dateOfBirth), "years")}</span>
+          );
+        } else {
+          return null; // If neither age nor dateOfBirth is available, render nothing
+        }
+      },
+    },
+
+    {
       title: "Gender",
       dataIndex: "gender",
       sorter: (a, b) => utils.antdTableSorter(a, b, "gender"),
@@ -87,15 +114,13 @@ const PatientList = () => {
       ),
     },
   ];
-  // const onSearch = (e) => {
-  //   const value = e.currentTarget.value;
-  //   const searchArray = e.currentTarget.value ? list : list;
-  //   const data = utils.wildCardSearch(searchArray, value);
-  //   setList(data);
-  // };
+
   const onSearch = (e) => {
     const value = e.currentTarget.value.trim();
     setList(value === "" ? [...list] : utils.wildCardSearch(list, value));
+  };
+  const handleRefresh = () => {
+    window.location.reload();
   };
 
   return (
@@ -113,7 +138,18 @@ const PatientList = () => {
               onChange={(e) => onSearch(e)}
             />
           </div>
+          <div>
+            <Button
+              onClick={handleRefresh}
+              // type="primary"
+              icon={<ReloadOutlined />}
+              block
+            >
+              Reload
+            </Button>
+          </div>
         </Flex>
+
         <div>
           <Button
             onClick={addPatient}
