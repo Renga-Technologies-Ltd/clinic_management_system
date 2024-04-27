@@ -18,6 +18,9 @@ const GeneralField = (props) => {
   const state = patientData?.patient?.address?.state || "";
   const postalCode = patientData?.patient?.address?.postalCode || "";
   const country = patientData?.patient?.address?.country || "";
+  const age = patientData?.patient?.age || "";
+  console.log(patientData);
+  console.log("patient age is", age);
 
   return (
     <Row gutter={16}>
@@ -39,10 +42,13 @@ const GeneralField = (props) => {
             <Col xs={24} sm={24} md={12}>
               <Form.Item label="Date of Birth" name="dateOfBirth">
                 <span>
-                  {moment(dateOfBirth).format("MMMM Do YYYY")}
-                  {}
+                  <span>
+                    {dateOfBirth
+                      ? moment(dateOfBirth).format("DD/MM/YYYY")
+                      : "Not Specified"}
+                  </span>
+                  {age !== undefined ? <span>; Age: {age}</span> : null}
                 </span>
-                <span>; Age: {moment().diff(dateOfBirth, "years")}</span>
               </Form.Item>
             </Col>
             <Col xs={24} sm={24} md={12}>

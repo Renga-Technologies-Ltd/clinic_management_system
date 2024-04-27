@@ -43,6 +43,9 @@ const Diagnosis = (data) => {
                 <strong>Patient ID:</strong>{" "}
                 {appointmentRecords.patient.patient_id}
               </p>
+              <p>
+                <strong>Patient Age:</strong> {appointmentRecords.patient.age}
+              </p>
               {/* Add more patient details as needed */}
             </>
           ) : (

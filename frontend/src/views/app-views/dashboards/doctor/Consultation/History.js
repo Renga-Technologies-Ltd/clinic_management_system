@@ -30,7 +30,7 @@ const History = (data) => {
           {appointmentRecords?.patient ? (
             // Access nested properties correctly
             <>
-              <p>
+            <p>
                 <strong>Appointment ID:</strong>{" "}
                 {`${appointmentRecords.appointment_id}`}
               </p>
@@ -41,6 +41,10 @@ const History = (data) => {
               <p>
                 <strong>Patient ID:</strong>{" "}
                 {appointmentRecords.patient.patient_id}
+              </p>
+              <p>
+                <strong>Patient Age:</strong>{" "}
+                {appointmentRecords.patient.age}
               </p>
               {/* Add more patient details as needed */}
             </>

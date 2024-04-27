@@ -127,18 +127,14 @@ const ViewConsultation = (props) => {
           <Card title="Basic Info">
             <Row gutter={16}>
               <Col xs={24} sm={24} md={12}>
-                <Col xs={24} sm={24} md={12}>
-                  <Form.Item label="First Name">
-                    <span>{observations?.patientName}</span>
-                  </Form.Item>
-                </Col>
-                <Col xs={24} sm={24} md={12}>
-                  <Form.Item label="Date of Birth">
-                    <span>
-                      {moment(patient?.dateOfBirth).format("MMMM Do YYYY")}
-                    </span>
-                  </Form.Item>
-                </Col>
+                <Form.Item label="First Name">
+                  <span>{observations?.patientName}</span>
+                </Form.Item>
+              </Col>
+              <Col xs={24} sm={24} md={12}>
+                <Form.Item label="Age">
+                  <span>{patient?.age}</span>
+                </Form.Item>
               </Col>
             </Row>
             <Row gutter={16}>

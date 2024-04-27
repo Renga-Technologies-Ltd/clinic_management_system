@@ -79,7 +79,9 @@ const PatientList = () => {
       dataIndex: "dateOfBirth",
       sorter: (a, b) => utils.antdTableSorter(a, b, "dateOfBirth"),
       render: (dateOfBirth) => (
-        <span>{moment(dateOfBirth).format("DD/MM/YYYY")}</span>
+        <span>
+          {dateOfBirth ? moment(dateOfBirth).format("DD/MM/YYYY") : "Not Specified"}
+        </span>
       ),
     },
     {

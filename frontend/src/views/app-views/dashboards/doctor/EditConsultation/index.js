@@ -83,7 +83,7 @@ const EditConsultation = (props) => {
       if (response.ok) {
         const data = await response.json();
         setSubmitLoading(false);
-        message.success(data.message);
+        // message.success(data.message);
         const { observations, patient, doctor } = data;
         // Optionally, update the local state with the updated data
         setFormData(data);
