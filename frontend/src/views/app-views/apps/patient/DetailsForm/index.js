@@ -24,7 +24,7 @@ const DetailsForm = (props) => {
         const response = await fetch(apiUrl);
         const data = await response.json();
         // console.log(data);
-        // Assuming the API response contains patient details
+       
         setPatientData(data);
       } catch (error) {
         console.error("Error fetching patient details:", error);

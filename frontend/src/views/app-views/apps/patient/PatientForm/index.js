@@ -11,14 +11,30 @@ const EDIT = "EDIT";
 
 const PatientForm = (props) => {
   const { mode = ADD } = props;
-
   const [form] = Form.useForm();
-  const [uploadedImg, setImage] = useState("");
-  const [uploadLoading, setUploadLoading] = useState(false);
   const [submitLoading, setSubmitLoading] = useState(false);
-
-  useEffect(() => {}, []);
-
+  const [list, setList] = useState([]);
+  console.log(list);
+  useEffect(() => {
+    const patientId = props.id;
+    console.log('patient id is', patientId);
+    const fetchPatients = async () => {
+      try {
+        const apiUrl = `${base_apiUrl}/patient/${patientId}`;
+        const response = await fetch(apiUrl);
+        const { patients } = await response.json(); // Destructure patients from the response
+        // Check if the data is an array
+        if (Array.isArray(patients)) {
+          setList(patients);
+        } else {
+          console.error("Invalid data structure:", patients);
+        }
+      } catch (error) {
+        console.error("Error fetching patients:", error);
+      }
+    };
+    fetchPatients();
+  }, [props.id]);
   const onFinish = () => {
     setSubmitLoading(true);
     form
@@ -112,13 +128,7 @@ const PatientForm = (props) => {
               {
                 label: "General",
                 key: "1",
-                children: (
-                  <GeneralField
-                    uploadedImg={uploadedImg}
-                    uploadLoading={uploadLoading}
-                    handleOnclick={onFinish}
-                  />
-                ),
+                children: <GeneralField handleOnclick={onFinish} />,
               },
             ]}
           />

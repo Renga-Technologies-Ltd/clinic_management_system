@@ -5,7 +5,6 @@ import { Row, Col, Button, Table, Tag } from "antd";
 import StatisticWidget from "components/shared-components/StatisticWidget";
 import ChartWidget from "components/shared-components/ChartWidget";
 
-import GoalWidget from "components/shared-components/GoalWidget";
 import Card from "components/shared-components/Card";
 import { useNavigate } from "react-router-dom";
 // import { BandwidthChartData } from "./DefaultDashboardData";

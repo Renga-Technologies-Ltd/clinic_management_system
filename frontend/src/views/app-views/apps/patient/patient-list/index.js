@@ -5,6 +5,7 @@ import {
   SearchOutlined,
   PlusCircleOutlined,
   ReloadOutlined,
+  EditOutlined,
 } from "@ant-design/icons";
 import moment from "moment";
 import EllipsisDropdown from "components/shared-components/EllipsisDropdown";
@@ -44,6 +45,12 @@ const PatientList = () => {
           <span className="ml-2">View Details</span>
         </Flex>
       </Menu.Item>
+      <Menu.Item onClick={() => editPatient(row._id)}>
+        <Flex alignItems="center">
+          <EditOutlined />
+          <span className="ml-2">Edit patient</span>
+        </Flex>
+      </Menu.Item>
     </Menu>
   );
   const addPatient = () => {
@@ -54,12 +61,20 @@ const PatientList = () => {
     console.log(row); // Log the row object to the console
     navigate(`/app/apps/patient/patient-details/${row}`);
   };
+  const editPatient = (row) => {
+    console.log(row); // Log the row object to the console
+    navigate(`/app/apps/patient/edit-patient/${row}`);
+  };
 
   const tableColumns = [
     {
-      title: "Patient Record ID",
+      title: "Patient ID",
       dataIndex: "_id",
-      render: (_, record) => <div>{record.patient_id}</div>,
+      render: (_, record) => (
+        <a href={`/app/apps/patient/patient-details/${record._id}`}>
+          {record.patient_id}
+        </a>
+      ),
     },
     {
       title: "Patient",
@@ -80,7 +95,9 @@ const PatientList = () => {
       sorter: (a, b) => utils.antdTableSorter(a, b, "dateOfBirth"),
       render: (dateOfBirth) => (
         <span>
-          {dateOfBirth ? moment(dateOfBirth).format("DD/MM/YYYY") : "Not Specified"}
+          {dateOfBirth
+            ? moment(dateOfBirth).format("DD/MM/YYYY")
+            : "Not Specified"}
         </span>
       ),
     },

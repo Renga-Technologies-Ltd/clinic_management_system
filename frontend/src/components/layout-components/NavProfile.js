@@ -1,13 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Dropdown, Avatar } from "antd";
 import { useDispatch } from "react-redux";
-import {
-  EditOutlined,
-  SettingOutlined,
-  ShopOutlined,
-  QuestionCircleOutlined,
-  LogoutOutlined,
-} from "@ant-design/icons";
+import { LogoutOutlined } from "@ant-design/icons";
 import NavItem from "./NavItem";
 import Flex from "components/shared-components/Flex";
 import { signOut } from "store/slices/authSlice";
@@ -42,13 +36,7 @@ const Title = styled.span(() => ({
 }));
 // end of styled components
 
-const MenuItem = (props) => (
-  <Flex as="a" href={props.path} alignItems="center" gap={SPACER[2]}>
-    <Icon>{props.icon}</Icon>
-    <span>{props.label}</span>
-  </Flex>
-);
-
+// Sign out menu item
 const MenuItemSignOut = (props) => {
   const dispatch = useDispatch();
 
@@ -69,32 +57,6 @@ const MenuItemSignOut = (props) => {
 };
 
 const items = [
-  // {
-  //   key: "Edit Profile",
-  //   label: <MenuItem path="/" label="Edit Profile" icon={<EditOutlined />} />,
-  // },
-  // {
-  //   key: "Account Setting",
-  //   label: (
-  //     <MenuItem path="/" label="Account Setting" icon={<SettingOutlined />} />
-  //   ),
-  // },
-  // {
-  //   key: "Account Billing",
-  //   label: (
-  //     <MenuItem path="/" label="Account Billing" icon={<ShopOutlined />} />
-  //   ),
-  // },
-  // {
-  //   key: "Help Center",
-  //   label: (
-  //     <MenuItem
-  //       path="/"
-  //       label="Help Center"
-  //       icon={<QuestionCircleOutlined />}
-  //     />
-  //   ),
-  // },
   {
     key: "Sign Out",
     label: <MenuItemSignOut label="Sign Out" />,

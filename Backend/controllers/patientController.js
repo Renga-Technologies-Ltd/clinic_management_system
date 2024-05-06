@@ -129,6 +129,7 @@ const patientController = {
       if (!patient) {
         return res.status(404).json({ message: "Patient not found" });
       }
+      console.log("Patient found:", patient);
       res.status(200).json({ patient });
     } catch (error) {
       console.error("Error getting patient by id:", error);
