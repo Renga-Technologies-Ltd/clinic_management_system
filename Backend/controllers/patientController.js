@@ -1,6 +1,5 @@
 const Patient = require("../schemas/patient");
 const DoctorObservations = require("../schemas/doctorObservations");
-
 const Appointment = require("../schemas/appointment");
 const User = require("../schemas/users");
 const NurseReadings = require("../schemas/nurseReadings");
@@ -81,6 +80,7 @@ const patientController = {
         firstName,
         lastName,
         dateOfBirth,
+        age,
         gender,
         contactNumber,
         emailAddress,
@@ -96,6 +96,7 @@ const patientController = {
       patient.firstName = firstName;
       patient.lastName = lastName;
       patient.dateOfBirth = dateOfBirth;
+      patient.age = age;
       patient.gender = gender;
       patient.contactNumber = contactNumber;
       patient.emailAddress = emailAddress;
@@ -166,7 +167,6 @@ const patientController = {
   addMedicalRecords: async (req, res, next) => {
     try {
       const { app_id, history, examination, diagnosis, treatment } = req.body;
-
       // Fetch appointment details and populate patient and doctor fields
       const appointment = await Appointment.findById(app_id).populate([
         "patient",
@@ -358,7 +358,6 @@ const patientController = {
         acc[month].appointments++;
         return acc;
       }, {});
-
       // Generate data for "Number of patients" series
       const numberOfPatientsData = Object.values(patientsByMonth).map(
         (entry) => entry.patients
@@ -388,6 +387,7 @@ const patientController = {
       return {
         series: [
           { name: "Number of patients", data: numberOfPatientsData },
+          
           { name: "Appointments booked", data: appointmentsBookedData },
         ],
         categories: categories,

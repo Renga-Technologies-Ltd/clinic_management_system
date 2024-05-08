@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col, Card, Table, Tag } from "antd";
-import NumberFormat from "react-number-format";
 import utils from "utils";
 import moment from "moment";
-import { Link } from "react-router-dom";
 const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
 const AppointmentRecords = (props) => {
@@ -20,8 +18,7 @@ const AppointmentRecords = (props) => {
           setAppointmentRecords(data.appointments);
         } else {
           console.error("Invalid data structure:", data);
-        }
-        console.log(data.appointments);
+        }       
       } catch (error) {
         console.error("Error fetching patient details:", error);
       }

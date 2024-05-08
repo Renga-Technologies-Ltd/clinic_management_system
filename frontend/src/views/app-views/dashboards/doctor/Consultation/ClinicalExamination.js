@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Input, Row, Col, Card, Form, Radio, message } from "antd";
+import { Input, Row, Col, Card, Form, Radio, message, Popover } from "antd";
+import { Button, Upload } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
 import NurseReading from "./NursesReadings";
 import LabRequest from "./Lab";
 import LabResults from "./LabResults";
@@ -13,6 +15,7 @@ const ClinicalExamination = (data) => {
   const [labRequestNeeded, setLabRequestNeeded] = useState(false);
   const [showLabRequestForm, setShowLabRequestForm] = useState(false);
   const [showRadioRequestForm, setShowRadioRequestForm] = useState(false);
+  const [userData, setUserData] = useState(null);
   const [form] = Form.useForm();
 
   // Handle lab request change
@@ -68,12 +71,43 @@ const ClinicalExamination = (data) => {
         );
         const data = await response.json();
         setAppointmentRecords(data.appointment);
+        const userData = JSON.parse(localStorage.getItem("userDetails"));
+        // localStorage.getItem("userDetails")
+        setUserData(userData);
       } catch (error) {
         console.error("Error:", error);
       }
     };
     fetchAppointmentData();
   }, [appointment_id]);
+  const props = {
+    name: "file",
+    action: `${base_apiUrl}/fileupload/`,
+    headers: {
+      authorization: "authorization-text",
+    },
+    data: {
+      appointmentId: appointment_id,
+      patientId: appointmentRecords?.patient._id,
+      userId: userData?.id,
+    },
+    onChange(info) {
+      if (info.file.status !== "uploading") {
+        console.log(info.file, info.fileList);
+      }
+      if (info.file.status === "done") {
+        message.success(`${info.file.name} file uploaded successfully`);
+      } else if (info.file.status === "error") {
+        console.log(info.file);
+        message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+  };
+  const content = (
+    <div>
+      <p>Click to Upload PDF documents only</p>
+    </div>
+  );
 
   return (
     <Row gutter={16}>
@@ -95,8 +129,7 @@ const ClinicalExamination = (data) => {
                 {appointmentRecords.patient.patient_id}
               </p>
               <p>
-                <strong>Patient Age:</strong>{" "}
-                {appointmentRecords.patient.age}
+                <strong>Patient Age:</strong> {appointmentRecords.patient.age}
               </p>
               {/* Add more patient details as needed */}
             </>
@@ -176,6 +209,15 @@ const ClinicalExamination = (data) => {
           {showRadioRequestForm ? (
             <RadilogyRequest appointment_id={appointment_id} />
           ) : null}
+        </Card>
+        <Card title="Document Upload">
+          <Col xs={24} sm={24} md={17}>
+            <Popover content={content} title="Document Upload">
+              <Upload {...props}>
+                <Button icon={<UploadOutlined />}>Click to Upload</Button>
+              </Upload>
+            </Popover>
+          </Col>
         </Card>
         <Card title="Triage Results">
           <NurseReading appointment_id={appointment_id} />

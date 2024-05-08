@@ -8,13 +8,14 @@ const GeneralField = ({ initialValues }) => {
   // Provide default values for initialValues if it is null
   initialValues = initialValues || {};
 
-  // console.log("initialValues:", initialValues);
+  console.log("initialValues:", initialValues);
 
   // Destructure initial values with default values
   const {
     firstName = "",
     lastName = "",
     dateOfBirth = null,
+    age = "",
     gender = "",
     patient_id = "",
     contactNumber = "",
@@ -50,7 +51,7 @@ const GeneralField = ({ initialValues }) => {
         <Card title="Basic Info">
           <Form.Item
             label="Patient ID"
-            name="patient_id"
+            // name="patient_id"
             initialValue={patient_id}
             disabled
             // rules={[{ required: true, message: "Please enter first name" }]}
@@ -93,6 +94,17 @@ const GeneralField = ({ initialValues }) => {
               </Form.Item>
               {patientAge !== null && <p>Patient Age: {patientAge}</p>}
             </Col>
+            <Col xs={24} sm={24} md={12}>
+              <Form.Item
+                label="Patient Age"
+                name="age"
+                initialValue={age}
+              >
+                <Input />
+              </Form.Item>
+              {/* {patientAge !== null && <p>Patient Age: {patientAge}</p>} */}
+            </Col>
+
             <Col xs={24} sm={24} md={12}>
               <Form.Item
                 label="Gender"

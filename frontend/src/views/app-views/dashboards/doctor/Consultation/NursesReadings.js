@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Input, Row, Col, Card, Form } from "antd";
+import { Button, message, Col, Upload } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
 const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
 const NurseReading = (data) => {
@@ -19,10 +20,10 @@ const NurseReading = (data) => {
     };
     fetchAppointmentData();
   }, [appointment_id]);
-  console.log(nurseReadings);
-  //   console.log(appointment_id);
+
   return (
-    <Row gutter={16}>
+    <>
+      <hr></hr>
       <Col xs={24} sm={24} md={17}>
         {nurseReadings ? (
           // Access nested properties correctly
@@ -103,7 +104,7 @@ const NurseReading = (data) => {
           <p>Triage Data not available</p>
         )}
       </Col>
-    </Row>
+    </>
   );
 };
 

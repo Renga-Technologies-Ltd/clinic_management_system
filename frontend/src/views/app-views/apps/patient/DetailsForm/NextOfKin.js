@@ -3,10 +3,7 @@ import { Row, Col, Card, Form } from "antd";
 
 const NextOfKin = (props) => {
   const { patientData } = props;
-  console.log(patientData);
-
   const firstName = patientData?.patient?.nextOfKin?.firstName || "";
-  // console.log(firstName);
   const lastName = patientData?.patient?.nextOfKin?.lastName || "";
   const relationship = patientData?.patient?.nextOfKin?.relationship || "";
   const contactNumber = patientData?.patient?.nextOfKin?.relationship || "";

@@ -146,6 +146,29 @@ const paymentController = {
       res.status(500).json({ message: "Internal Server Error" });
     }
   },
+  getPaymentbyAppointment: async (req, res, next) => {
+    try {
+      const appointmentId = req.params.appointment;
+      const payment = await Payment.findOne({ appointment: appointmentId })
+        .populate({
+          path: "appointment",
+          model: "Appointment",
+          select: "appointmentTime",
+        })
+        .populate({
+          path: "receivedBy",
+          model: "User",
+          select: "profile.firstName profile.lastName",
+        });
+      if (!payment) {
+        return res.status(404).json({ message: "Payment not found" });
+      }
+      res.status(200).json({ payment });
+    } catch (error) {
+      console.error("Error getting payment by appointment:", error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  },
 
   getPaymentPerUser: async (req, res, next) => {
     try {

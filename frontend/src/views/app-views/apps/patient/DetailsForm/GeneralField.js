@@ -7,7 +7,7 @@ const GeneralField = (props) => {
   const { patientData } = props;
 
   const firstName = patientData?.patient?.firstName || "";
-  // console.log(firstName);
+ 
   const lastName = patientData?.patient?.lastName || "";
   const dateOfBirth = patientData?.patient?.dateOfBirth || null;
   const gender = patientData?.patient?.gender || "";
@@ -19,8 +19,6 @@ const GeneralField = (props) => {
   const postalCode = patientData?.patient?.address?.postalCode || "";
   const country = patientData?.patient?.address?.country || "";
   const age = patientData?.patient?.age || "";
-  console.log(patientData);
-  console.log("patient age is", age);
 
   return (
     <Row gutter={16}>

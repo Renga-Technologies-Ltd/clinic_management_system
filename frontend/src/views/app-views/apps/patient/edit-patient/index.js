@@ -24,7 +24,7 @@ const EditPatient = (props) => {
         const apiUrl = `${base_apiUrl}/getPatient/${patientId}`;
         const response = await fetch(apiUrl);
         const { patient } = await response.json(); // Destructure patient from the response
-        // console.log("patient:", patient); // Log the patient object
+        console.log("patient:", patient); // Log the patient object
         if (patient) {
           // Check if patient exists
           setFormData(patient); // Set the patient in an array

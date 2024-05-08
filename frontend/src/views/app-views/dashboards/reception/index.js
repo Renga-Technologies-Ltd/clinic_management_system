@@ -5,7 +5,6 @@ import DataDisplayWidget from "components/shared-components/DataDisplayWidget";
 import { Link } from "react-router-dom";
 import {
   OrderedListOutlined,
-  ReconciliationOutlined,
   UserAddOutlined,
   BarChartOutlined,
 } from "@ant-design/icons";

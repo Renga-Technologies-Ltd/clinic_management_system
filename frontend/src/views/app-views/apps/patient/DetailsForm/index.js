@@ -3,7 +3,7 @@ import PageHeaderAlt from "components/layout-components/PageHeaderAlt";
 import { Tabs } from "antd";
 import GeneralField from "./GeneralField";
 import NextOfKin from "./NextOfKin";
-import PatientDocuments from "./MedicalRecords";
+import PatientDocuments from "./DocumentRecords";
 import AppointmentRecords from "./AppointmentRecords";
 import Flex from "components/shared-components/Flex";
 

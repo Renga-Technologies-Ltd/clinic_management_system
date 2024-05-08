@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { Card, Table, Tag, Button } from "antd";
+import { Card, Table, Tag, Button, Modal } from "antd";
 import moment from "moment";
-import NumberFormat from "react-number-format";
+import { ReloadOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import utils from "utils";
+import Invoice from "views/app-views/apps/patient/payment/Receipt";
+import ReceiptTemplate from "./ReceiptTemplate";
+
 const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
 const TodaysAppointments = () => {
   const [appointmentRecords, setAppointmentRecords] = useState(null);
+  const [receiptData, setReceiptData] = useState(null);
+  const [paymentId, setPaymentId] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false); // State to control modal visibility
   const navigate = useNavigate();
   const handlePayment = (appointmentId) => {
     navigate(`/app/apps/patient/pay-appointment/${appointmentId}`);
@@ -96,7 +102,15 @@ const TodaysAppointments = () => {
       render: (paid, record) => (
         <>
           {paid ? (
-            <Tag color="green">Paid</Tag>
+            <>
+              <Tag color="green">Paid</Tag>
+              <Button
+                icon={<ReloadOutlined />}
+                onClick={() => openPrint(record._id)}
+              >
+                Reprint Receipt
+              </Button>
+            </>
           ) : (
             <Button onClick={() => handlePayment(record._id)}>Pay Now</Button>
           )}
@@ -104,13 +118,34 @@ const TodaysAppointments = () => {
       ),
     },
   ];
+  const openPrint = async (id) => {
+    try {
+      const response = await fetch(
+        `${base_apiUrl}/getPaymentbyAppointment/${id}`,
+        {
+          method: "GET",
+        }
+      );
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const data = await response.json();
+      setReceiptData(data);
+      setPaymentId(data._id);
+      setModalVisible(true); // Update modal visibility state
+      console.log("Modal visible:", modalVisible); // Log modal visibility state
+      console.log("data", data);
+    } catch (error) {
+      console.error("Error fetching appointments:", error.message);
+      // You can set an error state or show a notification to the user
+    }
+  };
 
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
         const todayStart = moment().startOf("day"); // Get the start of today
         const todayEnd = moment().endOf("day"); // Get the end of today
-
         const response = await fetch(`${base_apiUrl}/Appointments`);
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -142,6 +177,15 @@ const TodaysAppointments = () => {
         dataSource={appointmentRecords}
         rowKey="id"
       />
+      {/* Modal to display Invoice component */}
+      <Modal
+        title="Invoice"
+        visible={modalVisible}
+        onCancel={() => setModalVisible(false)}
+        footer={null}
+      >
+        <ReceiptTemplate receiptData={receiptData} />
+      </Modal>
     </Card>
   );
 };

@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { PrinterOutlined } from "@ant-design/icons";
 import { Card, Button } from "antd";
+import moment from "moment";
 
 const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
-const Invoice = (props) => {
-  const receipt = props.paymentId;
+const ReceiptTemplate = ({ receiptData }) => {
+  //   console.log(receiptData);
+  const receipt = receiptData.payment._id;
   const [invoiceData, setInvoiceData] = useState(null); // Initialize state as null
   const [appoinmentId, setAppoinmentId] = useState(null);
   const [labRecords, setLabRecords] = useState(null);
-
+  //   console.log(receipt);
   useEffect(() => {
     const fetchInvoiceData = async () => {
       try {
@@ -45,21 +47,7 @@ const Invoice = (props) => {
       fetchLabRecords();
       // Fetch invoice data only if receipt ID exists
     }
-  }, [receipt]); // Fetch invoice data whenever receipt ID changes
-
-  const formatDate = (dateString) => {
-    const options = {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: false, // Use 24-hour format
-    };
-    const date = new Date(dateString);
-    return date.toLocaleString("en-GB", options);
-  };
-
+  }, [receipt]);
   const printDiv = () => {
     const printableContent = document.querySelector(".printable-content");
     if (printableContent) {
@@ -75,6 +63,10 @@ const Invoice = (props) => {
     } else {
       console.error("Printable content not found");
     }
+  };
+
+  const formatDate = (dateString) => {
+    return moment(dateString).format("MMMM Do YYYY, h:mm a");
   };
 
   return (
@@ -188,4 +180,4 @@ const Invoice = (props) => {
   );
 };
 
-export default Invoice;
+export default ReceiptTemplate;
