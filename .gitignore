@@ -3,5 +3,5 @@ node_modules
 # dotenv environment variables file
 .env
 .env.test
-./Backend/uploads/
+Backend/uploads/
 ./Backend/uploads/*
