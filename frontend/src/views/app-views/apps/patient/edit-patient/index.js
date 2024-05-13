@@ -5,6 +5,7 @@ import PageHeaderAlt from "components/layout-components/PageHeaderAlt";
 import GeneralField from "./GeneralField";
 import Flex from "components/shared-components/Flex";
 import DetailsForm from "../DetailsForm";
+import Summary from "./Summary";
 
 const base_apiUrl = process.env.REACT_APP_BASE_URL;
 const EditPatient = (props) => {
@@ -122,12 +123,7 @@ const EditPatient = (props) => {
               {
                 label: "Summary",
                 key: "1",
-                // children: (
-                //   <DetailsForm
-                //     patientId={id}
-                //     initialValues={formData} // Pass the initialValues here
-                //   />
-                // ),
+                children: <Summary />,
               },
               {
                 label: "Edit Patient Details",

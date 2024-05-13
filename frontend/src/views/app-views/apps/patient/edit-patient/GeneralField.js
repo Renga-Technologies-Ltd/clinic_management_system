@@ -44,6 +44,7 @@ const GeneralField = ({ initialValues }) => {
       setPatientAge(null);
     }
   };
+  const dateOfBirthDateOnly = dateOfBirth ? dateOfBirth.slice(0, 10) : null;
 
   return (
     <Row gutter={16}>
@@ -51,12 +52,12 @@ const GeneralField = ({ initialValues }) => {
         <Card title="Basic Info">
           <Form.Item
             label="Patient ID"
-            // name="patient_id"
+            name="patient_id"
             initialValue={patient_id}
             disabled
             // rules={[{ required: true, message: "Please enter first name" }]}
           >
-            <Input prefix={<UserOutlined />} placeholder="First Name" />
+            <Input disabled />
           </Form.Item>
           <Row gutter={16}>
             <Col xs={24} sm={24} md={12}>
@@ -84,7 +85,11 @@ const GeneralField = ({ initialValues }) => {
             <Col xs={24} sm={24} md={12}>
               <Form.Item
                 label="Date of Birth"
-                initialValue={dateOfBirth ? moment(dateOfBirth) : null} // Convert date to moment object if not null
+                initialValue={
+                  dateOfBirthDateOnly
+                    ? moment(dateOfBirthDateOnly, "YYYY-MM-DD")
+                    : undefined
+                } // Use dateOfBirthDateOnly
                 name="dateOfBirth"
               >
                 <DatePicker
@@ -95,16 +100,10 @@ const GeneralField = ({ initialValues }) => {
               {patientAge !== null && <p>Patient Age: {patientAge}</p>}
             </Col>
             <Col xs={24} sm={24} md={12}>
-              <Form.Item
-                label="Patient Age"
-                name="age"
-                initialValue={age}
-              >
+              <Form.Item label="Patient Age" name="age" initialValue={age}>
                 <Input />
               </Form.Item>
-              {/* {patientAge !== null && <p>Patient Age: {patientAge}</p>} */}
             </Col>
-
             <Col xs={24} sm={24} md={12}>
               <Form.Item
                 label="Gender"

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Input, Row, Col, Card, Form } from "antd";
 const base_apiUrl = process.env.REACT_APP_BASE_URL;
-
 const TriageForm = (data) => {
   const appointment_id = data.appointment_id;
   const [appointmentRecords, setAppointmentRecords] = useState(null);
@@ -22,13 +21,10 @@ const TriageForm = (data) => {
     };
     fetchAppointmentData();
   }, [appointment_id]);
-
   console.log("patient", bmi);
-
   const handleWeightChange = (e) => {
     setWeight(e.target.value);
   };
-
   const handleHeightChange = (e) => {
     setHeight(e.target.value);
   };
