@@ -23,6 +23,8 @@ const History = (data) => {
   }, [appointment_id]);
   //   console.log(appointmentRecords);
   //   console.log(appointment_id);
+  console.log("patient age:", appointmentRecords?.patient?.age);
+  console.log("patient:", appointmentRecords?.patient);
   return (
     <Row gutter={16}>
       <Col xs={24} sm={24} md={17}>
@@ -30,7 +32,7 @@ const History = (data) => {
           {appointmentRecords?.patient ? (
             // Access nested properties correctly
             <>
-            <p>
+              <p>
                 <strong>Appointment ID:</strong>{" "}
                 {`${appointmentRecords.appointment_id}`}
               </p>
@@ -43,8 +45,12 @@ const History = (data) => {
                 {appointmentRecords.patient.patient_id}
               </p>
               <p>
-                <strong>Patient Age:</strong>{" "}
-                {appointmentRecords.patient.age}
+                <div>
+                  <strong>Patient Age:</strong>{" "}
+                  {appointmentRecords.patient.age
+                    ? appointmentRecords.patient.age
+                    : "Not defined"}
+                </div>
               </p>
               {/* Add more patient details as needed */}
             </>

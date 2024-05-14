@@ -245,14 +245,14 @@ const appointmentController = {
         .json({ message: "Appointment updated successfully", appointment });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: "Internal server error" }); 
+      res.status(500).json({ message: "Internal server error" });
     }
   },
   findAppointment: async (req, res, next) => {
     try {
       const appointment_id = req.params.appointment_id;
       const appointment = await Appointment.findById(appointment_id)
-        .populate("patient", "firstName lastName patient_id") // Replace "firstName" with the actual field you want to retrieve from the Patient model
+        .populate("patient", "firstName lastName patient_id age") // Replace "firstName" with the actual field you want to retrieve from the Patient model
         .populate("doctor", "profile.firstName profile.lastName user_id") // Access subfields in the profile object
         .populate(
           "bookedBy",
