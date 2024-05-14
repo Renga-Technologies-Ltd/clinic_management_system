@@ -204,7 +204,49 @@ const appointmentController = {
     const {} = req.body;
   },
   editAppointment: async (req, res, next) => {
-    const {} = req.body;
+    const {
+      appointment_id,
+      patient,
+      bookingType,
+      appointmentTime,
+      bookedBy,
+      doctor,
+      accompaniedBy,
+      paid,
+      nurseReadings,
+      doctorReadings,
+    } = req.body;
+
+    try {
+      const appointment = await Appointment.findOneAndUpdate(
+        { appointment_id }, // Find the appointment by appointment_id
+        {
+          $set: {
+            patient,
+            bookingType,
+            appointmentTime,
+            bookedBy,
+            doctor,
+            accompaniedBy,
+            paid,
+            nurseReadings,
+            doctorReadings,
+          },
+        },
+        { new: true } // To return the updated appointment
+      );
+
+      if (!appointment) {
+        return res.status(404).json({ message: "Appointment not found" });
+      }
+
+      res
+        .status(200)
+        .json({ message: "Appointment updated successfully", appointment });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Internal server error" }); 
+    }
   },
   findAppointment: async (req, res, next) => {
     try {
