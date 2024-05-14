@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Input, Row, Col, Card, Form } from "antd";
 import NurseReading from "./NursesReadings";
-import moment from "moment";
+
 const { TextArea } = Input;
 const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
@@ -43,7 +43,12 @@ const Treatment = (data) => {
                 {appointmentRecords.patient.patient_id}
               </p>
               <p>
-                <strong>Patient Age:</strong> {appointmentRecords.patient.age}
+                <div>
+                  <strong>Patient Age:</strong>{" "}
+                  {appointmentRecords.patient.age
+                    ? appointmentRecords.patient.age
+                    : "NA"}
+                </div>
               </p>
               {/* Add more patient details as needed */}
             </>

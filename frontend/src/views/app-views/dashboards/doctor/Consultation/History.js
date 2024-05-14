@@ -49,7 +49,7 @@ const History = (data) => {
                   <strong>Patient Age:</strong>{" "}
                   {appointmentRecords.patient.age
                     ? appointmentRecords.patient.age
-                    : "Not defined"}
+                    : "NA"}
                 </div>
               </p>
               {/* Add more patient details as needed */}
