@@ -125,6 +125,12 @@ const ClinicalExamination = (data) => {
                 <strong>Patient ID:</strong>{" "}
                 {appointmentRecords.patient.patient_id}
               </p>
+              <p>
+                <strong>Patient Age:</strong>{" "}
+                {appointmentRecords.patient.age
+                  ? appointmentRecords.patient.age
+                  : "NA"}
+              </p>
             </>
           ) : (
             <p>No patient details available</p>
