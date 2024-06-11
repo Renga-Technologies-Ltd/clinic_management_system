@@ -14,7 +14,7 @@ const Payment = (props) => {
   const [submitLoading, setSubmitLoading] = useState(false);
   const [paymentId, setPaymentId] = useState(null); // Track payment ID
   const [paymentSuccess, setPaymentSuccess] = useState(false);
-  const [paymentDetails, setPaymentdetails] = useState(null);
+  // const [paymentDetails, setPaymentdetails] = useState(null);
   useEffect(() => {}, []);
 
   const onFinish = async () => {
@@ -46,7 +46,7 @@ const Payment = (props) => {
           setSubmitLoading(false);
           message.success(data.message || "Payment submitted successfully");
           setPaymentId(data.payment._id); // Set payment ID
-          setPaymentdetails(data.payment);
+          // setPaymentdetails(data.payment);
           setPaymentSuccess(true); // Set payment success to true
           form.resetFields();
         } catch (error) {

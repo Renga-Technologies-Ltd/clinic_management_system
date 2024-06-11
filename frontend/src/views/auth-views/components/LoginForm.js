@@ -32,7 +32,7 @@ export const LoginForm = (props) => {
   } = props;
 
   const onLogin = (values) => {
-    showLoading();   
+    showLoading();
     signIn(values);
   };
 
@@ -46,7 +46,7 @@ export const LoginForm = (props) => {
         clearTimeout(timer);
       };
     }
-  }, []);
+  }, [token, allowRedirect, navigate, redirect, showMessage, hideAuthMessage]);
 
   const renderOtherSignIn = (
     <div>
@@ -85,7 +85,7 @@ export const LoginForm = (props) => {
             },
             {
               type: "email",
-              message: "Please enter a validate email!",
+              message: "Please enter a valid email!",
             },
           ]}
         >
@@ -104,7 +104,7 @@ export const LoginForm = (props) => {
               <span>Password</span>
               {showForgetPassword && (
                 <span
-                  onClick={() => onForgetPasswordClick}
+                  onClick={() => onForgetPasswordClick()}
                   className="cursor-pointer font-size-sm font-weight-normal text-muted"
                 >
                   Forget Password?

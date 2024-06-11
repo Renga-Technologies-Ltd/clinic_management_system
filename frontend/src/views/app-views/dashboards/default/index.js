@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { useSelector } from "react-redux";
-import { Row, Col, Button, Table, Tag } from "antd";
+import { Row, Col, Button, Table } from "antd";
 import StatisticWidget from "components/shared-components/StatisticWidget";
 import ChartWidget from "components/shared-components/ChartWidget";
 import Card from "components/shared-components/Card";

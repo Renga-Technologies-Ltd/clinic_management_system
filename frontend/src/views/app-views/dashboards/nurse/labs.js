@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Card, Table, Tag, Button, message } from "antd";
 import moment from "moment";
-import NumberFormat from "react-number-format";
 import { useNavigate } from "react-router-dom";
 import utils from "utils";
 const base_apiUrl = process.env.REACT_APP_BASE_URL;

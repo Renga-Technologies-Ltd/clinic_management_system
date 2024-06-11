@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Input, Row, Col, Card, Form, message } from "antd";
+import { Row, Col, Card, message } from "antd";
 import NurseReading from "./NursesReadings";
 // const { TextArea } = Input;
 const base_apiUrl = process.env.REACT_APP_BASE_URL;

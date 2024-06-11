@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Input, Row, Col, Card, Form } from "antd";
+import {  Row, Col,} from "antd";
 
 const base_apiUrl = process.env.REACT_APP_BASE_URL;
 

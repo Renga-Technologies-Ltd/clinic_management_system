@@ -14,7 +14,7 @@ const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
 export const TransactionDashboard = () => {
   const navigate = useNavigate();
-  const [dateRange, setDateRange] = useState([]); // No initial value
+  const [dateRange, setDateRange] = useState([]);
   const [paymentType, setPaymentType] = useState("All");
   const [transactions, setTransactions] = useState([]);
   const userData = JSON.parse(localStorage.getItem("userDetails"));
@@ -32,7 +32,7 @@ export const TransactionDashboard = () => {
       }
       const data = await response.json();
       const payments = data.payments;
-      console.log("All Payments:", payments);
+      // console.log("All Payments:", payments);
       setTransactions(payments);
       setFilteredTransactions(payments); // Initialize with all payments
     } catch (error) {
@@ -45,9 +45,12 @@ export const TransactionDashboard = () => {
 
     if (dateRange && dateRange.length === 2) {
       const [start, end] = dateRange;
-      filtered = filtered.filter((transaction) =>
-        moment(transaction.timeOfPayment).isBetween(start, end, null, "[]")
-      );
+      const startDate = start.format();
+      const endDate = end.format();
+      filtered = filtered.filter((transaction) => {
+        const transactionDate = moment(transaction.timeOfPayment);
+        return transactionDate.isBetween(startDate, endDate, null, "[]");
+      });
     }
 
     if (paymentType !== "All") {
@@ -55,8 +58,6 @@ export const TransactionDashboard = () => {
         (transaction) => transaction.paymentMethod === paymentType
       );
     }
-
-    console.log("Filtered Transactions:", filtered);
     setFilteredTransactions(filtered);
   };
 

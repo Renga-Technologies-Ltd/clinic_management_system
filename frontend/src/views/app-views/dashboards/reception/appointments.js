@@ -4,7 +4,7 @@ import moment from "moment";
 import { ReloadOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import utils from "utils";
-import Invoice from "views/app-views/apps/patient/payment/Receipt";
+
 import ReceiptTemplate from "./ReceiptTemplate";
 
 const base_apiUrl = process.env.REACT_APP_BASE_URL;
@@ -12,7 +12,7 @@ const base_apiUrl = process.env.REACT_APP_BASE_URL;
 const TodaysAppointments = () => {
   const [appointmentRecords, setAppointmentRecords] = useState(null);
   const [receiptData, setReceiptData] = useState(null);
-  const [paymentId, setPaymentId] = useState(null);
+  // const [paymentId, setPaymentId] = useState(null);
   const [modalVisible, setModalVisible] = useState(false); // State to control modal visibility
   const navigate = useNavigate();
   const handlePayment = (appointmentId) => {
@@ -131,7 +131,7 @@ const TodaysAppointments = () => {
       }
       const data = await response.json();
       setReceiptData(data);
-      setPaymentId(data._id);
+      // setPaymentId(data._id);
       setModalVisible(true); // Update modal visibility state
       console.log("Modal visible:", modalVisible); // Log modal visibility state
       console.log("data", data);

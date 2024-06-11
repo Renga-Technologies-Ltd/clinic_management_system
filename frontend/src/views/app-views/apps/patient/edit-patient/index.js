@@ -4,7 +4,7 @@ import { useParams, useNavigate } from "react-router-dom"; // Import useParams h
 import PageHeaderAlt from "components/layout-components/PageHeaderAlt";
 import GeneralField from "./GeneralField";
 import Flex from "components/shared-components/Flex";
-import DetailsForm from "../DetailsForm";
+// import DetailsForm from "../DetailsForm";
 import Summary from "./Summary";
 
 const base_apiUrl = process.env.REACT_APP_BASE_URL;
@@ -17,9 +17,9 @@ const EditPatient = (props) => {
 
   useEffect(() => {
     const patientId = id;
-    const param = {
-      id: patientId,
-    };
+    // const param = {
+    //   id: patientId,
+    // };
     const fetchPatients = async () => {
       try {
         const apiUrl = `${base_apiUrl}/getPatient/${patientId}`;

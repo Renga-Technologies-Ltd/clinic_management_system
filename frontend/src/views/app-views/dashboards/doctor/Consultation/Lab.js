@@ -3,11 +3,12 @@ import { Input, Button, Col, Card, Form } from "antd";
 
 // const base_apiUrl = process.env.REACT_APP_BASE_URL;
 const { TextArea } = Input;
-const LabRequest = ({ sendRequest, form, setShowLabResults }) => {
+const LabRequest = ({ sendRequest, form }) => {
   // const appointment_id = data.appointment_id;
   const [submitLoading, setSubmitLoading] = useState(false);
 
   const handleFormFinish = (values) => {
+    setSubmitLoading(true);
     // Handle form finish if needed
   };
 

@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import PageHeaderAlt from "components/layout-components/PageHeaderAlt";
-import { Tabs, Row, Form, Button, message } from "antd";
+import { Row, Form } from "antd";
 import Flex from "components/shared-components/Flex";
 import { useParams } from "react-router-dom";
-import LabRequest from "views/app-views/dashboards/doctor/Consultation/Lab";
+// import LabRequest from "views/app-views/dashboards/doctor/Consultation/Lab";
 import LabResults from "views/app-views/dashboards/doctor/Consultation/LabResults";
-
 
 const Payment = (props) => {
   const appointmentId = useParams();
@@ -13,7 +12,6 @@ const Payment = (props) => {
   const [form] = Form.useForm();
 
   useEffect(() => {}, []);
-
 
   return (
     <>

@@ -61,6 +61,7 @@ const RadilogyRequest = (data) => {
 
   const printDocument = () => {
     const printableContent = document.querySelector(".printable-content");
+    loading && message.loading("Printing...");
     const printWindow = window.open("", "_blank");
     printWindow.document.open();
     printWindow.document.write("<html><head><title>Print</title></head><body>");

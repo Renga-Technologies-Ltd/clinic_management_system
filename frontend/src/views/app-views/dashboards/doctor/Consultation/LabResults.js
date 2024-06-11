@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Input, Upload, Col, Card, Button, Form, message } from "antd";
+import { Input, Col, Card, Button, Form, message } from "antd";
 import { useNavigate } from "react-router-dom";
 const base_apiUrl = process.env.REACT_APP_BASE_URL;
 const { TextArea } = Input;
@@ -22,7 +22,6 @@ const LabResults = (data) => {
     };
     fetchLabResults();
   }, [id]);
-
 
   const onFinish = async (values) => {
     try {
