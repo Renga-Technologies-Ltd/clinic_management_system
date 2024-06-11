@@ -61,7 +61,7 @@ const DetailsForm = (props) => {
               children: <NextOfKin patientData={patientData} />,
             },
             {
-              label: "Patients docoments",
+              label: "Patients documents",
               key: "3",
               children: <PatientDocuments patientId={patientId} />,
             },

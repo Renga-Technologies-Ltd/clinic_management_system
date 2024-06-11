@@ -106,6 +106,14 @@ export const TransactionDashboard = () => {
       ),
     },
     {
+      title: "Date",
+      dataIndex: "timeOfPayment",
+      sorter: (a, b) => utils.antdTableSorter(a, b, "timeOfPayment"),
+      render: (timeOfPayment) => (
+        <span>{moment(timeOfPayment).format("D/MM/yyyy")}</span>
+      ),
+    },
+    {
       title: "Time",
       dataIndex: "timeOfPayment",
       sorter: (a, b) => utils.antdTableSorter(a, b, "timeOfPayment"),
@@ -117,6 +125,16 @@ export const TransactionDashboard = () => {
       title: "Amount",
       dataIndex: "amount",
       key: "amount",
+    },
+    {
+      title: "Payment Method",
+      dataIndex: "paymentMethod",
+      key: "paymentMethod",
+    },
+    {
+      title: "Payment type",
+      dataIndex: "paymentType",
+      key: "paymentType",
     },
     {
       title: "Received by",
