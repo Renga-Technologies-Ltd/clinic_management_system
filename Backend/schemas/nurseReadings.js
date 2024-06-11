@@ -6,19 +6,50 @@ const nurseReadingsSchema = new mongoose.Schema({
     ref: "Appointment",
     required: true,
   },
-  bloodPressure: {
-    systolic: Number,
-    diastolic: Number,
+  weight: {
+    type: Number,
+    required: true,
   },
-  heartRate: Number,
-  temperature: Number,
-  respiratoryRate: Number,
-  height: Number,
-  weight: Number,
-  pulse: Number,
-  painLevel: Number,
-  SpO2: Number,
-  // Add other nurse-specific readings as needed
+  height: {
+    type: Number,
+    required: true,
+  },
+  bmi: {
+    type: Number,
+    required: true,
+  },
+  tests: [
+    {
+      systolic: {
+        type: Number,
+        required: true,
+      },
+      diastolic: {
+        type: Number,
+        required: true,
+      },
+      heartRate: {
+        type: Number,
+        required: true,
+      },
+      temperature: {
+        type: Number,
+        required: true,
+      },
+      respiratoryRate: {
+        type: Number,
+        required: true,
+      },
+      painLevel: {
+        type: Number,
+        required: true,
+      },
+      SpO2: {
+        type: Number,
+        required: true,
+      },
+    },
+  ],
   createdAt: {
     type: Date,
     default: Date.now,

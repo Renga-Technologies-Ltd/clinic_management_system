@@ -272,34 +272,40 @@ const appointmentController = {
 
   nurseSectionreading: async (req, res, next) => {
     try {
-      // console.log(req.body);
-      const { appointment_id, appointment } = req.body;
+      console.log("Received request body:", req.body);
+      const { appointment_id, appointment, tests } = req.body;
+
+      // Extract individual readings from the appointment object
+      const { weight, height, bmi } = appointment;
+
+      // Create a new NurseReadings document
       const newReadings = new NurseReadings({
         appointment: appointment_id,
-        bloodPressure: appointment.bloodPressure,
-        heartRate: appointment.heartRate,
-        temperature: appointment.temperature,
-        respiratoryRate: appointment.respiratoryRate,
-        height: appointment.height,
-        weight: appointment.weight,
-        pulse: appointment.pulse,
-        painLevel: appointment.painLevel,
-        SpO2: appointment.SpO2,
+        weight,
+        height,
+        bmi,
+        tests, // Include the array of test readings directly
       });
+
+      // Save the new NurseReadings document
       await newReadings.save();
+
       // Update nurseReadings field in the corresponding Appointment
       await Appointment.findByIdAndUpdate(appointment_id, {
         nurseReadings: true,
       });
+
+      // Send response
       res.status(201).json({
         message: "Details saved successfully",
         readings: newReadings,
       });
     } catch (error) {
-      console.error("Error creating new recorrds", error);
+      console.error("Error creating new records", error);
       res.status(500).json({ message: "Error creating patients records" });
     }
   },
+
   getNurseReadings: async (req, res, next) => {
     try {
       const appointment_id = req.params.id;

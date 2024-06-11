@@ -9,6 +9,7 @@ import {
   ReconciliationOutlined,
   UserAddOutlined,
   BarChartOutlined,
+  AccountBookOutlined,
 } from "@ant-design/icons";
 import utils from "utils";
 
@@ -52,6 +53,17 @@ const DisplayButtons = () => (
           icon={<ReconciliationOutlined />}
           title="Summary Dashboard"
           color="volcano"
+          vertical={true}
+          avatarSize={55}
+        />
+      </Link>
+    </Col>
+    <Col xs={24} sm={24} md={24} lg={12} xl={12} xxl={12}>
+      <Link to="/app/dashboards/accounts">
+        <DataDisplayWidget
+          icon={<AccountBookOutlined />}
+          title="Accounts"
+          color="cyna"
           vertical={true}
           avatarSize={55}
         />

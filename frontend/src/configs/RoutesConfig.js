@@ -30,6 +30,11 @@ export const protectedRoutes = [
     path: `${APP_PREFIX_PATH}/dashboards/default`,
     component: React.lazy(() => import("views/app-views/dashboards/default")),
   },
+  {
+    key: "dashboard.accounts",
+    path: `${APP_PREFIX_PATH}/dashboards/accounts`,
+    component: React.lazy(() => import("views/app-views/dashboards/accounts")),
+  },
 
   //main dashboard
   {

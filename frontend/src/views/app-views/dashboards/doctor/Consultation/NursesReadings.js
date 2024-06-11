@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Button, message, Col, Upload } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
+import { Col } from "antd";
 const base_apiUrl = process.env.REACT_APP_BASE_URL;
-
-const NurseReading = (data) => {
-  const appointment_id = data.appointment_id;
+const NurseReading = ({ appointment_id }) => {
   const [nurseReadings, setNurseReading] = useState(null);
+
   useEffect(() => {
     const fetchAppointmentData = async () => {
       try {
@@ -20,44 +18,80 @@ const NurseReading = (data) => {
     };
     fetchAppointmentData();
   }, [appointment_id]);
+  console.log("nurse readings", nurseReadings);
 
   return (
     <>
       <hr></hr>
       <Col xs={24} sm={24} md={17}>
+        <>
+          <p>
+            <strong>Height:</strong> {nurseReadings?.height} cm
+          </p>
+          <p>
+            <strong>Weight:</strong> {nurseReadings?.weight} kg
+          </p>
+        </>
+        <hr></hr>
         {nurseReadings ? (
-          // Access nested properties correctly
-          <>
-            <p>
-              {/* <strong>Appointment ID:</strong> {`${nurseReadings._id}`} */}
-            </p>
-            <p>
-              <strong>Blood pressure:</strong>{" "}
-              {`${nurseReadings.bloodPressure.systolic} / ${nurseReadings.bloodPressure.diastolic}`}
-            </p>
-            <p>
-              <strong>Heart rate:</strong> {nurseReadings.heartRate}
-            </p>
-            <p>
-              <strong>Temperature:</strong> {nurseReadings.temperature}
-            </p>
-            <p>
-              <strong>Respiratory Rate:</strong> {nurseReadings.respiratoryRate}
-            </p>
-            <p>
-              <strong>Height:</strong> {nurseReadings.height} cm
-            </p>
-            <p>
-              <strong>Weight:</strong> {nurseReadings.weight} kg
-            </p>
-            <p>
-              <strong>SpO2:</strong> {nurseReadings.SpO2}
-            </p>
-            <p>
-              <strong>Pain Level:</strong> {nurseReadings.painLevel}
-            </p>
-            <hr></hr>
-            <p>
+          // Check if tests array is present
+          nurseReadings.tests && nurseReadings.tests.length > 0 ? (
+            nurseReadings.tests.map((test, index) => (
+              <>
+                <div key={index}>
+                  <p>
+                    <strong>Test {index + 1}:</strong>
+                  </p>
+                  <p>
+                    <strong>Blood pressure:</strong>{" "}
+                    {`${test.systolic} / ${test.diastolic}`}
+                  </p>
+                  <p>
+                    <strong>Heart Rate:</strong> {test.heartRate}
+                  </p>
+                  <p>
+                    <strong>Temperature:</strong> {test.temperature}
+                  </p>
+                  <p>
+                    <strong>Respiratory Rate:</strong> {test.respiratoryRate}
+                  </p>
+                  <p>
+                    <strong>Pain Level:</strong> {test.painLevel}
+                  </p>
+                  <p>
+                    <strong>SpO2:</strong> {test.SpO2}
+                  </p>
+                  <hr></hr>
+                </div>
+              </>
+            ))
+          ) : (
+            // Display nurse readings if tests array is not present
+            <>
+              <p>Displaying old data</p>
+              {/* {nurseReadings} */}
+              <p>
+                <strong>Blood pressure:</strong>{" "}
+                {`${nurseReadings?.bloodPressure?.systolic} / ${nurseReadings?.bloodPressure?.diastolic}`}
+              </p>
+              <p>
+                <strong>Heart rate:</strong> {nurseReadings.heartRate}
+              </p>
+              <p>
+                <strong>Temperature:</strong> {nurseReadings.temperature}
+              </p>
+              <p>
+                <strong>Respiratory Rate:</strong>{" "}
+                {nurseReadings.respiratoryRate}
+              </p>
+
+              <p>
+                <strong>SpO2:</strong> {nurseReadings.SpO2}
+              </p>
+              <p>
+                <strong>Pain Level:</strong> {nurseReadings.painLevel}
+              </p>
+              <p>
               <strong>Patient BMI: </strong>{" "}
               {nurseReadings &&
                 (
@@ -100,7 +134,7 @@ const NurseReading = (data) => {
               return <p style={{ color }}>{bmiCategory}</p>;
             })()}
           </>
-        ) : (
+        ))  : (
           <p>Triage Data not available</p>
         )}
       </Col>

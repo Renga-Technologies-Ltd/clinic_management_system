@@ -68,7 +68,12 @@ const paymentController = {
         .populate({
           path: "appointment",
           model: "Appointment",
-          select: "appointmentTime",
+          select: "appointmentTime patient",
+          populate: {
+            path: "patient",
+            model: "Patient",
+            select: "firstName lastName",
+          },
         })
         .populate({
           path: "receivedBy",
@@ -81,6 +86,7 @@ const paymentController = {
       res.status(500).json({ message: "Internal Server Error" });
     }
   },
+
   //count payments for a specific date
   todaysPayments: async (req, res, next) => {
     try {

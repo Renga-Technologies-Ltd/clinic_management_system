@@ -4,11 +4,8 @@ import { useSelector } from "react-redux";
 import { Row, Col, Button, Table, Tag } from "antd";
 import StatisticWidget from "components/shared-components/StatisticWidget";
 import ChartWidget from "components/shared-components/ChartWidget";
-
 import Card from "components/shared-components/Card";
 import { useNavigate } from "react-router-dom";
-// import { BandwidthChartData } from "./DefaultDashboardData";
-
 import utils from "utils";
 
 const base_apiUrl = process.env.REACT_APP_BASE_URL;
@@ -27,7 +24,6 @@ export const DefaultDashboard = () => {
     ],
     categories: [],
   });
-
   const [latestTransactionData, setlatestTransactionData] = useState([]);
   const [todayAppCount, setTodayAppCount] = useState(0);
   const [allAppCount, setAppCount] = useState(0);
@@ -85,7 +81,6 @@ export const DefaultDashboard = () => {
           moment(payment.timeOfPayment).isBetween(todayStart, todayEnd)
         );
         setlatestTransactionData(todayPayments);
-        console.log("Today's payments:", todayPayments);
 
         // Calculate total amount paid for today
         const totalAmountPaidToday = todayPayments.reduce(
@@ -136,11 +131,24 @@ export const DefaultDashboard = () => {
     fetchAllPayments();
     fetchRegisteredPatients();
   }, []);
+
+  console.log("Latest Transactions", latestTransactionData);
   const tableColumns = [
     {
       title: "Payment ID",
       dataIndex: "receipt_id",
       key: "receipt_id",
+    },
+    {
+      title: "Patient Name",
+      dataIndex: "appointment.patient.firstName",
+      key: "patient_name",
+      render: (text, record) => (
+        <span>
+          {record.appointment.patient.firstName}{" "}
+          {record.appointment.patient.lastName}
+        </span>
+      ),
     },
     {
       title: "Time",
@@ -156,7 +164,7 @@ export const DefaultDashboard = () => {
       key: "amount",
     },
     {
-      title: "Recieved by",
+      title: "Received by",
       dataIndex: "receivedBy",
       render: (receivedBy) => (
         <span>
@@ -167,6 +175,7 @@ export const DefaultDashboard = () => {
       ),
     },
   ];
+
   const tableColumns2 = [
     {
       title: "Patient ID",
@@ -209,21 +218,7 @@ export const DefaultDashboard = () => {
       subtitle: `Sales made today`,
     },
   ];
-  // const AnnualStatisticData = [
-  //   {
-  //     title: "All Registered Patients",
-  //     value: registeredPatientscount,
-  //     // status: registeredPatientscount > 0 ? 1 : -1,
-  //     subtitle: `Registered in the system`,
-  //   },
-  //   {
-  //     title: "Today's Sales",
-  //     value: totalPaid,
-  //     // status: totalPaid > 0 ? 1 : -1,
-  //     subtitle: `Sales made today`,
-  //   },
-  // ];
-
+ 
   if (!isAdminOrDoctor) {
     // Render welcome card and redirection links for non-Doctor and non-Admin users
     return (

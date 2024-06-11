@@ -9,25 +9,19 @@ import { useNavigate } from "react-router-dom";
 const Examination = (props) => {
   const navigate = useNavigate();
   const appointment_id = useParams().appointment_id;
-  //   console.log(receipt_id);
-
   const [form] = Form.useForm();
-
   const [submitLoading, setSubmitLoading] = useState(false);
   const base_apiUrl = process.env.REACT_APP_BASE_URL;
-
-  //   console.log(appointmentRecords);
 
   const onFinish = async () => {
     setSubmitLoading(true);
     try {
       const values = await form.validateFields();
-      // Include appointment_id in the form values
       const formData = { ...values, appointment_id };
-      // console.log(formData, appointment_id);
+
+      console.log("Form Values:", formData); // Added console.log
 
       const apiUrl = `${base_apiUrl}/nurseReadings`;
-
       const requestOptions = {
         method: "POST",
         headers: {
@@ -36,7 +30,6 @@ const Examination = (props) => {
         body: JSON.stringify(formData),
       };
 
-      // Make the API request
       const response = await fetch(apiUrl, requestOptions);
 
       if (response.ok) {
@@ -54,8 +47,8 @@ const Examination = (props) => {
       message.error("Failed to submit the form. Please try again.");
     }
   };
+
   const goBack = () => {
-    //console.log(row); // Log the row object to the console
     navigate(`/app/dashboards/nurse`);
   };
 
@@ -66,6 +59,7 @@ const Examination = (props) => {
         form={form}
         name="advanced_search"
         className="ant-advanced-search-form"
+        onFinish={onFinish}
       >
         <PageHeaderAlt className="border-bottom" overlap>
           <div className="container">
@@ -79,7 +73,6 @@ const Examination = (props) => {
               <div className="mb-3">
                 <Button
                   type="primary"
-                  onClick={() => onFinish()}
                   htmlType="submit"
                   loading={submitLoading}
                 >
@@ -97,7 +90,9 @@ const Examination = (props) => {
               {
                 label: "General",
                 key: "1",
-                children: <TriageForm appointment_id={appointment_id} />,
+                children: (
+                  <TriageForm form={form} appointment_id={appointment_id} />
+                ),
               },
             ]}
           />
