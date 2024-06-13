@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Input, Row, Col, Card, Form, Radio, message, Popover } from "antd";
 import { Button, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
-import NurseReading from "./NursesReadings";
+import NurseReading from "../EditConsultation/NursesReadings";
 import LabRequest from "./Lab";
 import LabResults from "./LabResults";
 import RadilogyRequest from "./Radiology";

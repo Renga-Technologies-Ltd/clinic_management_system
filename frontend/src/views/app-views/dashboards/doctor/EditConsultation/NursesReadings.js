@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col } from "antd";
+import { Col } from "antd";
 const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
 const NurseReading = (data) => {
@@ -22,17 +22,99 @@ const NurseReading = (data) => {
   //   console.log(appointmentRecords);
   //   console.log(appointment_id);
   return (
-    <Row gutter={16}>
-      <Col xs={24} sm={24} md={17}>
-        {nurseReadings ? (
-          // Access nested properties correctly
+    <Col xs={24} sm={24} md={17}>
+      <>
+        <p>
+          <strong>Height:</strong> {nurseReadings?.height} cm
+        </p>
+        <p>
+          <strong>Weight:</strong> {nurseReadings?.weight} kg
+        </p>
+      </>
+      <hr></hr>
+      <p>
+        <strong>Patient BMI: </strong>{" "}
+        {nurseReadings &&
+          (
+            nurseReadings.weight /
+            ((nurseReadings.height / 100) * (nurseReadings.height / 100))
+          ).toFixed(2)}
+      </p>
+      {(() => {
+        const bmi =
+          nurseReadings &&
+          nurseReadings.weight /
+            ((nurseReadings.height / 100) * (nurseReadings.height / 100));
+        let bmiCategory = "";
+        if (bmi < 18.5) {
+          bmiCategory = "Underweight";
+        } else if (bmi >= 18.5 && bmi < 25) {
+          bmiCategory = "Normal weight";
+        } else if (bmi >= 25 && bmi < 30) {
+          bmiCategory = "Overweight";
+        } else {
+          bmiCategory = "Obese";
+        }
+        let color = "";
+        switch (bmiCategory) {
+          case "Underweight":
+            color = "#FF6347"; // Red
+            break;
+          case "Normal weight":
+            color = "#32CD32"; // Green
+            break;
+          case "Overweight":
+            color = "#FFA500"; // Orange
+            break;
+          case "Obese":
+            color = "#FF4500"; // Dark Orange
+            break;
+          default:
+            color = "black";
+        }
+        return <p style={{ color }}>{bmiCategory}</p>;
+      })()}
+      <hr></hr>
+      {nurseReadings ? (
+        // Check if tests array is present
+        nurseReadings.tests && nurseReadings.tests.length > 0 ? (
+          nurseReadings.tests.map((test, index) => (
+            <>
+              <div key={index}>
+                <p>
+                  <strong>Test {index + 1}:</strong>
+                </p>
+                <p>
+                  <strong>Blood pressure:</strong>{" "}
+                  {`${test.systolic} / ${test.diastolic}`}
+                </p>
+                <p>
+                  <strong>Heart Rate:</strong> {test.heartRate}
+                </p>
+                <p>
+                  <strong>Temperature:</strong> {test.temperature}
+                </p>
+                <p>
+                  <strong>Respiratory Rate:</strong> {test.respiratoryRate}
+                </p>
+                <p>
+                  <strong>Pain Level:</strong> {test.painLevel}
+                </p>
+                <p>
+                  <strong>SpO2:</strong> {test.SpO2}
+                </p>
+                <hr></hr>
+              </div>
+            </>
+          ))
+        ) : (
+          // Display nurse readings if tests array is not present
           <>
-            <p>
-              {/* <strong>Appointment ID:</strong> {`${nurseReadings._id}`} */}
-            </p>
+            <p>Displaying old data</p>
+            {/* {nurseReadings} */}
             <p>
               <strong>Blood pressure:</strong>{" "}
-              {`${nurseReadings.bloodPressure.systolic} / ${nurseReadings.bloodPressure.diastolic}`}
+              {`${nurseReadings?.bloodPressure?.systolic} / ${nurseReadings?.bloodPressure?.diastolic}`}
             </p>
             <p>
               <strong>Heart rate:</strong> {nurseReadings.heartRate}
@@ -43,68 +125,22 @@ const NurseReading = (data) => {
             <p>
               <strong>Respiratory Rate:</strong> {nurseReadings.respiratoryRate}
             </p>
-            <p>
-              <strong>Height:</strong> {nurseReadings.height} cm
-            </p>
-            <p>
-              <strong>Weight:</strong> {nurseReadings.weight} KG
-            </p>
+
             <p>
               <strong>SpO2:</strong> {nurseReadings.SpO2}
             </p>
             <p>
               <strong>Pain Level:</strong> {nurseReadings.painLevel}
             </p>
-            <hr></hr>
             <p>
-              <strong>Patient BMI: </strong>{" "}
-              {nurseReadings &&
-                (
-                  nurseReadings.weight /
-                  ((nurseReadings.height / 100) * (nurseReadings.height / 100))
-                ).toFixed(2)}
+              <hr></hr>
             </p>
-            {(() => {
-              const bmi =
-                nurseReadings &&
-                nurseReadings.weight /
-                  ((nurseReadings.height / 100) * (nurseReadings.height / 100));
-              let bmiCategory = "";
-              if (bmi < 18.5) {
-                bmiCategory = "Underweight";
-              } else if (bmi >= 18.5 && bmi < 25) {
-                bmiCategory = "Normal weight";
-              } else if (bmi >= 25 && bmi < 30) {
-                bmiCategory = "Overweight";
-              } else {
-                bmiCategory = "Obese";
-              }
-              let color = "";
-              switch (bmiCategory) {
-                case "Underweight":
-                  color = "#FF6347"; // Red
-                  break;
-                case "Normal weight":
-                  color = "#32CD32"; // Green
-                  break;
-                case "Overweight":
-                  color = "#FFA500"; // Orange
-                  break;
-                case "Obese":
-                  color = "#FF4500"; // Dark Orange
-                  break;
-                default:
-                  color = "black";
-              }
-              return <p style={{ color }}>{bmiCategory}</p>;
-            })()}
-            {/* Add more patient details as needed */}
           </>
-        ) : (
-          <p>Triage Data not available</p>
-        )}
-      </Col>
-    </Row>
+        )
+      ) : (
+        <p>Triage Data not available</p>
+      )}
+    </Col>
   );
 };
 

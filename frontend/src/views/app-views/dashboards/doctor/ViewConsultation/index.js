@@ -5,7 +5,7 @@ import Flex from "components/shared-components/Flex";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
-import NurseReading from "../Consultation/NursesReadings";
+import NurseReading from "../EditConsultation/NursesReadings";
 import LabResults from "./LabResults";
 import RadiologyResults from "./RadiologyResults";
 // import { use } from "i18next";

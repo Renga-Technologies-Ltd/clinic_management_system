@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import moment from "moment";
 import { Row, Col, Button, Table, DatePicker, Select } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
@@ -20,6 +20,8 @@ export const TransactionDashboard = () => {
   const userData = JSON.parse(localStorage.getItem("userDetails"));
   const userRoles = userData?.roles || [];
   const [filteredTransactions, setFilteredTransactions] = useState([]);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
 
   const isAdminOrDoctor =
     userRoles.includes("Admin") || userRoles.includes("Doctor");
@@ -40,13 +42,15 @@ export const TransactionDashboard = () => {
     }
   };
 
-  const filterTransactions = (dateRange, paymentType) => {
+  const filterTransactions = useCallback((dateRange, paymentType) => {
     let filtered = transactions;
 
     if (dateRange && dateRange.length === 2) {
       const [start, end] = dateRange;
       const startDate = start.format();
       const endDate = end.format();
+      setStartDate(startDate);
+      setEndDate(endDate);
       filtered = filtered.filter((transaction) => {
         const transactionDate = moment(transaction.timeOfPayment);
         return transactionDate.isBetween(startDate, endDate, null, "[]");
@@ -59,7 +63,7 @@ export const TransactionDashboard = () => {
       );
     }
     setFilteredTransactions(filtered);
-  };
+  }, [transactions]);
 
   useEffect(() => {
     fetchAllPayments();
@@ -67,7 +71,7 @@ export const TransactionDashboard = () => {
 
   useEffect(() => {
     filterTransactions(dateRange, paymentType);
-  }, [dateRange, paymentType, transactions]);
+  }, [dateRange, paymentType, transactions, filterTransactions]);
 
   const handleDateRangeChange = (dates) => {
     setDateRange(dates);
@@ -81,7 +85,7 @@ export const TransactionDashboard = () => {
     const ws = XLSX.utils.json_to_sheet(filteredTransactions);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Transactions");
-    XLSX.writeFile(wb, "transactions.xlsx");
+    XLSX.writeFile(wb, `Transactions${startDate} to ${endDate}.xlsx`);
   };
 
   const disabledDate = (current) => {

@@ -45,7 +45,7 @@ const Invoice = (props) => {
       fetchLabRecords();
       // Fetch invoice data only if receipt ID exists
     }
-  }, [receipt]); // Fetch invoice data whenever receipt ID changes
+  }, [receipt,appoinmentId]); // Fetch invoice data whenever receipt ID changes
 
   const formatDate = (dateString) => {
     const options = {

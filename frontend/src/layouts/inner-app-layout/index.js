@@ -28,7 +28,7 @@ const MainContent = styled.div(({hasPageHeader, gutter}) => {
 
 
 const SideContent = props => {
-	const { sideContent, sideContentWidth = 250, border } = props
+	const { sideContent, sideContentWidth = 250 } = props
 
 	const currentTheme = useSelector(state => state.theme.currentTheme)
 

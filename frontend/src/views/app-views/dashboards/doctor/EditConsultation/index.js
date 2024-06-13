@@ -67,7 +67,7 @@ const EditConsultation = (props) => {
     };
     fetchAppointmentData();
     fetchData(); // Call the fetchData function when the component mounts
-  }, []);
+  }, [appointment_id, form]);
 
   const onFinish = async (values) => {
     try {

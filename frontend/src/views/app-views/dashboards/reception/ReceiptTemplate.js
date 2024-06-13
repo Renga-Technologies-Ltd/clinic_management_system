@@ -47,7 +47,7 @@ const ReceiptTemplate = ({ receiptData }) => {
       fetchLabRecords();
       // Fetch invoice data only if receipt ID exists
     }
-  }, [receipt]);
+  }, [receipt, appoinmentId]);
   const printDiv = () => {
     const printableContent = document.querySelector(".printable-content");
     if (printableContent) {

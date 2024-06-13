@@ -29,7 +29,7 @@ const PaymentForm = (props) => {
       }
     };
     fetchAppointments();
-  }, []);
+  }, [appointmentId.appointment_id]);
 
   return (
     <Row gutter={16}>

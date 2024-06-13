@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Input, Row, Tab, Col, Card, Form, Select, DatePicker } from "antd";
-import { UserOutlined, PhoneOutlined, MailOutlined } from "@ant-design/icons";
+import { Input, Row,  Col, Card, Form, Select, DatePicker } from "antd";
+import { UserOutlined, PhoneOutlined } from "@ant-design/icons";
 import moment from "moment";
 
 const { Option } = Select;

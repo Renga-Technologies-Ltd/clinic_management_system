@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import AuthService from "services/AuthService";
 import { history } from "services/history";
-import { APP_PREFIX_PATH } from "configs/AppConfig";
+// import { APP_PREFIX_PATH } from "configs/AppConfig";
 const base_apiUrl = process.env.REACT_APP_BASE_URL;
 
 
